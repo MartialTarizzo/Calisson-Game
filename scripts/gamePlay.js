@@ -1,15 +1,15 @@
-import { enigme_3_1 } from './enigmes_3_1.js';
-import { enigme_3_2 } from './enigmes_3_2.js';
-import { enigme_3_3 } from './enigmes_3_3.js';
-import { enigme_4_1 } from './enigmes_4_1.js';
-import { enigme_4_2 } from './enigmes_4_2.js';
-import { enigme_4_3 } from './enigmes_4_3.js';
-import { enigme_5_1 } from './enigmes_5_1.js';
-import { enigme_5_2 } from './enigmes_5_2.js';
-import { enigme_5_3 } from './enigmes_5_3.js';
-import { enigme_6_1 } from './enigmes_6_1.js';
-import { enigme_6_2 } from './enigmes_6_2.js';
-import { enigme_6_3 } from './enigmes_6_3.js';
+import { enigme_3_1 } from '../grids/enigmes_3_1.js';
+import { enigme_3_2 } from '../grids/enigmes_3_2.js';
+import { enigme_3_3 } from '../grids/enigmes_3_3.js';
+import { enigme_4_1 } from '../grids/enigmes_4_1.js';
+import { enigme_4_2 } from '../grids/enigmes_4_2.js';
+import { enigme_4_3 } from '../grids/enigmes_4_3.js';
+import { enigme_5_1 } from '../grids/enigmes_5_1.js';
+import { enigme_5_2 } from '../grids/enigmes_5_2.js';
+import { enigme_5_3 } from '../grids/enigmes_5_3.js';
+import { enigme_6_1 } from '../grids/enigmes_6_1.js';
+import { enigme_6_2 } from '../grids/enigmes_6_2.js';
+import { enigme_6_3 } from '../grids/enigmes_6_3.js';
 
 function getEnigmes(taille, niveau) {
   let e = [
@@ -31,7 +31,7 @@ import {
   rafraichitlongueur,
   partage,
   messageok
-} from "./calisson_files/javascript.js";
+} from "./javascript.js";
 
 btreset.onclick = reset;
 btmode.onclick = changemode;
@@ -51,7 +51,7 @@ function restart(score) {
   document.getElementById('score').innerHTML = 'Score total : ' + totalScore;
 
   let taille = getRandomInt(4)
-  let niveau = getRandomInt(2)
+  let niveau = getRandomInt(3)
   let enigs = getEnigmes(taille, niveau)
   let i = getRandomInt(enigs.length)
   let enig = enigs[i]

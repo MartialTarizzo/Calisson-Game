@@ -800,6 +800,7 @@ function ajouterenleversegment(evt) {
             chaine = chaine + '<br/>Score : ' + calcScore()
             document.getElementById('message').innerHTML = chaine;
             document.getElementById('messagediv').style.display = "";
+            setTimeout(() => {messageok()}, 2000)
         }
     }
 }
