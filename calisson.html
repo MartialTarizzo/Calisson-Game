@@ -8,46 +8,7 @@
 </head>
 
 <body>
-    <script defer="" language="JavaScript" type="module">
-        import {
-            start,
-            reset,
-            changemode,
-            rafraichit,
-            rafraichitlongueur,
-            partage,
-            messageok
-        } from "./calisson_files/javascript.js";
-
-        document.getElementById('btreset').addEventListener(
-            'click',
-            (evt) => reset()
-        );
-        btmode.onclick = changemode;
-        taille.onchange = rafraichit;
-        longueur.onchange = rafraichitlongueur;
-        btshare.onclick = partage;
-        btok.onclick = messageok;
-
-        let totalScore = 0;
-        function getRandomInt(max) {
-            return Math.floor(Math.random() * max);
-        }
-        import { enigme_3_1 } from './enigmes_3_1.js';
-        let enigs = enigme_3_1.split("\n")
-        enigs.pop() // suppression de NaN qui est le dernier élément
-        let i = getRandomInt(enigs.length)
-        let enig = enigs[i]
-
-        function restart(score) {
-            totalScore += score;
-            document.getElementById('score').innerHTML = 'Score total : ' + totalScore;
-            i = getRandomInt(enigs.length)
-            enig = enigs[i]
-            start(enig, restart)
-        }
-        start(enig, restart)
-    </script>
+    <script type="module" src="gamePlay.js"></script>
 
     <div id="controle">
         <span id="score"></span>&nbsp;

@@ -11,8 +11,6 @@ import { enigme_6_1 } from './enigmes_6_1.js';
 import { enigme_6_2 } from './enigmes_6_2.js';
 import { enigme_6_3 } from './enigmes_6_3.js';
 
-import { playGrid } from './playgrid.js';
-
 function getEnigmes(taille, niveau) {
   let e = [
     [enigme_3_1, enigme_3_2, enigme_3_3],
@@ -24,17 +22,52 @@ function getEnigmes(taille, niveau) {
   enigmes.pop()
   return enigmes
 }
+
+import {
+  start,
+  reset,
+  changemode,
+  rafraichit,
+  rafraichitlongueur,
+  partage,
+  messageok
+} from "./calisson_files/javascript.js";
+
+btreset.onclick = reset;
+btmode.onclick = changemode;
+taille.onchange = rafraichit;
+longueur.onchange = rafraichitlongueur;
+btshare.onclick = partage;
+btok.onclick = messageok;
+
+let totalScore = 0;
+
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-export function playOneGrid() {
-  let taille = getRandomInt(3)
-  let niveau = getRandomInt(3)
+function restart(score) {
+  totalScore += score;
+  document.getElementById('score').innerHTML = 'Score total : ' + totalScore;
+
+  let taille = getRandomInt(4)
+  let niveau = getRandomInt(2)
   let enigs = getEnigmes(taille, niveau)
   let i = getRandomInt(enigs.length)
-  document.getElementById("spTaille").innerText = taille+3
-  document.getElementById("spNiveau").innerText = niveau+1
+  let enig = enigs[i]
 
-  playGrid(enigs[i])
+  start(enig, restart)
 }
+
+function beginGame() {
+  let taille = 0
+  let niveau = 1
+  let enigs = getEnigmes(taille, niveau)
+  let i = getRandomInt(enigs.length)
+  let enig = enigs[i]
+
+  start(enig, restart)
+}
+
+beginGame()
+
