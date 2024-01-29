@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns:og="http://ogp.me/ns#">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="./calisson_files/style.css">
+    <title>calisson</title>
+</head>
+
+<body>
+    <script defer="" language="JavaScript" type="module">
+        import {
+            start,
+            reset,
+            changemode,
+            rafraichit,
+            rafraichitlongueur,
+            partage,
+            messageok
+        } from "./calisson_files/javascript.js";
+
+        document.getElementById('btreset').addEventListener(
+            'click',
+            (evt) => reset()
+        );
+        btmode.onclick = changemode;
+        taille.onchange = rafraichit;
+        longueur.onchange = rafraichitlongueur;
+        btshare.onclick = partage;
+        btok.onclick = messageok;
+
+        let totalScore = 0;
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+        import { enigme_3_1 } from './enigmes_3_1.js';
+        let enigs = enigme_3_1.split("\n")
+        enigs.pop() // suppression de NaN qui est le dernier élément
+        let i = getRandomInt(enigs.length)
+        let enig = enigs[i]
+
+        function restart(score) {
+            totalScore += score;
+            document.getElementById('score').innerHTML = 'Score total : ' + totalScore;
+            i = getRandomInt(enigs.length)
+            enig = enigs[i]
+            start(enig, restart)
+        }
+        start(enig, restart)
+    </script>
+
+    <div id="controle">
+        <span id="score"></span>&nbsp;
+        <button id="btreset">Reset</button>
+        <button id="btmode" style="display: none;">Mode arête</button>
+        <span id="sptaille">Taille :
+            <input type="number" id="taille" value="3" min="2" step="1" width="30px"></span>
+
+        <span id="splongueur">Zoom <input type="number" id="longueur" value="80" min="30" step="1" width="30px"></span>
+        <span id="chronospan">Chrono : <span id="chrono">27 s</span></span>
+        <span id="losange">Losange(s) utilisé(s) : <span id="nblosange">0</span></span>
+    </div>
+
+    <canvas id="canvas" width="425" height="490" style="cursor: pointer;"></canvas>
+    <canvas id="canvasbis" width="30" height="30"></canvas>
+
+    <br>
+
+    <div id="texte">
+        CC-BY-SA-NC Arnaud DURAND version <br>
+        sur un jeu et des grilles faits par Olivier LONGUET
+    </div>
+    <input type="text" id="copiepressepapier" style="opacity:0">
+    <div id="messagediv" style="display: none;">
+        <div id="message"></div><br><input type="button" value="Partager sur Twitter" id="btshare"><input type="button"
+            id="btok" value="Ok">
+    </div>
+    <br>
+</body>
+
+</html>
