@@ -703,8 +703,7 @@ function ajouteunlosange(x, y) {
 
 }
 
-// MT+ pour passer du mode jeu au mode retouche de grille
-function gotoDesign() {
+function dessinerSolution() {
     // MAJ de tabmilieu en fonction de solution
     for (var i = 0; i < solution.length; i++) {
         switch (solution[i]) {
@@ -713,16 +712,31 @@ function gotoDesign() {
             case 'bloquee': tabmilieu[i][2] = true;
         }
     }
+    dessinerlafigure();
+}
+
+function abandonGrille() {
+
+    function restoreControlsAndCallback() {
+        document.getElementById('btreset').style.display = "";
+        document.getElementById('btcancel').style.display = "";
+        funCallBack(0)
+    }
+    
     // réglage de l'interface : seul le bouton de génération du lien est actif
     document.getElementById('btreset').style.display = "none";
+    document.getElementById('btcancel').style.display = "none";
     // document.getElementById('genurl').style.display = "none";
     // document.getElementById('terminedl').style.display = "none";
-    document.getElementById('sptaille').style.display = "none";
-    document.getElementById("chronospan").style.display = 'none';
-    document.getElementById("losange").style.display = 'none';
+    // document.getElementById('sptaille').style.display = "none";
+    // document.getElementById("chronospan").style.display = 'none';
+    // document.getElementById("losange").style.display = 'none';
     // document.getElementById('termine').style.display = 'none';
 
-    dessinerlafigure();
+    dessinerSolution();
+    chronoarret();
+    setTimeout(restoreControlsAndCallback, 2000)
+
 }
 // MT-
 
@@ -730,10 +744,10 @@ function gotoDesign() {
 function ajouterenleversegment(evt) {
     // console.log(evt.button);
     // +MT : si on appuie sur Alt (option sur mac) => passage en mode retouche de la grille
-    if (evt.getModifierState('Alt')) {
-        gotoDesign();
-        return
-    }
+    // if (evt.getModifierState('Alt')) {
+    //     abandonGrille();
+    //     return
+    // }
     //-MT
 
     if (style) {
@@ -1039,5 +1053,8 @@ export {
     rafraichit,
     rafraichitlongueur,
     partage,
-    messageok
+    messageok,
+    abandonGrille,
+    chronoarret,
+    dessinerSolution
 };

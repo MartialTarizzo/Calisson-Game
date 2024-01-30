@@ -30,7 +30,10 @@ import {
   rafraichit,
   rafraichitlongueur,
   partage,
-  messageok
+  messageok,
+  abandonGrille,
+  chronoarret,
+  dessinerSolution
 } from "./javascript.js";
 
 btreset.onclick = reset;
@@ -39,11 +42,17 @@ taille.onchange = rafraichit;
 longueur.onchange = rafraichitlongueur;
 btshare.onclick = partage;
 btok.onclick = messageok;
+btcancel.onclick = cancelGrid;
 
 let totalScore = 0;
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
+}
+
+function cancelGrid() {
+  abandonGrille();
+  totalScore = Math.max(0, totalScore - 100)
 }
 
 function mkGenEnigme() {
@@ -67,7 +76,31 @@ function mkGenEnigme() {
   return nextEnig
 }
 
-let genEnigme = mkGenEnigme();
+let genEnigme;
+
+let maxTime;
+let gameTimer;
+
+function decompteTemps() {
+  maxTime--
+//  console.log(maxTime)
+  if (maxTime < 0) {
+    clearInterval(gameTimer)
+    chronoarret()
+    dessinerSolution()
+
+    setTimeout(endGame, 0)
+  }
+  else {
+    document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
+  }
+}
+
+function endGame() {
+  let msg = 'Limite de temps atteinte ! Score final = ' + totalScore
+  alert(msg)
+  beginGame()
+}
 
 function restart(score) {
   totalScore += score;
@@ -79,7 +112,13 @@ function restart(score) {
 }
 
 function beginGame() {
+  maxTime = 10 * 60
+  document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
+  totalScore = 0
+  document.getElementById('score').innerHTML = ''
+  genEnigme = mkGenEnigme();
   let enig = genEnigme()
+  gameTimer = setInterval(decompteTemps, 1000)
   start(enig, restart)
 }
 
