@@ -494,7 +494,7 @@ function commencergrille() {
         solutionpresente = true;
         document.getElementById("chronospan").style.display = '';
         document.getElementById("chrono").innerHTML = chrono + ' s'
-        document.getElementById("losange").style.display = '';
+        document.getElementById("losange").style.display = 'none';
         document.getElementById("nblosange").innerHTML = '0';
     } else {
         solutionpresente = false;
@@ -800,7 +800,7 @@ function ajouterenleversegment(evt) {
             chaine = chaine + '<br/>Score : ' + calcScore()
             document.getElementById('message').innerHTML = chaine;
             document.getElementById('messagediv').style.display = "";
-            setTimeout(() => {messageok()}, 2000)
+            setTimeout(() => { messageok() }, 2000)
         }
     }
 }
@@ -825,11 +825,14 @@ function calcScore() {
     let perfAr = nbArUser / nbAretes;
     let durPlacAr = 2 // durée (en s) moyenne de placement d'une arête pour un bon joueur
 
+    // calcul de la valeur de référence pour la grille en cours
+    let scoreRef = 1 * taille ** 2.2 * (1 + perfAr)
+    // et de la valeur obtenue par lee joueur
+    let scorePlayer = 1 * taille ** 2 * (1.1 - propLos) * (durPlacAr / durPlacArUser) * (1 + perfAr)
     // Calcul du score qui dépend de la taille de la grille et des variables précédentes
     return Math.max(
-        taille,
-        //Math.round(10 * taille ** 2 * (1.1 - propLos) * (durPlacAr / durPlacArUser) * perfAr ** 2)
-        Math.round(1 * taille ** 2 * (1.1 - propLos) * (durPlacAr / durPlacArUser) * (1+perfAr))
+        taille * 5,
+        Math.round((taille - 2) * 50 * scorePlayer / scoreRef)
     )
 }
 
@@ -889,7 +892,7 @@ function genereurl() {
 }
 
 function GET(param) {
-    if (param == 'tab') {return currentTab}
+    if (param == 'tab') { return currentTab }
     var vars = {};
     window.location.href.replace(location.hash, '').replace(
         /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
@@ -904,12 +907,14 @@ function GET(param) {
     return vars;
 }
 
+
 function chronomarche() {
 
-    chronointerval = setInterval(function () {
-        chrono++;
-        document.getElementById("chrono").innerHTML = chrono + ' s'
-    }, 1000);
+    chronointerval = setInterval(
+        function () {
+            chrono++;
+            document.getElementById("chrono").innerHTML = chrono + ' s'
+        }, 1000);
 }
 
 function chronoarret() {

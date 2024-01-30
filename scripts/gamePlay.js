@@ -46,26 +46,40 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
+function mkGenEnigme() {
+  let taille = 0
+  let niveau = 0
+
+  function nextEnig() {
+    let enigs = getEnigmes(taille, niveau)
+    let i = getRandomInt(enigs.length)
+    let enig = enigs[i]
+    if (niveau == 2) {
+      if (taille < 3) {
+        taille++;
+        niveau = 0
+      }
+    }
+    else { niveau++ }
+    return enig
+  }
+
+  return nextEnig
+}
+
+let genEnigme = mkGenEnigme();
+
 function restart(score) {
   totalScore += score;
   document.getElementById('score').innerHTML = 'Score total : ' + totalScore;
 
-  let taille = getRandomInt(4)
-  let niveau = getRandomInt(3)
-  let enigs = getEnigmes(taille, niveau)
-  let i = getRandomInt(enigs.length)
-  let enig = enigs[i]
+  let enig = genEnigme()
 
   start(enig, restart)
 }
 
 function beginGame() {
-  let taille = 0
-  let niveau = 1
-  let enigs = getEnigmes(taille, niveau)
-  let i = getRandomInt(enigs.length)
-  let enig = enigs[i]
-
+  let enig = genEnigme()
   start(enig, restart)
 }
 
