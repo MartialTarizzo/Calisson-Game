@@ -814,6 +814,7 @@ function ajouterenleversegment(evt) {
             chaine = chaine + '<br/>Score : ' + calcScore()
             document.getElementById('message').innerHTML = chaine;
             document.getElementById('messagediv').style.display = "";
+            document.getElementById('btcancel').style.display = "none";
             setTimeout(() => { messageok() }, 2000)
         }
     }
@@ -852,6 +853,7 @@ function calcScore() {
 
 function messageok() {
     document.getElementById('messagediv').style.display = "none";
+    document.getElementById('btcancel').style.display = "";
     funCallBack(calcScore())
 }
 

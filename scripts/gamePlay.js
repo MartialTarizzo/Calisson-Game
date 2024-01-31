@@ -212,8 +212,8 @@ function beginGame() {
   maxTime = 10 * 60
   document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
   totalScore = 0
-  scoreBonif = 500
-  incScoreBonif = 500
+  scoreBonif = 400
+  incScoreBonif = 400
   timeBonif = 120   // 2 mniutes de plus !
   document.getElementById('score').innerHTML = ''
   genEnigme = mkGenEnigme();
