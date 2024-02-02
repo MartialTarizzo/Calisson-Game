@@ -100,7 +100,7 @@ function init() {
     }
 
     if (!(is_touch_device())) {
-        document.getElementById('btmode').style.display = '';
+        document.getElementById('btmode').style.display = 'none';
         // document.getElementById('explicationcontrole').style.display = '';
         // document.getElementById('explicationcontroleportable').style.display = 'none';
     } else {
