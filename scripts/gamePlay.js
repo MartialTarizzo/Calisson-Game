@@ -118,7 +118,7 @@ function mkGenEnigme() {
 
 /***
  * Variables globales
- * Sauf initialisation explicite, ces variables doivent être initialisée à chaque début de partie
+ * Sauf initialisation explicite, ces variables doivent être initialisées à chaque début de partie
  */
 // Le générateur d'énigme
 let genEnigme;
@@ -135,7 +135,7 @@ let scoreBonif;
 let incScoreBonif;
 
 // La bonification en temps
-let timeBonif; 
+let timeBonif;
 
 // La durée du jeu
 let maxTime;
@@ -160,7 +160,7 @@ function cancelGrid() {
  */
 function decompteTemps() {
   maxTime--
-//  console.log(maxTime)
+  //  console.log(maxTime)
   if (maxTime < 0) {
     clearInterval(gameTimer)
     chronoarret()
@@ -176,9 +176,19 @@ function decompteTemps() {
  * Fin de partie
  */
 function endGame() {
-  let msg = 'Limite de temps atteinte ! Score final = ' + totalScore
-  alert(msg)
-  beginGame()
+  let msg = '- Limite de temps atteinte -<br> <strong>Score final = ' + totalScore + "</strong>"
+  let modal = document.getElementById("modalEndGame");
+  let parMsg = document.getElementById("pEndGameMessage");
+  parMsg.innerHTML = msg
+  modal.style.display = "block";
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+      beginGame()
+    }
+  }
 }
 
 /**
@@ -196,7 +206,7 @@ function restart(score) {
     maxTime += timeBonif
   }
 
-  (score >0) ? start( genEnigme(), restart ) : start(currentEnig, restart)
+  (score > 0) ? start(genEnigme(), restart) : start(currentEnig, restart)
 }
 
 /**
@@ -208,7 +218,7 @@ function restart(score) {
  *   de jeu ( <=> propositions des grilles successives)
  *   
  */
-function beginGame() {
+export function beginGame() {
   maxTime = 10 * 60
   document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
   totalScore = 0
@@ -223,5 +233,5 @@ function beginGame() {
 }
 
 // lancement du jeu au chargement de la page HTML
-beginGame()
+//beginGame()
 

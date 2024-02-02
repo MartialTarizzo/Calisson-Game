@@ -28,6 +28,7 @@ function init() {
     longueur = Number(document.getElementById("longueur").value);
     marge = 5;
     mode = "arete";
+    document.getElementById("btmode").innerHTML = "Mode arête";
 
     // valeurs utilisées pour le calcul des coordonnées des points/segments
     v1x = -Math.sqrt(3) * longueur / 2
@@ -99,7 +100,7 @@ function init() {
     }
 
     if (!(is_touch_device())) {
-        document.getElementById('btmode').style.display = 'none';
+        document.getElementById('btmode').style.display = '';
         // document.getElementById('explicationcontrole').style.display = '';
         // document.getElementById('explicationcontroleportable').style.display = 'none';
     } else {
