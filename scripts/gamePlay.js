@@ -88,7 +88,8 @@ function getRandomInt(max) {
  * les appels successifs à nextEnig fournissent une grille choisie aléatoirement et ayant des
  * niveaux croissants de 3.1 à 6.3 :
  * 3.1, 3.2, 3.3, 4.1, 4.2, ... , 6.1, 6.2, 6.3, 6.3, 6.3 , ... 
- * 
+ * La valeur de retour de la fonction nextEnig est un objet contenant 
+ * trois champs : taille (3..6), niveau (1..3) et enigme (chaîne représentant l'énigme)
  */
 function mkGenEnigme() {
   let taille = 0
@@ -98,7 +99,11 @@ function mkGenEnigme() {
     // choix au hasard d'une énigme dans la taille et le niveau courants
     let enigs = getEnigmes(taille, niveau)
     let i = getRandomInt(enigs.length)
-    let enig = enigs[i]
+    let r = {
+      taille : taille + 3, 
+      niveau : niveau + 1, 
+      enigme : enigs[i]
+    }
     // incrémentation du couple taille/niveau : 0/0 -> 3/2 (grilles 3/1 -> 6/3)
     if (niveau == 2) {
       if (taille < 3) {
@@ -109,8 +114,10 @@ function mkGenEnigme() {
     else { niveau++ }
 
     // déf de currentEnig et valeur retournée
-    currentEnig = enig;
-    return enig
+    currentEnig = r;
+    // MAJ affichage
+    document.getElementById('spLevel').innerHTML = currentEnig.taille + '.' + currentEnig.niveau
+    return r
   }
 
   return nextEnig
@@ -224,13 +231,14 @@ function restart(score) {
         maxTime += timeBonif
       }
       document.getElementById('score').innerHTML = 'Score total : ' + totalScore;
-      start(genEnigme(), restart)
+      genEnigme()
+      start(currentEnig.enigme, restart)
     }, 1000)
   }
   else {
     if (maxTime > 0) {
       gameTimer = setInterval(decompteTemps, 1000)
-      start(currentEnig, restart)
+      start(currentEnig.enigme, restart)
     }
     else {
       endGame()
@@ -258,9 +266,9 @@ export function beginGame() {
   timePenalite = 60
   document.getElementById('score').innerHTML = ''
   genEnigme = mkGenEnigme();
-  let enig = genEnigme()
+  genEnigme()
   gameTimer = setInterval(decompteTemps, 1000)
-  start(enig, restart)
+  start(currentEnig.enigme, restart)
 }
 
 // lancement du jeu au chargement de la page HTML

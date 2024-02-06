@@ -1,6 +1,7 @@
 /* 
 javascript.js pour la page HTML de Calisson
 */
+// TODO : nettoyer ce fichier de tout ce qui ne sert plus à rien (résidus de la version d'origine)
 
 ////////////////////////////////////////////////////
 // Réglage de l'interface et initialisations diverses
@@ -838,9 +839,9 @@ function calcScore() {
     let durPlacAr = 2 // durée (en s) moyenne de placement d'une arête pour un bon joueur
 
     // calcul de la valeur de référence pour la grille en cours
-    let scoreRef = 1 * taille ** 2 * 1.1 * (1 + perfAr)
-    // et de la valeur obtenue par lee joueur
-    let scorePlayer = 1 * taille ** 2 * (1.1 - propLos) * (durPlacAr / durPlacArUser) * (1 + perfAr)
+    let scoreRef = 1 * taille ** 2 * 1.1
+    // et de la valeur obtenue par le joueur
+    let scorePlayer = 1 * taille ** 2 * (1.1 - propLos) * (durPlacAr / durPlacArUser) * (1 + perfAr / 2)
     // Calcul du score qui dépend de la taille de la grille et des variables précédentes
     return Math.max(
         taille * 5,
