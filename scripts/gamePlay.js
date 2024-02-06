@@ -226,7 +226,7 @@ function restart(score) {
     displaypopupEndGrid()
     setTimeout(() => {
       totalScore += score;
-      if (totalScore > scoreBonif) {
+      if (totalScore >= scoreBonif) {
         scoreBonif += incScoreBonif
         maxTime += timeBonif
       }
