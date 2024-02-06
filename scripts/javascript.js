@@ -451,7 +451,7 @@ function miseajourpoint(chaine) {
 
 function commencergrille() {
 
-    document.getElementById('messagediv').style.display = "none";
+    // document.getElementById('messagediv').style.display = "none";
     modejeu = true;
     chrono = 0;
     nblosangeutilise = 0;
@@ -720,7 +720,6 @@ function abandonGrille() {
         funCallBack(0)
     }
     
-    // réglage de l'interface : seul le bouton de génération du lien est actif
     document.getElementById('btreset').style.display = "none";
     document.getElementById('btcancel').style.display = "none";
     // document.getElementById('genurl').style.display = "none";
@@ -805,14 +804,15 @@ function ajouterenleversegment(evt) {
         if (testesolution()) {
             chronoarret()
             termine();
-            let dataURL = canvasbis.toDataURL();
-            let chaine = "<img src='" + dataURL + "'/>"
-            chaine = chaine + '<br/>Bravo! Vous avez fait un temps de ' + chronofin + ' s et utilisé ' + nblosangeutilise + ' losange(s).';
-            chaine = chaine + '<br/>Score : ' + calcScore()
-            document.getElementById('message').innerHTML = chaine;
-            document.getElementById('messagediv').style.display = "";
-            document.getElementById('btcancel').style.display = "none";
-            setTimeout(() => { messageok() }, 2000)
+            // let dataURL = canvasbis.toDataURL();
+            // let chaine = "<img src='" + dataURL + "'/>"
+            // chaine = chaine + '<br/>Bravo! Vous avez fait un temps de ' + chronofin + ' s et utilisé ' + nblosangeutilise + ' losange(s).';
+            // chaine = chaine + '<br/>Score : ' + calcScore()
+            // document.getElementById('message').innerHTML = chaine;
+            // document.getElementById('messagediv').style.display = "";
+            // document.getElementById('btcancel').style.display = "none";
+            setTimeout(() => { messageok() }, 500)
+            // messageok()
         }
     }
 }
@@ -838,7 +838,7 @@ function calcScore() {
     let durPlacAr = 2 // durée (en s) moyenne de placement d'une arête pour un bon joueur
 
     // calcul de la valeur de référence pour la grille en cours
-    let scoreRef = 1 * taille ** 2.2 * (1 + perfAr)
+    let scoreRef = 1 * taille ** 2 * 1.1 * (1 + perfAr)
     // et de la valeur obtenue par lee joueur
     let scorePlayer = 1 * taille ** 2 * (1.1 - propLos) * (durPlacAr / durPlacArUser) * (1 + perfAr)
     // Calcul du score qui dépend de la taille de la grille et des variables précédentes
@@ -849,8 +849,8 @@ function calcScore() {
 }
 
 function messageok() {
-    document.getElementById('messagediv').style.display = "none";
-    document.getElementById('btcancel').style.display = "";
+    // document.getElementById('messagediv').style.display = "none";
+    // document.getElementById('btcancel').style.display = "";
     funCallBack(calcScore())
 }
 

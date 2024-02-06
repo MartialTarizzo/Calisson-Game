@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/popup.css">
+    <script src="./scripts/jquery-3.7.1.js"></script>
 
     <title>Speedy Calisson</title>
 </head>
@@ -54,14 +55,15 @@
         CC-BY-SA-NC Martial TARIZZO, à partir du programme d'Arnaud DURAND<br>
         et du jeu du Calisson créé par Olivier LONGUET
     </div> -->
-    <input type="text" id="copiepressepapier" style="opacity:0">
+    <!-- <input type="text" id="copiepressepapier" style="opacity:0">
     <div id="messagediv" style="display: none;">
         <div id="message"></div>
         <br>
         <input type="button" value="Partager sur Twitter" id="btshare" style="display: none;">
         <input type="button" id="btok" value="Ok" style="display: none;">
     </div>
-    <br>
+    <br> -->
+
     <!-- Le popup modal affiché au début du jeu  -->
     <div id="popup">
         <div class="overlay"></div>
@@ -73,17 +75,59 @@
             </div>
         </div>
     </div>
+    
     <!-- le dialogue modal de fin de partie -->
-<div id="modalEndGame" class="modal">
-    <!-- Modal content -->
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Partie terminée</h3>
-      </div>
-      <div class="modal-body">
-        <p id="pEndGameMessage"></p>
-      </div>
+    <div id="modalEndGame" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Partie terminée</h3>
+            </div>
+            <div class="modal-body">
+                <p id="pEndGameMessage"></p>
+            </div>
+        </div>
     </div>
+
+    <!-- l'affichage du score de fin de chaque grille -->
+    <div id="popupEndGrid" style="  
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        right:10px;
+        display:none;
+        justify-content: flex-start;
+        align-items: center;
+        background-color: #d6d6d6;
+        border: 2px solid #000000;
+        border-radius: 10px;
+        color: rgb(0, 0, 0);
+        width: 100px;
+        height: 120px;
+        margin-left: auto;
+        margin-right: auto;
+    ">
+        <div style="
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: large;
+            font-weight: bolder;
+            text-align: center;
+        ">
+            <img style=' width: 60%;' src="240px-388-clapping-hands-2.svg.png">
+            <p id="pScoreFinal">100 pts</p>
+        </div>
+    </div>
+    <script>
+        function displaypopupEndGrid() {
+            $('#popupEndGrid').css('display', 'flex').animate({
+                'zoom': 1
+            }, 10).fadeIn(10).animate({
+                'zoom': 3
+            }, 1000).fadeOut(400).animate({
+                'zoom': 1
+            }, 100);
+        }
+    </script>
 </body>
 
 </html>

@@ -68,8 +68,8 @@ btreset.onclick = reset;
 btmode.onclick = changemode;
 taille.onchange = rafraichit;
 longueur.onchange = rafraichitlongueur;
-btshare.onclick = partage;
-btok.onclick = messageok;
+// btshare.onclick = partage;
+// btok.onclick = messageok;
 btcancel.onclick = cancelGrid;
 
 /**
@@ -127,7 +127,7 @@ let genEnigme;
 let currentEnig;
 
 // Le score total de la partie en cours
-let totalScore = 0;
+let totalScore;
 
 // le score permettant une bonification en temps
 let scoreBonif;
@@ -136,6 +136,8 @@ let incScoreBonif;
 
 // La bonification en temps
 let timeBonif;
+// La pénalité en temps
+let timePenalite;
 
 // La durée du jeu
 let maxTime;
@@ -146,11 +148,14 @@ let gameTimer;
  * fonction appelée quand le joueur clique sur le bouton d'abandon
  * - affiche la solution pendant une durée fixée et lance la fonction 
  *   de callback avec un score nul (cf abandonGrille dans le fichier de résolution)
- * - retranche 100 pts au score (si possible)
+ * - retranche 60 s au temps (si possible)
  */
 function cancelGrid() {
+
+  clearInterval(gameTimer)
   abandonGrille();
-  totalScore = Math.max(0, totalScore - 100)
+  maxTime = Math.max(0, maxTime - timePenalite)
+  document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
 }
 
 /**
@@ -161,7 +166,7 @@ function cancelGrid() {
 function decompteTemps() {
   maxTime--
   //  console.log(maxTime)
-  if (maxTime < 0) {
+  if (maxTime <= 0) {
     clearInterval(gameTimer)
     chronoarret()
     dessinerSolution()
@@ -198,16 +203,41 @@ function endGame() {
  * - relance l'interface de résolution sur une nouvelle grille
  */
 function restart(score) {
-  totalScore += score;
-  document.getElementById('score').innerHTML = 'Score total : ' + totalScore;
 
-  if (totalScore > scoreBonif) {
-    scoreBonif += incScoreBonif
-    maxTime += timeBonif
+  function displaypopupEndGrid() {
+    document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
+    $('#popupEndGrid').css('display', 'flex').animate({
+      'zoom': 1
+    }, 10).fadeIn(10).animate({
+      'zoom': 3
+    }, 1000).fadeOut(400).animate({
+      'zoom': 1
+    }, 100);
   }
 
-  (score > 0) ? start(genEnigme(), restart) : start(currentEnig, restart)
+  if (score > 0) {
+    displaypopupEndGrid()
+    setTimeout(() => {
+      totalScore += score;
+      if (totalScore > scoreBonif) {
+        scoreBonif += incScoreBonif
+        maxTime += timeBonif
+      }
+      document.getElementById('score').innerHTML = 'Score total : ' + totalScore;
+      start(genEnigme(), restart)
+    }, 1000)
+  }
+  else {
+    if (maxTime > 0) {
+      gameTimer = setInterval(decompteTemps, 1000)
+      start(currentEnig, restart)
+    }
+    else {
+      endGame()
+    }
+  }
 }
+
 
 /**
  * La fonction de lancement du jeu
@@ -219,12 +249,13 @@ function restart(score) {
  *   
  */
 export function beginGame() {
-  maxTime = 10 * 60
+  maxTime = 5 * 60
   document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
   totalScore = 0
-  scoreBonif = 400
-  incScoreBonif = 400
-  timeBonif = 120   // 2 mniutes de plus !
+  scoreBonif = 500
+  incScoreBonif = 500
+  timeBonif = 60   // 1 minute de plus !
+  timePenalite = 60
   document.getElementById('score').innerHTML = ''
   genEnigme = mkGenEnigme();
   let enig = genEnigme()
