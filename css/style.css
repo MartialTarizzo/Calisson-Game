@@ -12,7 +12,11 @@ input {
     display: inline;
     border-radius: 10px;
     padding: 10px;
+}
 
+/* masquage des controles de zoom */
+#splongueur {
+    display: none;
 }
 
 input[type=number] {
@@ -25,7 +29,7 @@ input[type=number] {
 #btmode,
 #termine,
 #terminedl {
-    font-size: 20px;
+    font-size: 40px;
     display: inline;
     margin: auto;
     margin-top: 10px;

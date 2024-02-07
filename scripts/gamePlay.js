@@ -192,7 +192,7 @@ function endGame() {
   const bestScoreInStorage = localStorage.getItem('bestScore')
   const bestScore = bestScoreInStorage ? JSON.parse(bestScoreInStorage) : 0
 
-  let msg = '- Limite de temps atteinte -<br> <strong>Score final = ' + totalScore + "</strong>"
+  let msg = '- Limite de temps atteinte -<br> <strong>Score final = ' + totalScore + " pts</strong>"
 
   if (totalScore > bestScore) {
     msg += '<br><strong>C\'est votre meilleur score !</strong>'

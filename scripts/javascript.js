@@ -147,6 +147,7 @@ function init() {
     canvas.oncontextmenu = function (event) {
         event.preventDefault();
     }
+    window.onresize = ()=> {setZoomFactor(); rafraichitlongueur()}
 }
 // effacement de la zone de jeu
 function clearCanvas() {
@@ -481,7 +482,8 @@ function commencergrille() {
         taille = Number(GET('t'));
     }
 
-    document.getElementById("longueur").value = 80 - 10 * (taille - 4);
+    // MT - zoom automatique à la bonne valeur
+    setZoomFactor();
 
     document.getElementById("taille").value = taille;
     rafraichit()
@@ -511,6 +513,16 @@ function commencergrille() {
 
     miseajourpoint(tab)
     dessinerlafigure()
+}
+
+function setZoomFactor() {
+    let divControleHeight = document.getElementById('controle').clientHeight;
+    let clw = document.documentElement.clientWidth - 4 * marge;
+    let clh = document.documentElement.clientHeight - divControleHeight - 8 * marge;
+    let dw = clw / (2 * taille) * 2 / Math.sqrt(3);
+    let dh = clh / (2 * taille);
+    //    document.getElementById("longueur").value = 80 - 10 * (taille - 4);
+    document.getElementById("longueur").value = Math.floor(Math.min(dw, dh));
 }
 
 // Associée au bouton 'Reset' : annule les actions de l'utilisateur
