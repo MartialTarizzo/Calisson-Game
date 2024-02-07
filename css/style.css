@@ -68,3 +68,25 @@ input[type=number] {
 #canvasbis {
     display: none;
 }
+
+#popupEndGrid {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    right:10px;
+    display:none;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #d6d6d6;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    color: rgb(0, 0, 0);
+    width: 100px;
+    height: 120px;
+    margin-left: auto;
+    margin-right: auto; 
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: large;
+    font-weight: bolder;
+    text-align: center;
+}

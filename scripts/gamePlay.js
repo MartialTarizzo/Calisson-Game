@@ -191,14 +191,14 @@ function endGame() {
   const bestScoreInStorage = localStorage.getItem('bestScore')
   const bestScore = bestScoreInStorage ? JSON.parse(bestScoreInStorage) : 0
 
-  let msg = '- Limite de temps atteinte -<br> <strong>Score final = ' + totalScore + " pts</strong>"
+  let msg = '- Limite de temps atteinte -<br> <strong>Score final = <span style="color: red">' + totalScore + " pts</span></strong>"
 
   if (totalScore > bestScore) {
     msg += '<br><strong>C\'est votre meilleur score !</strong>'
     localStorage.setItem('bestScore', JSON.stringify(totalScore))
   }
   else {
-    msg += '<br><strong>Le score à battre est toujours de ' + bestScore + ' pts</strong>'
+    msg += '<br><strong>Le score à battre est toujours de <br><span style="color: red">' + bestScore + ' pts</span></strong>'
   }
 
 
@@ -283,7 +283,4 @@ export function beginGame() {
   gameTimer = setInterval(decompteTemps, 1000)
   start(currentEnig.enigme, restart)
 }
-
-// lancement du jeu au chargement de la page HTML
-//beginGame()
 
