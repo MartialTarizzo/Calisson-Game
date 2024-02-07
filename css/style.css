@@ -30,6 +30,7 @@ input[type=number] {
 #termine,
 #terminedl {
     font-size: 40px;
+    color: aliceblue;
     display: inline;
     margin: auto;
     margin-top: 10px;
@@ -38,6 +39,13 @@ input[type=number] {
     background-color: cornflowerblue;
     border-radius: 10px;
     padding: 10px;
+}
+
+#btmode {
+    color: black;
+    background-color: lightgray;
+    padding: 5px;
+    border-radius: 20px;
 }
 
 

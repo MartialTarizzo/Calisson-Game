@@ -54,7 +54,6 @@ import {
   changemode,
   rafraichit,
   rafraichitlongueur,
-  partage,
   messageok,
   abandonGrille,
   chronoarret,
@@ -66,8 +65,8 @@ import {
  */
 btreset.onclick = reset;
 btmode.onclick = changemode;
-taille.onchange = rafraichit;
-longueur.onchange = rafraichitlongueur;
+// taille.onchange = rafraichit;
+// longueur.onchange = rafraichitlongueur;
 // btshare.onclick = partage;
 // btok.onclick = messageok;
 btcancel.onclick = cancelGrid;

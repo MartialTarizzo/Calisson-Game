@@ -25,8 +25,6 @@ let currentTab;
 
 
 function init() {
-    taille = Number(document.getElementById("taille").value);
-    longueur = Number(document.getElementById("longueur").value);
     marge = 5;
     mode = "arete";
     document.getElementById("btmode").innerHTML = "Mode arête";
@@ -151,10 +149,6 @@ function init() {
 }
 // effacement de la zone de jeu
 function clearCanvas() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    var w = canvas.width;
-    canvas.width = 1;
-    canvas.width = w;
     context.beginPath();
     context.fillStyle = "white";
     context.fillRect(0, 0, canvas.width, canvas.height);
@@ -163,10 +157,6 @@ function clearCanvas() {
 
 // remet tout dans l'état de départ et dessine la figure
 function rafraichit() {
-    clearCanvas();
-
-    taille = Number(document.getElementById("taille").value);
-    longueur = Number(document.getElementById("longueur").value);
     canvas.width = Math.sqrt(3) * taille * longueur + 2 * marge;
     canvas.height = taille * longueur * 2 + 2 * marge;
 
@@ -448,7 +438,6 @@ function miseajourpoint(chaine) {
             }
         }
     }
-    // console.log(tabmilieu)
 }
 
 function commencergrille() {
@@ -460,47 +449,15 @@ function commencergrille() {
     chronomarche();
     var tab = GET('tab');
 
-    var yaunnombre = tab.match(/(\d+)/);
-
-    if (yaunnombre) {
-        numerogrille = yaunnombre[0];
-        tab = tab.replace(numerogrille, '')
-    } else {
-        numerogrille = '';
-    }
-
-    if (GET('t') == undefined) {
-        let i = 0, taillei
-        let pastrouve = true
-        while ((pastrouve) && (i < 30)) {
-            i++;
-            taillei = 3 * (3 * i * i - i);
-            pastrouve = (taillei != tab.length)
-        }
-        taille = i;
-    } else {
-        taille = Number(GET('t'));
-    }
+    calcTaille(tab);
 
     // MT - zoom automatique à la bonne valeur
     setZoomFactor();
-
-    document.getElementById("taille").value = taille;
     rafraichit()
-    document.getElementById('sptaille').style.display = "none";
-    // document.getElementById('genurl').style.display = "none";
+    solutionpresente = true;
 
-    if (tab.indexOf('s') > -1) {
-        solutionpresente = true;
-        document.getElementById("chronospan").style.display = '';
-        document.getElementById("chrono").innerHTML = chrono + ' s'
-        document.getElementById("losange").style.display = 'none';
-        document.getElementById("nblosange").innerHTML = '0';
-    } else {
-        solutionpresente = false;
-        document.getElementById("chronospan").style.display = 'none';
-        document.getElementById("losange").style.display = 'none';
-    }
+    document.getElementById("chronospan").style.display = '';
+    document.getElementById("chrono").innerHTML = chrono + ' s'
 
     v1x = -Math.sqrt(3) * longueur / 2
     v1y = longueur / 2;
@@ -515,14 +472,24 @@ function commencergrille() {
     dessinerlafigure()
 }
 
+function calcTaille(tab) {
+    let i = 0, taillei;
+    let pastrouve = true;
+    while ((pastrouve) && (i < 30)) {
+        i++;
+        taillei = 3 * (3 * i * i - i);
+        pastrouve = (taillei != tab.length);
+    }
+    taille = i;
+}
+
 function setZoomFactor() {
     let divControleHeight = document.getElementById('controle').clientHeight;
     let clw = document.documentElement.clientWidth - 4 * marge;
     let clh = document.documentElement.clientHeight - divControleHeight - 8 * marge;
     let dw = clw / (2 * taille) * 2 / Math.sqrt(3);
     let dh = clh / (2 * taille);
-    //    document.getElementById("longueur").value = 80 - 10 * (taille - 4);
-    document.getElementById("longueur").value = Math.floor(Math.min(dw, dh));
+    longueur = Math.floor(Math.min(dw, dh));
 }
 
 // Associée au bouton 'Reset' : annule les actions de l'utilisateur
@@ -532,31 +499,13 @@ function reset() {
     commencergrille()
 }
 
-function partage() {
-    let url = "https://mathix.org/calisson/index.html?tab=" + GET('tab');
-    if (numerogrille != '') {
-        window.open("https://twitter.com/intent/tweet?url=" + encodeURI(url) + "&text=J'ai réussi la grille n°" + numerogrille + " du @Jeuducalisson1 en " + chronofin + "s et en utilisant " + nblosangeutilise + " losange(s) !Vous saurez faire mieux ? ", "_blank ");
-    } else {
-        window.open("https://twitter.com/intent/tweet?url=" + encodeURI(url) + "&text=J'ai réussi une grille du @Jeuducalisson1 en " + chronofin + " s et en utilisant " + nblosangeutilise + " losange(s)! Vous saurez faire mieux ?", "_blank")
-    }
-}
-
 // associée au bouton 'Ma grille est terminée'
 function termine() {
 
     style = !style;
 
     dessinerlafigure();
-    if (!style) {
-        // document.getElementById('terminedl').style.display = "";
-        // document.getElementById('termine').innerHTML = "Reprendre ma grille";
-        document.getElementById('btreset').style.display = "none";
-    } else {
-        document.getElementById('terminedl').style.display = "none";
-        document.getElementById('btreset').style.display = "";
-        document.getElementById('termine').innerHTML = "Ma grille est terminée";
-    }
-    contextbis.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvasbis.width, canvasbis.height);
+    // contextbis.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvasbis.width, canvasbis.height);
 }
 
 function dessinerlafigure() {
@@ -699,7 +648,6 @@ function ajouteunlosange(x, y) {
                 if (tabmilieu[i][2] != 'bloquee') {
                     if ((!tabmilieu[i][4]) && (solutionpresente)) {
                         nblosangeutilise++;
-                        document.getElementById('nblosange').innerHTML = nblosangeutilise;
                     }
                     tabmilieu[i][4] = !tabmilieu[i][4]
                     orientation = tabmilieu[i][3]
@@ -729,18 +677,14 @@ function abandonGrille() {
 
     function restoreControlsAndCallback() {
         document.getElementById('btreset').style.display = "";
+        document.getElementById('btmode').style.display = "";
         document.getElementById('btcancel').style.display = "";
         funCallBack(0)
     }
     
     document.getElementById('btreset').style.display = "none";
+    document.getElementById('btmode').style.display = "none";
     document.getElementById('btcancel').style.display = "none";
-    // document.getElementById('genurl').style.display = "none";
-    // document.getElementById('terminedl').style.display = "none";
-    // document.getElementById('sptaille').style.display = "none";
-    // document.getElementById("chronospan").style.display = 'none';
-    // document.getElementById("losange").style.display = 'none';
-    // document.getElementById('termine').style.display = 'none';
 
     dessinerSolution();
     chronoarret();
@@ -751,13 +695,6 @@ function abandonGrille() {
 
 // La fonction appelée à chaque clic de souris sur le point mileu d'un segment
 function ajouterenleversegment(evt) {
-    // console.log(evt.button);
-    // +MT : si on appuie sur Alt (option sur mac) => passage en mode retouche de la grille
-    // if (evt.getModifierState('Alt')) {
-    //     abandonGrille();
-    //     return
-    // }
-    //-MT
 
     if (style) {
         var pos = getMousePos(canvas, evt)
@@ -817,13 +754,6 @@ function ajouterenleversegment(evt) {
         if (testesolution()) {
             chronoarret()
             termine();
-            // let dataURL = canvasbis.toDataURL();
-            // let chaine = "<img src='" + dataURL + "'/>"
-            // chaine = chaine + '<br/>Bravo! Vous avez fait un temps de ' + chronofin + ' s et utilisé ' + nblosangeutilise + ' losange(s).';
-            // chaine = chaine + '<br/>Score : ' + calcScore()
-            // document.getElementById('message').innerHTML = chaine;
-            // document.getElementById('messagediv').style.display = "";
-            // document.getElementById('btcancel').style.display = "none";
             setTimeout(() => { messageok() }, 500)
             // messageok()
         }
@@ -862,8 +792,6 @@ function calcScore() {
 }
 
 function messageok() {
-    // document.getElementById('messagediv').style.display = "none";
-    // document.getElementById('btcancel').style.display = "";
     funCallBack(calcScore())
 }
 
@@ -893,29 +821,7 @@ function curseur(evt) {
         }
     }
 }
-// associée au bouton de génération de l'url de la grille (mode design)
-function genereurl() {
-    chaine = "?tab=";
 
-    for (i = 0; i < tabmilieu.length; i++) {
-        if (tabmilieu[i][2] == true) {
-            chaine = chaine + "t";
-        } else {
-            if (tabmilieu[i][2] == 'solution') {
-                chaine = chaine + "s";
-            } else {
-                chaine = chaine + "f";
-            }
-        }
-    }
-    numerogrille = prompt('Indiquer le numéro de la grille (laisser vide si non défini');
-    while (((isNaN(numerogrille))) && (numerogrille != '')) {
-        numerogrille = prompt('Indiquer le numéro de la grille (laisser vide si non défini');
-    }
-    chaine = chaine + numerogrille
-    copierdanspressepapier("https://mathix.org/calisson/index.html" + chaine)
-    //	alert("Voici la chaîne à copier : https://mathix.org/calisson/index.html" + chaine)
-}
 
 function GET(param) {
     if (param == 'tab') { return currentTab }
@@ -932,7 +838,6 @@ function GET(param) {
     }
     return vars;
 }
-
 
 function chronomarche() {
 
@@ -967,38 +872,21 @@ let funCallBack;
 
 function start(tab, callback) {
     currentTab = tab
-    if (GET('tab') == undefined) {
-        init();
-        rafraichit()
-        modejeu = false;
-        solutionpresente = false;
-        document.getElementById("chronospan").style.display = 'none';
-        document.getElementById("losange").style.display = 'none';
-        document.getElementById('messagediv').style.display = "none";
-    } else {
-        funCallBack = callback;
-        init();
-        modejeu = true;
-        document.getElementById('btreset').style.display = "";
+    funCallBack = callback;
 
-        rafraichit()
-        commencergrille()
-    }
+    calcTaille(tab)
+    setZoomFactor();
+    init();
+    modejeu = true;
+    document.getElementById('btreset').style.display = "";
+
+    rafraichit()
+    commencergrille()
+
 }
-
-// On démarre !
-// start();
 
 // on change la taille écran du graphique
 function rafraichitlongueur() {
-    longueur = Number(document.getElementById("longueur").value);
-    if (GET('t') != undefined) {
-        taille = Number(GET('t'));
-        document.getElementById("taille").value = taille;
-    }
-
-    var tab = GET('tab');
-
     v1x = -Math.sqrt(3) * longueur / 2
     v1y = longueur / 2;
     v2x = 0;
@@ -1026,45 +914,12 @@ function changemode() {
     }
 }
 
-// associée au bouton de téléchargement de l'image de la grille
-function dl() {
-    var canvas = document.getElementById("canvas");
-    canvas.toBlob(function (blob) {
-        saveAs(blob, "solution.png");
-    });
-}
-
-function copierdanspressepapier(url) {
-    // On tente d'écrire l'url directement dans le PP. Si le navigateur n'y arrive pas, on présente une fenêtre d'information
-    // permettant de copier l'url "à la main"
-    navigator.clipboard.writeText(url).then(function () {
-        alert("Url dans le presse-papier!\n (controle-V pour coller l'url à l'endroit voulu) ");
-    }, function () {
-        prompt('Voici l\'url : ', url);
-    });
-}
-
-// Fonction non utilisée. Certainement un vestige d'une tentative d'utilisation du PP
-// mise en commentaires
-/*
-function copierdanspressepapier_back(url) {
-
-    var content = document.getElementById('copiepressepapier');
-    content.value = url;
-    // console.log(content)
-    content.select();
-    document.execCommand('copy');
-    alert("Url dans le presse-papier!\n (controle-V pour coller l'url à l'endroit voulu) ");
-}
-*/
-
 export {
     start,
     reset,
     changemode,
     rafraichit,
     rafraichitlongueur,
-    partage,
     messageok,
     abandonGrille,
     chronoarret,
