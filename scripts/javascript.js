@@ -21,7 +21,7 @@ let numerogrille;
 let is_touch_device;
 let canvas, context, canvasbis, contextbis;
 
-let currentTab;
+let currentEnigme;
 
 
 // pour empêcher le clignotement du canvas lors d'un toucher sur le canvas (interface tactile)
@@ -170,7 +170,7 @@ function calcTaillePoint() {
     return canvas.width / 30 / taille
 }
 
-/** le point de coordonnées (x, y) dans le canvas est-il assez proche du point d'inde i dans tabmileu ? */
+/** le point de coordonnées (x, y) dans le canvas est-il assez proche du point d'indice i dans tabmileu ? */
 function curseurProcheMilieu(x, y, i) {
     return ((x - tabmilieu[i][0]) ** 2 + (y - tabmilieu[i][1]) ** 2 < (longueur / 4) ** 2)
 }
@@ -475,9 +475,7 @@ function commencergrille() {
     chrono = 0;
     nblosangeutilise = 0;
     chronomarche();
-    var tab = GET('tab');
-
-    calcTaille(tab);
+    var tab = currentEnigme.tab;
 
     // MT - zoom automatique à la bonne valeur
     setZoomFactor();
@@ -788,7 +786,7 @@ function ajouterenleversegment(evt) {
 
 function calcScore() {
     let nbTotLos = 3 * taille ** 2; // nbre max de losanges dans la grille
-    let tab = GET('tab');
+    let tab = currentEnigme.tab
     let nbArUser = 0;   // nb arêtes ajoutées par le joueur
     for (let s of tab) {
         if (s == 's') { nbArUser++ }
@@ -813,7 +811,7 @@ function calcScore() {
     // Calcul du score qui dépend de la taille de la grille et des variables précédentes
     return Math.max(
         taille * 5,
-        Math.round((taille - 2) * 50 * scorePlayer / scoreRef)
+        Math.round((taille - 2 + (currentEnigme.niveau - 1) / 3) * 50 * scorePlayer / scoreRef)
     )
 }
 
@@ -847,23 +845,6 @@ function curseur(evt) {
     }
 }
 
-
-function GET(param) {
-    if (param == 'tab') { return currentTab }
-    var vars = {};
-    window.location.href.replace(location.hash, '').replace(
-        /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
-        function (m, key, value) { // callback
-            vars[key] = value !== undefined ? value : '';
-        }
-    );
-
-    if (param) {
-        return vars[param] ? vars[param] : null;
-    }
-    return vars;
-}
-
 function chronomarche() {
 
     chronointerval = setInterval(
@@ -895,8 +876,9 @@ function testesolution() {
 /////////////////////////////////////////////
 let funCallBack;
 
-function start(tab, callback) {
-    currentTab = tab
+function start(enigme, callback) {
+    let tab = enigme.tab
+    currentEnigme = enigme
     funCallBack = callback;
 
     calcTaille(tab)

@@ -124,7 +124,7 @@ function mkGenEnigme() {
     let r = {
       taille : taille + 3, 
       niveau : niveau + 1, 
-      enigme : enigs[i]
+      tab : enigs[i]
     }
     // incrémentation du couple taille/niveau : 0/0 -> 3/2 (grilles 3/1 -> 6/3)
     if (niveau == 2) {
@@ -240,13 +240,13 @@ function restart(score) {
       }
       document.getElementById('score').innerHTML = 'Score total : ' + totalScore;
       genEnigme()
-      start(currentEnig.enigme, restart)
+      start(currentEnig, restart)
     }, 1000)
   }
   else {
     if (maxTime > 0) {
       gameTimer = setInterval(decompteTemps, 1000)
-      start(currentEnig.enigme, restart)
+      start(currentEnig, restart)
     }
     else {
       endGame()
@@ -276,6 +276,6 @@ export function beginGame() {
   genEnigme = mkGenEnigme();
   genEnigme()
   gameTimer = setInterval(decompteTemps, 1000)
-  start(currentEnig.enigme, restart)
+  start(currentEnig, restart)
 }
 
