@@ -48,6 +48,33 @@ input[type=number] {
     border-radius: 20px;
 }
 
+#btNewGame, #btRazStats {
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+    display: inline;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: cornflowerblue;
+    border-radius: 10px;
+    padding: 10px;
+
+}
+#btRazStats {
+    font-size: 20px;
+    font-weight: normal;
+    background-color: lightgray;
+}
+
+hr {
+    width: 80%;
+    border: none;
+    border-top: 3px double #000000;
+    color: #333;
+    height: 5px;
+  }
 
 .explication {
     font-style: italic;

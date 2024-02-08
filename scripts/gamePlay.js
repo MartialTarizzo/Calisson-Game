@@ -122,9 +122,9 @@ function mkGenEnigme() {
     let enigs = getEnigmes(taille, niveau)
     let i = getRandomInt(enigs.length)
     let r = {
-      taille : taille + 3, 
-      niveau : niveau + 1, 
-      tab : enigs[i]
+      taille: taille + 3,
+      niveau: niveau + 1,
+      tab: enigs[i]
     }
     // incrémentation du couple taille/niveau : 0/0 -> 3/2 (grilles 3/1 -> 6/3)
     if (niveau == 2) {
@@ -186,6 +186,16 @@ function endGame() {
   const bestScoreInStorage = localStorage.getItem('bestScore')
   const bestScore = bestScoreInStorage ? JSON.parse(bestScoreInStorage) : 0
 
+  document.getElementById('btNewGame').onclick = function (event) {
+    modal.style.display = "none";
+    beginGame()
+  }
+  document.getElementById('btRazStats').onclick = function (event) {
+    localStorage.removeItem('bestScore');
+    modal.style.display = "none";
+    beginGame()
+  }
+  
   let msg = '- Limite de temps atteinte -<br> <strong>Score final = <span style="color: red">' + totalScore + " pts</span></strong>"
 
   if (totalScore > bestScore) {
@@ -196,19 +206,10 @@ function endGame() {
     msg += '<br><strong>Le score à battre est toujours de <br><span style="color: red">' + bestScore + ' pts</span></strong>'
   }
 
-
   let modal = document.getElementById("modalEndGame");
   let parMsg = document.getElementById("pEndGameMessage");
   parMsg.innerHTML = msg
   modal.style.display = "block";
-
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function (event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-      beginGame()
-    }
-  }
 }
 
 /**
