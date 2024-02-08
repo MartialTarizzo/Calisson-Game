@@ -1,8 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns:og="http://ogp.me/ns#">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/popup.css">
     <script src="./scripts/jquery-3.7.1.js"></script>
@@ -32,12 +32,6 @@
     <div id="controle">
         <button id="btreset">Reset</button>
         <button id="btmode" style="display: none;">Mode arête</button>
-        <span id="sptaille">Taille :
-            <input type="number" id="taille" value="3" min="2" step="1" width="30px"></span>
-
-        <span id="splongueur">Zoom <input type="number" id="longueur" value="80" min="30" step="1" width="30px"></span>
-        <span id="losange" style="display: none;">Losange(s) utilisé(s) : <span id="nblosange"
-                style="display: none;">0</span></span>
         <button id="btcancel">Abandon</button>
         <br>
         <span id="score"></span>&nbsp;
@@ -51,22 +45,9 @@
         </span>
     </div>
     <em>Niveau : <span id='spLevel'>3.1</span></em>
-    <div>    <canvas id="canvas" width="425" height="490" style="cursor: pointer;"></canvas>
-    <canvas id="canvasbis" width="30" height="30"></canvas>
-</div>
-
-    <!-- <div id="texte">
-        CC-BY-SA-NC Martial TARIZZO, à partir du programme d'Arnaud DURAND<br>
-        et du jeu du Calisson créé par Olivier LONGUET
-    </div> -->
-    <!-- <input type="text" id="copiepressepapier" style="opacity:0">
-    <div id="messagediv" style="display: none;">
-        <div id="message"></div>
-        <br>
-        <input type="button" value="Partager sur Twitter" id="btshare" style="display: none;">
-        <input type="button" id="btok" value="Ok" style="display: none;">
+    <div> <canvas id="canvas" width="425" height="490" style="cursor: pointer;"></canvas>
+        <canvas id="canvasbis" width="30" height="30"></canvas>
     </div>
-    <br> -->
 
     <!-- Le popup modal affiché au début du jeu  -->
     <div id="popup">
@@ -79,7 +60,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- le dialogue modal de fin de partie -->
     <div id="modalEndGame" class="modal">
         <!-- Modal content -->
@@ -94,29 +75,8 @@
     </div>
 
     <!-- l'affichage du score de fin de chaque grille -->
-    <div id="popupEndGrid" style="  
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        right:10px;
-        display:none;
-        justify-content: flex-start;
-        align-items: center;
-        background-color: #d6d6d6;
-        border: 2px solid #000000;
-        border-radius: 10px;
-        color: rgb(0, 0, 0);
-        width: 100px;
-        height: 120px;
-        margin-left: auto;
-        margin-right: auto;
-    ">
-        <div style="
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: large;
-            font-weight: bolder;
-            text-align: center;
-        ">
+    <div id="popupEndGrid">
+        <div>
             <img style=' width: 60%;' src="240px-388-clapping-hands-2.svg.png">
             <p id="pScoreFinal">100 pts</p>
         </div>

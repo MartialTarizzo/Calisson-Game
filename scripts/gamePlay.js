@@ -9,7 +9,6 @@ Ce fichier définit la mécanique du jeu du calisson
 # https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr
 */
 
-
 // Importation des grilles de jeu
 import { enigme_3_1 } from '../grids/enigmes_3_1.js';
 import { enigme_3_2 } from '../grids/enigmes_3_2.js';
@@ -24,27 +23,6 @@ import { enigme_6_1 } from '../grids/enigmes_6_1.js';
 import { enigme_6_2 } from '../grids/enigmes_6_2.js';
 import { enigme_6_3 } from '../grids/enigmes_6_3.js';
 
-/**
- * 
- * @param {int} taille 
- * la taille de la grille désirée, dans [0..4] pour les tailles réelles [3..6] 
- * @param {int} niveau 
- * le niveau des grilles dans [0..2] pour le niveau réel [1..3]
- * @returns
- * un tableau de chaînes, chaque chaîne codant une énigme
- */
-function getEnigmes(taille, niveau) {
-  let e = [
-    [enigme_3_1, enigme_3_2, enigme_3_3],
-    [enigme_4_1, enigme_4_2, enigme_4_3],
-    [enigme_5_1, enigme_5_2, enigme_5_3],
-    [enigme_6_1, enigme_6_2, enigme_6_3]
-  ]
-  let enigmes = e[taille][niveau].split("\n")
-  enigmes.pop()
-  return enigmes
-}
-
 /******************
  * les importations permettant de jouer une grille
  *****************/
@@ -54,74 +32,11 @@ import {
   changemode,
   rafraichit,
   rafraichitlongueur,
-  partage,
   messageok,
   abandonGrille,
   chronoarret,
   dessinerSolution
 } from "./javascript.js";
-
-/********
- * liaisons avec l'interface HTML
- */
-btreset.onclick = reset;
-btmode.onclick = changemode;
-taille.onchange = rafraichit;
-longueur.onchange = rafraichitlongueur;
-// btshare.onclick = partage;
-// btok.onclick = messageok;
-btcancel.onclick = cancelGrid;
-
-/**
- * Générateur de nombre aléatoire entier dans [0..max-1]
- * @param {int} max - borne supérieure
- * @returns - entier dans [0..max-1]
- */
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
-/**
- * Fonction de fabrication d'un générateur d'énigme
- * @returns 
- * la valeur de retour est une fonction nextEnig sans arguments qui agit comme un générateur.
- * les appels successifs à nextEnig fournissent une grille choisie aléatoirement et ayant des
- * niveaux croissants de 3.1 à 6.3 :
- * 3.1, 3.2, 3.3, 4.1, 4.2, ... , 6.1, 6.2, 6.3, 6.3, 6.3 , ... 
- * La valeur de retour de la fonction nextEnig est un objet contenant 
- * trois champs : taille (3..6), niveau (1..3) et enigme (chaîne représentant l'énigme)
- */
-function mkGenEnigme() {
-  let taille = 0
-  let niveau = 0
-
-  function nextEnig() {
-    // choix au hasard d'une énigme dans la taille et le niveau courants
-    let enigs = getEnigmes(taille, niveau)
-    let i = getRandomInt(enigs.length)
-    let r = {
-      taille : taille + 3, 
-      niveau : niveau + 1, 
-      enigme : enigs[i]
-    }
-    // incrémentation du couple taille/niveau : 0/0 -> 3/2 (grilles 3/1 -> 6/3)
-    if (niveau == 2) {
-      if (taille < 3) {
-        taille++;
-        niveau = 0
-      }
-    }
-    else { niveau++ }
-
-    // déf de currentEnig et valeur retournée
-    currentEnig = r;
-    // MAJ affichage
-    document.getElementById('spLevel').innerHTML = currentEnig.taille + '.' + currentEnig.niveau
-    return r
-  }
-
-  return nextEnig
-}
 
 /***
  * Variables globales
@@ -151,7 +66,87 @@ let maxTime;
 // Le timer du jeu
 let gameTimer;
 
-/**
+/********
+ * liaisons avec l'interface HTML
+ */
+btreset.onclick = reset;
+btmode.onclick = changemode;
+btcancel.onclick = cancelGrid;
+
+/** pour retourner la liste des énigmes d'une taille et d'un niveau donnés
+ * 
+ * @param {int} taille 
+ * la taille de la grille désirée, dans [0..3] pour les tailles réelles [3..6] 
+ * @param {int} niveau 
+ * le niveau des grilles dans [0..2] pour le niveau réel [1..3]
+ * @returns
+ * un tableau de chaînes, chaque chaîne codant une énigme
+ */
+function getEnigmes(taille, niveau) {
+  let e = [
+    [enigme_3_1, enigme_3_2, enigme_3_3],
+    [enigme_4_1, enigme_4_2, enigme_4_3],
+    [enigme_5_1, enigme_5_2, enigme_5_3],
+    [enigme_6_1, enigme_6_2, enigme_6_3]
+  ]
+  let enigmes = e[taille][niveau].split("\n")
+  enigmes.pop()
+  return enigmes
+}
+
+/** Générateur de nombre aléatoire entier dans [0..max-1]
+ * @param {int} max - borne supérieure
+ * @returns - entier dans [0..max-1]
+ */
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
+/** Fonction de fabrication d'un générateur d'énigme
+ * @returns 
+ * la valeur de retour est une fonction nextEnig sans arguments qui agit comme un générateur.
+ * 
+ * les appels successifs à nextEnig fournissent une grille choisie aléatoirement et ayant des
+ * niveaux croissants de 3.1 à 6.3 :
+ * 3.1, 3.2, 3.3, 4.1, 4.2, ... , 6.1, 6.2, 6.3, 6.3, 6.3 , ... 
+ * La valeur de retour de la fonction nextEnig est un objet contenant 
+ * trois champs : taille (3..6), niveau (1..3) et enigme (chaîne représentant l'énigme)
+ * effet de bord : la variable globale currentEnig contient la dernière énigme générée 
+ */
+function mkGenEnigme() {
+  let taille = 0
+  let niveau = 0
+
+  function nextEnig() {
+    // choix au hasard d'une énigme dans la taille et le niveau courants
+    let enigs = getEnigmes(taille, niveau)
+    let i = getRandomInt(enigs.length)
+    let r = {
+      taille : taille + 3, 
+      niveau : niveau + 1, 
+      tab : enigs[i]
+    }
+    // incrémentation du couple taille/niveau : 0/0 -> 3/2 (grilles 3/1 -> 6/3)
+    if (niveau == 2) {
+      if (taille < 3) {
+        taille++;
+        niveau = 0
+      }
+    }
+    else { niveau++ }
+
+    // déf de currentEnig et valeur retournée
+    currentEnig = r;
+    // MAJ affichage
+    document.getElementById('spLevel').innerHTML = currentEnig.taille + '.' + currentEnig.niveau
+    return r
+  }
+
+  return nextEnig
+}
+
+
+/** fonction d'abandon
  * fonction appelée quand le joueur clique sur le bouton d'abandon
  * - affiche la solution pendant une durée fixée et lance la fonction 
  *   de callback avec un score nul (cf abandonGrille dans le fichier de résolution)
@@ -165,8 +160,7 @@ function cancelGrid() {
   document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
 }
 
-/**
- * fonction de chrométrage du jeu
+/** Chronométrage du jeu
  * Mise à jour l'affichage du temps restant et déclenchement de l'arrête de la partie 
  * si le temps imparti est écoulé
  */
@@ -184,22 +178,22 @@ function decompteTemps() {
   }
 }
 
-/**
- * Fin de partie
+/** Fin de partie
+ * - calcul du message  et affichage dans le popup modal de fin de partie
  */
 function endGame() {
 
   const bestScoreInStorage = localStorage.getItem('bestScore')
   const bestScore = bestScoreInStorage ? JSON.parse(bestScoreInStorage) : 0
 
-  let msg = '- Limite de temps atteinte -<br> <strong>Score final = ' + totalScore + " pts</strong>"
+  let msg = '- Limite de temps atteinte -<br> <strong>Score final = <span style="color: red">' + totalScore + " pts</span></strong>"
 
   if (totalScore > bestScore) {
     msg += '<br><strong>C\'est votre meilleur score !</strong>'
     localStorage.setItem('bestScore', JSON.stringify(totalScore))
   }
   else {
-    msg += '<br><strong>Le score à battre est toujours de ' + bestScore + ' pts</strong>'
+    msg += '<br><strong>Le score à battre est toujours de <br><span style="color: red">' + bestScore + ' pts</span></strong>'
   }
 
 
@@ -230,7 +224,7 @@ function restart(score) {
     $('#popupEndGrid').css('display', 'flex').animate({
       'zoom': 1
     }, 10).fadeIn(10).animate({
-      'zoom': 3
+      'zoom': 4
     }, 1000).fadeOut(400).animate({
       'zoom': 1
     }, 100);
@@ -246,13 +240,13 @@ function restart(score) {
       }
       document.getElementById('score').innerHTML = 'Score total : ' + totalScore;
       genEnigme()
-      start(currentEnig.enigme, restart)
+      start(currentEnig, restart)
     }, 1000)
   }
   else {
     if (maxTime > 0) {
       gameTimer = setInterval(decompteTemps, 1000)
-      start(currentEnig.enigme, restart)
+      start(currentEnig, restart)
     }
     else {
       endGame()
@@ -282,9 +276,6 @@ export function beginGame() {
   genEnigme = mkGenEnigme();
   genEnigme()
   gameTimer = setInterval(decompteTemps, 1000)
-  start(currentEnig.enigme, restart)
+  start(currentEnig, restart)
 }
-
-// lancement du jeu au chargement de la page HTML
-//beginGame()
 
