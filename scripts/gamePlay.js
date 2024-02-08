@@ -9,7 +9,6 @@ Ce fichier définit la mécanique du jeu du calisson
 # https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr
 */
 
-
 // Importation des grilles de jeu
 import { enigme_3_1 } from '../grids/enigmes_3_1.js';
 import { enigme_3_2 } from '../grids/enigmes_3_2.js';
@@ -24,10 +23,60 @@ import { enigme_6_1 } from '../grids/enigmes_6_1.js';
 import { enigme_6_2 } from '../grids/enigmes_6_2.js';
 import { enigme_6_3 } from '../grids/enigmes_6_3.js';
 
-/**
+/******************
+ * les importations permettant de jouer une grille
+ *****************/
+import {
+  start,
+  reset,
+  changemode,
+  rafraichit,
+  rafraichitlongueur,
+  messageok,
+  abandonGrille,
+  chronoarret,
+  dessinerSolution
+} from "./javascript.js";
+
+/***
+ * Variables globales
+ * Sauf initialisation explicite, ces variables doivent être initialisées à chaque début de partie
+ */
+// Le générateur d'énigme
+let genEnigme;
+
+// l'énigme en cours
+let currentEnig;
+
+// Le score total de la partie en cours
+let totalScore;
+
+// le score permettant une bonification en temps
+let scoreBonif;
+// l'incrément de score permettant une bonification en temps
+let incScoreBonif;
+
+// La bonification en temps
+let timeBonif;
+// La pénalité en temps
+let timePenalite;
+
+// La durée du jeu
+let maxTime;
+// Le timer du jeu
+let gameTimer;
+
+/********
+ * liaisons avec l'interface HTML
+ */
+btreset.onclick = reset;
+btmode.onclick = changemode;
+btcancel.onclick = cancelGrid;
+
+/** pour retourner la liste des énigmes d'une taille et d'un niveau donnés
  * 
  * @param {int} taille 
- * la taille de la grille désirée, dans [0..4] pour les tailles réelles [3..6] 
+ * la taille de la grille désirée, dans [0..3] pour les tailles réelles [3..6] 
  * @param {int} niveau 
  * le niveau des grilles dans [0..2] pour le niveau réel [1..3]
  * @returns
@@ -45,34 +94,7 @@ function getEnigmes(taille, niveau) {
   return enigmes
 }
 
-/******************
- * les importations permettant de jouer une grille
- *****************/
-import {
-  start,
-  reset,
-  changemode,
-  rafraichit,
-  rafraichitlongueur,
-  messageok,
-  abandonGrille,
-  chronoarret,
-  dessinerSolution
-} from "./javascript.js";
-
-/********
- * liaisons avec l'interface HTML
- */
-btreset.onclick = reset;
-btmode.onclick = changemode;
-// taille.onchange = rafraichit;
-// longueur.onchange = rafraichitlongueur;
-// btshare.onclick = partage;
-// btok.onclick = messageok;
-btcancel.onclick = cancelGrid;
-
-/**
- * Générateur de nombre aléatoire entier dans [0..max-1]
+/** Générateur de nombre aléatoire entier dans [0..max-1]
  * @param {int} max - borne supérieure
  * @returns - entier dans [0..max-1]
  */
@@ -80,15 +102,16 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-/**
- * Fonction de fabrication d'un générateur d'énigme
+/** Fonction de fabrication d'un générateur d'énigme
  * @returns 
  * la valeur de retour est une fonction nextEnig sans arguments qui agit comme un générateur.
+ * 
  * les appels successifs à nextEnig fournissent une grille choisie aléatoirement et ayant des
  * niveaux croissants de 3.1 à 6.3 :
  * 3.1, 3.2, 3.3, 4.1, 4.2, ... , 6.1, 6.2, 6.3, 6.3, 6.3 , ... 
  * La valeur de retour de la fonction nextEnig est un objet contenant 
  * trois champs : taille (3..6), niveau (1..3) et enigme (chaîne représentant l'énigme)
+ * effet de bord : la variable globale currentEnig contient la dernière énigme générée 
  */
 function mkGenEnigme() {
   let taille = 0
@@ -122,35 +145,8 @@ function mkGenEnigme() {
   return nextEnig
 }
 
-/***
- * Variables globales
- * Sauf initialisation explicite, ces variables doivent être initialisées à chaque début de partie
- */
-// Le générateur d'énigme
-let genEnigme;
 
-// l'énigme en cours
-let currentEnig;
-
-// Le score total de la partie en cours
-let totalScore;
-
-// le score permettant une bonification en temps
-let scoreBonif;
-// l'incrément de score permettant une bonification en temps
-let incScoreBonif;
-
-// La bonification en temps
-let timeBonif;
-// La pénalité en temps
-let timePenalite;
-
-// La durée du jeu
-let maxTime;
-// Le timer du jeu
-let gameTimer;
-
-/**
+/** fonction d'abandon
  * fonction appelée quand le joueur clique sur le bouton d'abandon
  * - affiche la solution pendant une durée fixée et lance la fonction 
  *   de callback avec un score nul (cf abandonGrille dans le fichier de résolution)
@@ -164,8 +160,7 @@ function cancelGrid() {
   document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
 }
 
-/**
- * fonction de chrométrage du jeu
+/** Chronométrage du jeu
  * Mise à jour l'affichage du temps restant et déclenchement de l'arrête de la partie 
  * si le temps imparti est écoulé
  */
@@ -183,8 +178,8 @@ function decompteTemps() {
   }
 }
 
-/**
- * Fin de partie
+/** Fin de partie
+ * - calcul du message  et affichage dans le popup modal de fin de partie
  */
 function endGame() {
 
@@ -229,7 +224,7 @@ function restart(score) {
     $('#popupEndGrid').css('display', 'flex').animate({
       'zoom': 1
     }, 10).fadeIn(10).animate({
-      'zoom': 3
+      'zoom': 4
     }, 1000).fadeOut(400).animate({
       'zoom': 1
     }, 100);

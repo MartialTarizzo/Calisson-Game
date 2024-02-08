@@ -24,6 +24,23 @@ let canvas, context, canvasbis, contextbis;
 let currentTab;
 
 
+// pour empêcher le clignotement du canvas lors d'un toucher sur le canvas (interface tactile)
+document.body.addEventListener("touchstart", function (e) {
+    if (e.target == canvas) {
+        e.preventDefault();
+    }
+}, { passive: false });
+document.body.addEventListener("touchend", function (e) {
+    if (e.target == canvas) {
+        e.preventDefault();
+    }
+}, { passive: false });
+document.body.addEventListener("touchmove", function (e) {
+    if (e.target == canvas) {
+        e.preventDefault();
+    }
+}, { passive: false });
+
 function init() {
     marge = 5;
     mode = "arete";
@@ -145,8 +162,19 @@ function init() {
     canvas.oncontextmenu = function (event) {
         event.preventDefault();
     }
-    window.onresize = ()=> {setZoomFactor(); rafraichitlongueur()}
+    window.onresize = () => { setZoomFactor(); rafraichitlongueur() }
 }
+
+/** fonction retournant la taille des points dessinés au mileu des arêtes */
+function calcTaillePoint() {
+    return canvas.width / 30 / taille
+}
+
+/** le point de coordonnées (x, y) dans le canvas est-il assez proche du point d'inde i dans tabmileu ? */
+function curseurProcheMilieu(x, y, i) {
+    return ((x - tabmilieu[i][0]) ** 2 + (y - tabmilieu[i][1]) ** 2 < (longueur / 4) ** 2)
+}
+
 // effacement de la zone de jeu
 function clearCanvas() {
     context.beginPath();
@@ -510,6 +538,8 @@ function termine() {
 
 function dessinerlafigure() {
 
+    let taillePoint = calcTaillePoint()
+
     clearCanvas();
     for (let i = 0; i < tabsegment.length; i++) {
         context.beginPath();
@@ -542,7 +572,7 @@ function dessinerlafigure() {
                 context.beginPath();
                 context.lineWidth = 1;
                 context.setLineDash([]);
-                context.arc(tabmilieu[i][0], tabmilieu[i][1], 5, 0, 2 * Math.PI);
+                context.arc(tabmilieu[i][0], tabmilieu[i][1], taillePoint, 0, 2 * Math.PI);
                 context.fillStyle = "white";
                 context.strokeStyle = "black";
                 context.fill();
@@ -643,19 +673,18 @@ function ajouteunlosange(x, y) {
     var s1, s2, s3, s4;
     booldejadessine = true;
     for (var i = 0; i < tabmilieu.length; i++) {
-        if (Math.abs(x - tabmilieu[i][0]) < longueur / 5) {
-            if (Math.abs(y - tabmilieu[i][1]) < longueur / 5) {
-                if (tabmilieu[i][2] != 'bloquee') {
-                    if ((!tabmilieu[i][4]) && (solutionpresente)) {
-                        nblosangeutilise++;
-                    }
-                    tabmilieu[i][4] = !tabmilieu[i][4]
-                    orientation = tabmilieu[i][3]
+        if (curseurProcheMilieu(x, y, i)) {
+            if (tabmilieu[i][2] != 'bloquee') {
+                if ((!tabmilieu[i][4]) && (solutionpresente)) {
+                    nblosangeutilise++;
                 }
-
+                tabmilieu[i][4] = !tabmilieu[i][4]
+                orientation = tabmilieu[i][3]
             }
+
         }
     }
+
     //calculs des milieux des segments périphériques
     dessinerlafigure();
 
@@ -681,7 +710,7 @@ function abandonGrille() {
         document.getElementById('btcancel').style.display = "";
         funCallBack(0)
     }
-    
+
     document.getElementById('btreset').style.display = "none";
     document.getElementById('btmode').style.display = "none";
     document.getElementById('btcancel').style.display = "none";
@@ -696,6 +725,7 @@ function abandonGrille() {
 // La fonction appelée à chaque clic de souris sur le point mileu d'un segment
 function ajouterenleversegment(evt) {
 
+    let taillePoint = calcTaillePoint()
     if (style) {
         var pos = getMousePos(canvas, evt)
         var x = pos.x
@@ -703,45 +733,41 @@ function ajouterenleversegment(evt) {
         if (evt.button == 1) {
 
             for (var i = 0; i < tabmilieu.length; i++) {
-                if (Math.abs(x - tabmilieu[i][0]) < longueur / 5) {
-                    if (Math.abs(y - tabmilieu[i][1]) < longueur / 5) {
+                if (curseurProcheMilieu(x, y, i)) {
 
-                        if (tabmilieu[i][2] != 'bloquee') {
-                            if (tabmilieu[i][2] != 'solution') {
-                                tabmilieu[i][2] = "solution"
-                            } else {
-                                tabmilieu[i][2] = false;
-                            }
-                            // console.log(tabmilieu[i][2]);
+                    if (tabmilieu[i][2] != 'bloquee') {
+                        if (tabmilieu[i][2] != 'solution') {
+                            tabmilieu[i][2] = "solution"
+                        } else {
+                            tabmilieu[i][2] = false;
                         }
-                        dessinerlafigure()
-                        context.beginPath();
-                        context.lineWidth = 1;
-                        context.arc(tabmilieu[i][0], tabmilieu[i][1], 5, 0, 2 * Math.PI);
-                        context.fillStyle = "black";
-                        context.fill();
-                        context.closePath();
+                        // console.log(tabmilieu[i][2]);
                     }
+                    dessinerlafigure()
+                    context.beginPath();
+                    context.lineWidth = 1;
+                    context.arc(tabmilieu[i][0], tabmilieu[i][1], taillePoint, 0, 2 * Math.PI);
+                    context.fillStyle = "black";
+                    context.fill();
+                    context.closePath();
                 }
             }
         } else {
             if ((evt.button == 0) && (mode == "arete")) { //si pas clic droit
 
                 for (var i = 0; i < tabmilieu.length; i++) {
-                    if (Math.abs(x - tabmilieu[i][0]) < longueur / 5) {
-                        if (Math.abs(y - tabmilieu[i][1]) < longueur / 5) {
+                    if (curseurProcheMilieu(x, y, i)) {
 
-                            if (tabmilieu[i][2] != 'bloquee') {
-                                tabmilieu[i][2] = !tabmilieu[i][2];
-                            }
-                            dessinerlafigure()
-                            context.beginPath();
-                            context.lineWidth = 1;
-                            context.arc(tabmilieu[i][0], tabmilieu[i][1], 5, 0, 2 * Math.PI);
-                            context.fillStyle = "black";
-                            context.fill();
-                            context.closePath();
+                        if (tabmilieu[i][2] != 'bloquee') {
+                            tabmilieu[i][2] = !tabmilieu[i][2];
                         }
+                        dessinerlafigure()
+                        context.beginPath();
+                        context.lineWidth = 1;
+                        context.arc(tabmilieu[i][0], tabmilieu[i][1], taillePoint, 0, 2 * Math.PI);
+                        context.fillStyle = "black";
+                        context.fill();
+                        context.closePath();
                     }
                 }
             } else {
@@ -796,6 +822,7 @@ function messageok() {
 }
 
 function curseur(evt) {
+    let taillePoint = calcTaillePoint()
     if (style) {
         var pos = getMousePos(canvas, evt)
         var x = pos.x
@@ -804,18 +831,16 @@ function curseur(evt) {
         document.getElementById('canvas').style.cursor = 'auto';
 
         for (var i = 0; i < tabmilieu.length; i++) {
-            if (Math.abs(x - tabmilieu[i][0]) < longueur / 5) {
-                if (Math.abs(y - tabmilieu[i][1]) < longueur / 5) {
-                    document.getElementById('canvas').style.cursor = 'pointer';
-                    dessinerlafigure();
-                    if (tabmilieu[i][2] != 'bloquee') {
-                        context.beginPath();
-                        context.lineWidth = 1;
-                        context.arc(tabmilieu[i][0], tabmilieu[i][1], 5, 0, 2 * Math.PI);
-                        context.fillStyle = "black";
-                        context.fill();
-                        context.closePath();
-                    }
+            if (curseurProcheMilieu(x, y, i)) {
+                document.getElementById('canvas').style.cursor = 'pointer';
+                dessinerlafigure();
+                if (tabmilieu[i][2] != 'bloquee') {
+                    context.beginPath();
+                    context.lineWidth = 1;
+                    context.arc(tabmilieu[i][0], tabmilieu[i][1], taillePoint, 0, 2 * Math.PI);
+                    context.fillStyle = "black";
+                    context.fill();
+                    context.closePath();
                 }
             }
         }
