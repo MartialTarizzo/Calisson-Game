@@ -19,7 +19,7 @@ let chronofin;
 let chronointerval;
 let numerogrille;
 let is_touch_device;
-let canvas, context, canvasbis, contextbis;
+let canvas, context;
 
 let currentEnigme;
 
@@ -131,20 +131,8 @@ function init() {
     context = canvas.getContext('2d');
     if (!context) {
         alert("Impossible de récupérer le context du canvas");
-
     }
 
-    // copie du canvas pour la miniature affichée à la fin du jeu au dessus du message de succès
-    canvasbis = document.getElementById('canvasbis');
-    if (!canvasbis) {
-        alert("Impossible de récupérer le canvasbis");
-    }
-
-    contextbis = canvasbis.getContext('2d');
-    if (!contextbis) {
-        alert("Impossible de récupérer le context du canvas");
-
-    }
     if (canvas.getAttribute('listenerYetAdded') !== 'true') {
         canvas.setAttribute('listenerYetAdded', 'true');
         canvas.addEventListener('pointerdown', function (evt) {
@@ -531,7 +519,6 @@ function termine() {
     style = !style;
 
     dessinerlafigure();
-    // contextbis.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvasbis.width, canvasbis.height);
 }
 
 function dessinerlafigure() {
@@ -706,7 +693,7 @@ function abandonGrille() {
         document.getElementById('btreset').style.display = "";
         document.getElementById('btmode').style.display = "";
         document.getElementById('btcancel').style.display = "";
-        funCallBack(0)
+        funCallBack({score: 0})
     }
 
     document.getElementById('btreset').style.display = "none";
@@ -809,10 +796,18 @@ function calcScore() {
     // et de la valeur obtenue par le joueur
     let scorePlayer = 1 * taille ** 2 * (1.1 - propLos) * (durPlacAr / durPlacArUser) * (1 + perfAr / 2)
     // Calcul du score qui dépend de la taille de la grille et des variables précédentes
-    return Math.max(
+    let scoreFinal =  Math.max(
         taille * 5,
         Math.round((taille - 2 + (currentEnigme.niveau - 1) / 3) * 50 * scorePlayer / scoreRef)
     )
+    return {
+        taille: currentEnigme.taille,
+        niveau: currentEnigme.niveau,
+        nbAretesJoueur: nbArUser,
+        nbLosanges: nblosangeutilise,
+        chronofin: chronofin,
+        score: scoreFinal
+    }
 }
 
 function messageok() {

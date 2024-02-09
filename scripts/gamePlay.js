@@ -66,6 +66,8 @@ let maxTime;
 // Le timer du jeu
 let gameTimer;
 
+let listObjScore = []
+
 /********
  * liaisons avec l'interface HTML
  */
@@ -183,6 +185,38 @@ function decompteTemps() {
  */
 function endGame() {
 
+  function calcMsgStats() {
+    let totalTime = 0
+    let totalAretes = 0
+    let totalLosanges = 0
+    let msg = ""
+
+    if (listObjScore.length > 0) {
+      for (let os of listObjScore) {
+        totalTime += os.chronofin
+        totalAretes += os.nbAretesJoueur
+        totalLosanges += os.nbLosanges
+      }
+      let durMoyenneGrille = totalTime / listObjScore.length
+      let durMoyenneArete = totalAretes / totalTime
+
+      let lastScore = listObjScore[listObjScore.length - 1]
+      let niveauMax = lastScore.taille + "." + lastScore.niveau
+
+      msg = `
+    Niveau atteint : <strong>${niveauMax}</strong><br>
+    Durée totale : <strong>${totalTime} s</strong><br>
+    Durée moyenne par grille : <strong>${durMoyenneGrille.toFixed(1)} s</strong><br>
+    Nombre d'arêtes correctes placées : <strong>${totalAretes}</strong><br>
+    Durée moyenne par arête correcte : <strong>${durMoyenneArete.toFixed(1)} s</strong><br>
+    Nombre total de losange utilisés : <strong>${totalLosanges}</strong>
+    `
+    } else {
+      msg = "Aucune grille résolue ..."
+    }
+    return msg
+  }
+
   const bestScoreInStorage = localStorage.getItem('bestScore')
   const bestScore = bestScoreInStorage ? JSON.parse(bestScoreInStorage) : 0
 
@@ -195,7 +229,11 @@ function endGame() {
     modal.style.display = "none";
     beginGame()
   }
-  
+
+  let parStats = document.getElementById('pStats')
+  parStats.innerHTML = calcMsgStats()
+
+
   let msg = '- Limite de temps atteinte -<br> <strong>Score final = <span style="color: red">' + totalScore + " pts</span></strong>"
 
   if (totalScore > bestScore) {
@@ -214,11 +252,24 @@ function endGame() {
 
 /**
  * fonction de callback en cas de succès de la résolution d'une grille
- * @param {int} score 
- * - mets à jour le scoree du joueur
+ * @param objScore
+ * objet contenant au moins un champ score (entier)
+ * - Si le score est nul, le joueur a abandonné la résolution
+ * 
+ * - Si le score est non nul, on a aussi les champs suivants :
+  taille: taille de l'énigme,
+  niveau: niveau de l'énigme,
+  nbAretesJoueur: nbr d'arêtes placées par le joueur,
+  nbLosanges: nombre de losanges utilisés,
+  chronofin: durée de la résolution,
+  score: score final obtenu
+ * Tout ça doit permettre de faire des stats intéressantes ... TODO
+
+ * La fonction    
+ * - met à jour le score du joueur
  * - relance l'interface de résolution sur une nouvelle grille
  */
-function restart(score) {
+function restart(objScore) {
 
   function displaypopupEndGrid() {
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
@@ -230,8 +281,9 @@ function restart(score) {
       'zoom': 1
     }, 100);
   }
-
+  let score = objScore.score
   if (score > 0) {
+    listObjScore.push(objScore)
     displaypopupEndGrid()
     setTimeout(() => {
       totalScore += score;
@@ -268,6 +320,7 @@ function restart(score) {
 export function beginGame() {
   maxTime = 5 * 60
   document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
+  listObjScore = []
   totalScore = 0
   scoreBonif = 500
   incScoreBonif = 500

@@ -92,10 +92,6 @@ hr {
     border-radius: 10px;
 }
 
-#canvasbis {
-    display: none;
-}
-
 #popupEndGrid {
     position: fixed;
     top: 10px;
@@ -116,4 +112,15 @@ hr {
     font-size: large;
     font-weight: bolder;
     text-align: center;
+}
+
+.divStat  {
+    margin-left: 10%;
+    margin-right: 10%; 
+    color: black;
+    background-color: floralwhite;
+    padding: 5px;
+    border: 1px solid #000000;
+    text-align: left;
+
 }

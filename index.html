@@ -46,7 +46,6 @@
     </div>
     <em>Niveau : <span id='spLevel'>3.1</span></em>
     <div> <canvas id="canvas" width="425" height="490" style="cursor: pointer;"></canvas>
-        <canvas id="canvasbis" width="30" height="30"></canvas>
     </div>
 
     <!-- Le popup modal affiché au début du jeu  -->
@@ -71,6 +70,9 @@
             <div class="modal-body">
                 <p id="pEndGameMessage"></p>
             </div>
+            <div class="divStat">
+                <p id="pStats"></p>
+            </div>
             <button id="btRazStats">Remise à zéro des scores<br>et nouvelle partie</button>
             <div><hr></div>
             <button id="btNewGame">Nouvelle partie</button>
@@ -80,7 +82,7 @@
     <!-- l'affichage du score de fin de chaque grille -->
     <div id="popupEndGrid">
         <div>
-            <img style=' width: 60%;' src="240px-388-clapping-hands-2.svg.png">
+            <img style=' width: 60%;' src="pictures/240px-388-clapping-hands-2.svg.png">
             <p id="pScoreFinal">100 pts</p>
         </div>
     </div>
