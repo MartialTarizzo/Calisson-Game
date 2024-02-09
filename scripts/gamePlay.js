@@ -30,9 +30,6 @@ import {
   start,
   reset,
   changemode,
-  rafraichit,
-  rafraichitlongueur,
-  messageok,
   abandonGrille,
   chronoarret,
   dessinerSolution
@@ -50,6 +47,9 @@ let currentEnig;
 
 // Le score total de la partie en cours
 let totalScore;
+
+// le nombre d'abandons
+let nbAbandons;
 
 // le score permettant une bonification en temps
 let scoreBonif;
@@ -209,7 +209,8 @@ function endGame() {
     Durée moyenne par grille : <strong>${durMoyenneGrille.toFixed(1)} s</strong><br>
     Nombre d'arêtes correctes placées : <strong>${totalAretes}</strong><br>
     Durée moyenne par arête correcte : <strong>${durMoyenneArete.toFixed(1)} s</strong><br>
-    Nombre total de losange utilisés : <strong>${totalLosanges}</strong>
+    Nombre total de losange utilisés : <strong>${totalLosanges}</strong><br>
+    Nombre d'abandons : <strong>${nbAbandons}</strong>
     `
     } else {
       msg = "Aucune grille résolue ..."
@@ -297,6 +298,7 @@ function restart(objScore) {
     }, 1000)
   }
   else {
+    nbAbandons += 1
     if (maxTime > 0) {
       gameTimer = setInterval(decompteTemps, 1000)
       start(currentEnig, restart)
@@ -321,6 +323,7 @@ export function beginGame() {
   maxTime = 5 * 60
   document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
   listObjScore = []
+  nbAbandons = 0
   totalScore = 0
   scoreBonif = 500
   incScoreBonif = 500
