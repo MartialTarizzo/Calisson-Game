@@ -66,6 +66,9 @@ let maxTime;
 // Le timer du jeu
 let gameTimer;
 
+// la date depart de la partie
+let startDate;
+
 let listObjScore = []
 
 /********
@@ -163,7 +166,7 @@ function cancelGrid() {
 }
 
 /** Chronométrage du jeu
- * Mise à jour l'affichage du temps restant et déclenchement de l'arrête de la partie 
+ * Mise à jour l'affichage du temps restant et déclenchement de l'arrêt de la partie 
  * si le temps imparti est écoulé
  */
 function decompteTemps() {
@@ -186,6 +189,7 @@ function decompteTemps() {
 function endGame() {
 
   function calcMsgStats() {
+    let dureePartie = Math.floor((endDate - startDate) / 1000)
     let totalTime = 0
     let totalAretes = 0
     let totalLosanges = 0
@@ -204,8 +208,9 @@ function endGame() {
       let niveauMax = lastScore.taille + "." + lastScore.niveau
 
       msg = `
-    Niveau atteint : <strong>${niveauMax}</strong><br>
-    Durée totale : <strong>${totalTime} s</strong><br>
+    Durée de la partie : <strong>${dureePartie} s</strong><br>
+    Dernier niveau résolu : <strong>${niveauMax}</strong><br>
+    <strong>${listObjScore.length}</strong> grilles trouvées en <strong>${totalTime} s</strong><br>
     Durée moyenne par grille : <strong>${durMoyenneGrille.toFixed(1)} s</strong><br>
     Nombre d'arêtes correctes placées : <strong>${totalAretes}</strong><br>
     Durée moyenne par arête correcte : <strong>${durMoyenneArete.toFixed(1)} s</strong><br>
@@ -220,6 +225,7 @@ function endGame() {
 
   const bestScoreInStorage = localStorage.getItem('bestScore')
   const bestScore = bestScoreInStorage ? JSON.parse(bestScoreInStorage) : 0
+  const endDate = Date.now()
 
   document.getElementById('btNewGame').onclick = function (event) {
     modal.style.display = "none";
@@ -333,6 +339,7 @@ export function beginGame() {
   genEnigme = mkGenEnigme();
   genEnigme()
   gameTimer = setInterval(decompteTemps, 1000)
+  startDate = Date.now()
   start(currentEnig, restart)
 }
 
