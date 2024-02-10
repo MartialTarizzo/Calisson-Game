@@ -189,29 +189,54 @@ function decompteTemps() {
 function endGame() {
 
   function calcMsgStats() {
+    // la durée totale de la partie
     let dureePartie = Math.floor((endDate - startDate) / 1000)
-    let totalTime = 0
-    let totalAretes = 0
-    let totalLosanges = 0
-    let msg = ""
+
+    // la somme des durées effectives de résolution 
+    // C'est la somme des chronos des grilles résolues, ne tient donc pas compte 
+    // du temps perdu lors des Reset, Abandon, et de la dernière grille inachevée
+    let totalResTime
+    
+    // la durée cumulée de résolution : durée totale de résolution des grilles achevées
+    // elle comprend donc le temps perdu par reset et abandon, mais pas
+    // la dernière grille inachevée
+    let totalCumulTime
+    
+    // le nombre total d'arêtes placées
+    let totalAretes
+    // idem pour les losanges
+    let totalLosanges
+    // le message d'infos sur les perfs qui sera affiché
+    let msg
 
     if (listObjScore.length > 0) {
+      let lastScore = listObjScore[listObjScore.length - 1]
+      let niveauMax = lastScore.taille + "." + lastScore.niveau
+
+      totalCumulTime = Math.floor((lastScore['dateEndGrid'] - startDate) / 1000)
+
+      totalResTime = 0
+      totalAretes = 0
+      totalLosanges = 0
       for (let os of listObjScore) {
-        totalTime += os.chronofin
+        totalResTime += os.chronofin
         totalAretes += os.nbAretesJoueur
         totalLosanges += os.nbLosanges
       }
-      let durMoyenneGrille = totalTime / listObjScore.length
-      let durMoyenneArete = totalAretes / totalTime
+      let durMoyenneGrille = totalCumulTime / listObjScore.length
+      let durMoyenneArete = totalAretes / totalCumulTime
 
-      let lastScore = listObjScore[listObjScore.length - 1]
-      let niveauMax = lastScore.taille + "." + lastScore.niveau
+      // temps perdu (Reset, Abandon, dernière grille inachevée)
+      let tempsPerdu = (totalCumulTime - totalResTime) +  
+                       Math.floor((endDate - lastScore['dateEndGrid']) / 1000)
 
       msg = `
     Durée de la partie : <strong>${dureePartie} s</strong><br>
     Dernier niveau résolu : <strong>${niveauMax}</strong><br>
-    <strong>${listObjScore.length}</strong> grilles trouvées en <strong>${totalTime} s</strong><br>
+    <strong>${listObjScore.length}</strong> grilles trouvées en <strong>${totalCumulTime} s</strong><br>
     Durée moyenne par grille : <strong>${durMoyenneGrille.toFixed(1)} s</strong><br>
+    <hr>
+    Temps perdu (Reset, Abandon, dernière grille inachevée) : <strong> ${tempsPerdu} s</strong><br>
     Nombre d'arêtes correctes placées : <strong>${totalAretes}</strong><br>
     Durée moyenne par arête correcte : <strong>${durMoyenneArete.toFixed(1)} s</strong><br>
     Nombre total de losange utilisés : <strong>${totalLosanges}</strong><br>
@@ -270,9 +295,12 @@ function endGame() {
   nbLosanges: nombre de losanges utilisés,
   chronofin: durée de la résolution,
   score: score final obtenu
- * Tout ça doit permettre de faire des stats intéressantes ... TODO
+ * Tout ça doit permettre de faire des stats intéressantes ... 
 
- * La fonction    
+ * La fonction
+ * - ajoute dans l'objet score la date de fin de grille (champ dateEndGrid)
+ * - met à jour listObjScore
+ * - affiche le popup de score
  * - met à jour le score du joueur
  * - relance l'interface de résolution sur une nouvelle grille
  */
@@ -290,6 +318,7 @@ function restart(objScore) {
   }
   let score = objScore.score
   if (score > 0) {
+    objScore['dateEndGrid'] = Date.now()
     listObjScore.push(objScore)
     displaypopupEndGrid()
     setTimeout(() => {
