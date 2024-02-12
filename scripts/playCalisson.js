@@ -1,5 +1,5 @@
 /* 
-javascript.js pour la page HTML de Calisson
+playCalisson.js pour la page HTML permettant de jouer au jeu de Calisson
 */
 // TODO : nettoyer ce fichier de tout ce qui ne sert plus à rien (résidus de la version d'origine)
 
@@ -22,6 +22,11 @@ let is_touch_device;
 let canvas, context;
 
 let currentEnigme;
+
+// les largeurs des tracés
+let dashLineWidth = 1
+let gridLineWidth = 3
+let borderLineWidth = 4
 
 
 // pour empêcher le clignotement du canvas lors d'un toucher sur le canvas (interface tactile)
@@ -504,6 +509,9 @@ function setZoomFactor() {
     let dw = clw / (2 * taille) * 2 / Math.sqrt(3);
     let dh = clh / (2 * taille);
     longueur = Math.floor(Math.min(dw, dh));
+    gridLineWidth = Math.max(1, Math.floor(longueur/20))
+    borderLineWidth = gridLineWidth + 1
+    dashLineWidth =  Math.max(1, Math.floor(gridLineWidth/2))
 }
 
 // Associée au bouton 'Reset' : annule les actions de l'utilisateur
@@ -528,7 +536,7 @@ function dessinerlafigure() {
     clearCanvas();
     for (let i = 0; i < tabsegment.length; i++) {
         context.beginPath();
-        context.lineWidth = 1;
+        context.lineWidth = dashLineWidth;
         context.setLineDash([5, 10]);
         context.moveTo(tabsegment[i][0][0], tabsegment[i][0][1]);
         context.lineTo(tabsegment[i][1][0], tabsegment[i][1][1]);
@@ -541,7 +549,7 @@ function dessinerlafigure() {
         {
             if ((tabmilieu[i][2] == true) || (tabmilieu[i][2] == 'bloquee') || (tabmilieu[i][2] == 'solution')) { //on trace le segment si vrai
                 context.beginPath();
-                context.lineWidth = 5;
+                context.lineWidth = gridLineWidth;
                 context.setLineDash([]);
                 context.moveTo(tabsegment[i][0][0], tabsegment[i][0][1])
                 context.lineTo(tabsegment[i][1][0], tabsegment[i][1][1])
@@ -606,7 +614,7 @@ function dessinerlafigure() {
                 }
                 context.beginPath();
                 context.fillStyle = couleur;
-                context.lineWidth = 1;
+                context.lineWidth = gridLineWidth;
                 context.moveTo(x1, y1)
                 context.lineTo(x2, y2)
                 context.lineTo(x3, y3)
@@ -620,7 +628,7 @@ function dessinerlafigure() {
     //bordure
     for (let i = 0; i < taille; i++) {
         context.beginPath();
-        context.lineWidth = 5;
+        context.lineWidth = borderLineWidth;
         context.strokeStyle = "black";
         context.setLineDash([]);
         context.moveTo(centrex + i * v1x, centrey + i * v1y)
@@ -748,7 +756,7 @@ function ajouterenleversegment(evt) {
                         }
                         dessinerlafigure()
                         context.beginPath();
-                        context.lineWidth = 1;
+                        context.lineWidth = gridLineWidth;
                         context.arc(tabmilieu[i][0], tabmilieu[i][1], taillePoint, 0, 2 * Math.PI);
                         context.fillStyle = "black";
                         context.fill();

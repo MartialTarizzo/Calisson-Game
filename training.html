@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/popup.css">
+    <script src="./scripts/jquery-3.7.1.js"></script>
+
+    <title>Speedy Calisson</title>
+
+</head>
+
+<body>
+        <div class="home">
+            <a href="/index.html">
+                <img src="/pictures/icons8-home-fixed.gif" alt="home Back">
+                <img src="/pictures/icons8-home.gif" class="img-top" alt="home Front">
+            </a>
+        </div>
+
+    <script type="module">
+        import { beginGame } from "./scripts/gamePlay_training.js"
+
+        document.getElementById('selNiveau').onchange = beginGame
+
+        beginGame()
+
+    </script>
+
+    <div id="controle">
+        <button id="btreset">Reset</button>
+        <button id="btmode" style="display: none;">Mode arête</button>
+        <button id="btcancel">Abandon</button>
+        <br>
+        <div style="font-weight:bold; font-size:30px;">
+            <span>Niveau : </span>
+            <select name="simple" id="selNiveau" style="font-weight:bold; font-size:30px;height:40px; width:80px; ">
+                <option selected value="31">3.1</option>
+                <option value="32">3.2</option>
+                <option value="33">3.3</option>
+                <option value="41">4.1</option>
+                <option value="42">4.2</option>
+                <option value="43">4.3</option>
+                <option value="51">5.1</option>
+                <option value="52">5.2</option>
+                <option value="53">5.3</option>
+                <option value="61">6.1</option>
+                <option value="62">6.2</option>
+                <option value="63">6.3</option>
+            </select>
+            <span id="chronospan">
+                &nbsp;&nbsp;Chrono :
+                <span id="chrono">0 s</span>
+            </span>
+        </div>
+    </div>
+    <div> <canvas id="canvas" width="425" height="490" style="cursor: pointer;"></canvas>
+    </div>
+
+    <!-- l'affichage du score de fin de chaque grille -->
+    <div id="popupEndGrid">
+        <div>
+            <img style=' width: 60%;' src="pictures/240px-388-clapping-hands-2.svg.png">
+            <p id="pScoreFinal">100 pts</p>
+        </div>
+    </div>
+    <script>
+        function displaypopupEndGrid() {
+            $('#popupEndGrid').css('display', 'flex').animate({
+                'zoom': 1
+            }, 10).fadeIn(10).animate({
+                'zoom': 3
+            }, 1000).fadeOut(400).animate({
+                'zoom': 1
+            }, 100);
+        }
+    </script>
+
+<footer style="  position: fixed;
+left: 0;
+bottom: 0;
+width: 100%;
+background-color: cornflowerblue;
+color: white;
+text-align: center;
+font-size: 20px;">
+      Entraînement au Jeu du Calisson
+  </footer>
+</body>
+
+</html>

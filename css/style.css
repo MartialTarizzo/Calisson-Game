@@ -48,7 +48,8 @@ input[type=number] {
     border-radius: 20px;
 }
 
-#btNewGame, #btRazStats {
+#btNewGame,
+#btRazStats {
     font-size: 30px;
     font-weight: bold;
     color: black;
@@ -62,6 +63,7 @@ input[type=number] {
     padding: 10px;
 
 }
+
 #btRazStats {
     font-size: 20px;
     font-weight: normal;
@@ -74,7 +76,7 @@ hr {
     border-top: 3px double #000000;
     color: #333;
     height: 5px;
-  }
+}
 
 .explication {
     font-style: italic;
@@ -96,8 +98,8 @@ hr {
     position: fixed;
     top: 10px;
     left: 10px;
-    right:10px;
-    display:none;
+    right: 10px;
+    display: none;
     justify-content: flex-start;
     align-items: center;
     background-color: #d6d6d6;
@@ -107,20 +109,39 @@ hr {
     width: 100px;
     height: 120px;
     margin-left: auto;
-    margin-right: auto; 
+    margin-right: auto;
     font-family: Arial, Helvetica, sans-serif;
     font-size: large;
     font-weight: bolder;
     text-align: center;
 }
 
-.divStat  {
+.divStat {
     margin-left: 10%;
-    margin-right: 10%; 
+    margin-right: 10%;
     color: black;
     background-color: floralwhite;
     padding: 5px;
     border: 1px solid #000000;
     text-align: left;
 
+}
+
+.home {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 20px;
+}
+
+.home .img-top {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 99;
+}
+
+.home:hover .img-top {
+    display: inline;
 }

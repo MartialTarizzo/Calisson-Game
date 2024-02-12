@@ -8,95 +8,111 @@
     <script src="./scripts/jquery-3.7.1.js"></script>
 
     <title>Speedy Calisson</title>
+
+    <style>
+        .modeButton {
+            padding: 10px; 
+            font-size: 2em; font-weight: bold;
+            border-width: 2px; border-radius: 20px;
+            background-color: cornflowerblue;
+            color: white;
+        }
+    </style>
 </head>
 
-<body>
+<body style=" font-size: 20px; margin: 50px; text-align: left; border-width: 1px;">
+    <h1 style="text-align: center; border-style: solid; border-radius: 20px; padding: 10px; margin: 50px;">Speedy Calisson</h1>
+<p style="text-align: center;">
+    <img src="/pictures/calissons.png" alt="" width="300px">
+</p>
+    <p>"Speedy Calisson" est inspiré du jeu du Calisson, inventé par Olivier LONGUET. Pour une présentaton, s'informer sur les techniques de résolution et se confronter aux grilles proposées
+        par l'auteur, vous pouvez vous rendre sur le <a href="https://mathix.org/calisson/blog/" target="_blank"
+            rel="noopener noreferrer">site d'origine</a>.</p>
+    <div style="border-style:double; border-width: 1;">
+        <p style="text-align: center;">Deux modes de jeu sont possibles :</p>
+    <p style="text-align: center;">
+        <a href="/training.html"><button class="modeButton">Entraînement</button></a> 
+        &nbsp;ou &nbsp
+        <a href="/speedy.html"><button  class="modeButton">Speedy !</button></a>    
+    <br>
+    <p style="text-align: center; font-size: 15px;">(cliquez/tapez pour jouer)</p>    
+    </p>
+</div>
 
-    <script type="module">
-        import { beginGame } from "./scripts/gamePlay.js"
+    
 
-        function closePopupuAndStart() {
-            document.getElementById('popup').style.display = "none"
-            beginGame()
-        }
+    <h2>Mode <strong>Entraînement</strong></h2>
+    <p>Dans ce mode, la durée du jeu n'est pas limitée et il est possible de choisir la taille et le niveau des grilles à résoudre dans une liste déroulante.</p>
+    <p>Pour chaque grille résolue, le score obtenu est affiché, et une nouvelle grille est proposée.</p>
+    <p>En cas de changement de niveau, la grille en cours est abandonnée.</p>
 
-        btClosePopup.onclick = closePopupuAndStart
+    <h2>Mode Challenge (Speedy !)</h2>
+    <p>Ce mode vous permet de mettre à l'épreuve votre maîtrise du jeu !</p>
+    <p>Le but est d'obtenir en un temps limité le score total le plus grand possible, en résolvant des grilles de taille et difficulté croissantes analogues à celle de la page d'entraînement (mais les grilles sont différentes !).</p>
+    <ul>
+        <li>crédit de temps initial : <strong>300 s</strong> </li>
+        <li>tous les <strong>500</strong> pts, <strong>bonification de 60 s</strong></li>
+        <li>La partie est terminée quand le crédit de temps est épuisé.</li>
+    </ul>
+    <h2>Contrôles</h2>
+    <p>Dans les deux modes, deux boutons permettent de modifier le déroulement du jeu :
+        <ul>
+            <li>
+                <strong>Reset</strong> remet la grille dans son état d'origine.
+                <br>
+                Utile quand on veut repartir de zéro en cas de blocage. Ceci n'a pas d'incidence sur le score, mais vous aurez certainement perdu du temps en mode "Challenge" ...
+            </li>
+            <li>
+                <strong>Abandon</strong> est plus radical :
+                <ul>
+                    <li>
+                        la résolution de la grille en cours est abandonnée,
+                    </li>
+                    <li>
+                        la solution est affichée pendant un bref instant,
+                    </li>
+                    <li>
+                        En mode <strong>Challenge</strong> une pénalité est appliquée sur le crédit de temps ( <strong>- 60 s</strong> ), 
+                    </li>
+                    <li>
+                        la grille en cours est de nouveau proposée à la résolution.
+                    </li>    
+                </ul>
+                Ceci est utile quand on se trouve complètement bloqué, où quand on veut faciliter le démarrage de la résolution sur des grilles sans point de départ évident.
+            </li>
+        </ul>
+    </p>
+    <p>Pour revenir à l'écran d'accueil depuis les pages de jeu, cliquer sur la maison en haut à gauche <img src="/pictures/icons8-home.gif" height="30px"></p>
 
-        // MT - pour dev local -> à commenter en prod
-        // document.getElementById('popup').style.display = "none"
-        // beginGame()
-        // end dev local
-
-    </script>
-
-    <div id="controle">
-        <button id="btreset">Reset</button>
-        <button id="btmode" style="display: none;">Mode arête</button>
-        <button id="btcancel">Abandon</button>
-        <br>
-        <span id="score"></span>&nbsp;
-        <span id="chronospan">
-            &nbsp;&nbsp;Chrono :
-            <span id="chrono">0 s</span>
-        </span>
-        <span id="chronospan">
-            &nbsp;&nbsp;Restant :
-            <span id="spTempsRestant">0 s</span>
-        </span>
-    </div>
-    <em>Niveau : <span id='spLevel'>3.1</span></em>
-    <div> <canvas id="canvas" width="425" height="490" style="cursor: pointer;"></canvas>
-    </div>
-
-    <!-- Le popup modal affiché au début du jeu  -->
-    <div id="popup">
-        <div class="overlay"></div>
-        <div class="box">
-            <div class="close" id="btClosePopup">&times; </div>
-            <div class="frame">
-                <div class="title">Speedy Calisson</div>
-                <iframe src="info.html"></iframe>
-            </div>
-        </div>
-    </div>
-
-    <!-- le dialogue modal de fin de partie -->
-    <div id="modalEndGame" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Partie terminée</h3>
-            </div>
-            <div class="modal-body">
-                <p id="pEndGameMessage"></p>
-            </div>
-            <div class="divStat">
-                <p id="pStats"></p>
-            </div>
-            <button id="btRazStats">Effacement du score à battre<br>et nouvelle partie</button>
-            <div><hr></div>
-            <button id="btNewGame">Nouvelle partie</button>
-        </div>
-    </div>
-
-    <!-- l'affichage du score de fin de chaque grille -->
-    <div id="popupEndGrid">
-        <div>
-            <img style=' width: 60%;' src="pictures/240px-388-clapping-hands-2.svg.png">
-            <p id="pScoreFinal">100 pts</p>
-        </div>
-    </div>
-    <script>
-        function displaypopupEndGrid() {
-            $('#popupEndGrid').css('display', 'flex').animate({
-                'zoom': 1
-            }, 10).fadeIn(10).animate({
-                'zoom': 3
-            }, 1000).fadeOut(400).animate({
-                'zoom': 1
-            }, 100);
-        }
-    </script>
+    <h2>Jeu sur ordinateur ou Tablette/téléphone</h2>
+    <p>Quand on joue sur ordinateur, il est possible de dessiner des calissons (ou losanges) en effectuant un clic-droit avec la souris sur le milieu d'une arête.</p>
+<p>
+    Sur un dispositif à interface tactile où le clic-droit est impossible, les pages de jeu affichent entre les boutons <strong>Reset</strong> et <strong>Abandon</strong> un indicateur du mode d'action d'une presion sur le mileu d'une arête : tracé d'une arête (<strong>Mode arête</strong>) ou d'un losange (<strong>Mode losange</strong>). Il suffit de taper sur l'indicateur pour changer de mode.
+</p>
+<h2>Conseils</h2>
+<p>Pour obtenir un score important, il faut :</p>
+<ul>
+    <li>trouver la solution de chaque grille le plus rapidement possible,</li>
+    <li>employer un minimum de calissons/losanges car le score diminue en fonction du nombre utilisé et cela prend du temps : L'idéal est de n'en employer aucun !
+</ul>
+<p>Le score pour chaque grille augmente avec sa taille et sa difficulté :
+<ul>
+    <li>
+        Les grilles les plus faciles contiennent beaucoup plus d'arêtes que nécessaire. Leur résolution est
+        généralement
+        possible sans utiiser le moindre calisson.
+    </li>
+    <li>
+        Les grilles les plus difficiles contiennent un nombre d'arêtes minimal, les résoudre sans calisson est en
+        général difficile.
+    </li>
+</ul>
+</p>
+<h2>Crédits</h2>
+    <p>Le code de la zone de jeu a été modifié à partir de celui d'Arnaud DURAND utilisé sur la page d'origine. <br>
+        Tous les contenus mentionnés sont sous licence <a
+            href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr" target="_blank"
+            rel="noopener noreferrer">Creative Commons CC-BY-SA-NC</a> </p>
+    <br>
+    Martial Tarizzo - 12/2/2024
 </body>
-
-</html>

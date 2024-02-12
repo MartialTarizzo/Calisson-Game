@@ -10,18 +10,18 @@ Ce fichier définit la mécanique du jeu du calisson
 */
 
 // Importation des grilles de jeu
-import { enigme_3_1 } from '../grids/enigmes_3_1.js';
-import { enigme_3_2 } from '../grids/enigmes_3_2.js';
-import { enigme_3_3 } from '../grids/enigmes_3_3.js';
-import { enigme_4_1 } from '../grids/enigmes_4_1.js';
-import { enigme_4_2 } from '../grids/enigmes_4_2.js';
-import { enigme_4_3 } from '../grids/enigmes_4_3.js';
-import { enigme_5_1 } from '../grids/enigmes_5_1.js';
-import { enigme_5_2 } from '../grids/enigmes_5_2.js';
-import { enigme_5_3 } from '../grids/enigmes_5_3.js';
-import { enigme_6_1 } from '../grids/enigmes_6_1.js';
-import { enigme_6_2 } from '../grids/enigmes_6_2.js';
-import { enigme_6_3 } from '../grids/enigmes_6_3.js';
+import { enigme_3_1 } from '../grids-speedy/enigmes_3_1.js';
+import { enigme_3_2 } from '../grids-speedy/enigmes_3_2.js';
+import { enigme_3_3 } from '../grids-speedy/enigmes_3_3.js';
+import { enigme_4_1 } from '../grids-speedy/enigmes_4_1.js';
+import { enigme_4_2 } from '../grids-speedy/enigmes_4_2.js';
+import { enigme_4_3 } from '../grids-speedy/enigmes_4_3.js';
+import { enigme_5_1 } from '../grids-speedy/enigmes_5_1.js';
+import { enigme_5_2 } from '../grids-speedy/enigmes_5_2.js';
+import { enigme_5_3 } from '../grids-speedy/enigmes_5_3.js';
+import { enigme_6_1 } from '../grids-speedy/enigmes_6_1.js';
+import { enigme_6_2 } from '../grids-speedy/enigmes_6_2.js';
+import { enigme_6_3 } from '../grids-speedy/enigmes_6_3.js';
 
 /******************
  * les importations permettant de jouer une grille
@@ -33,7 +33,7 @@ import {
   abandonGrille,
   chronoarret,
   dessinerSolution
-} from "./javascript.js";
+} from "./playCalisson.js";
 
 /***
  * Variables globales
