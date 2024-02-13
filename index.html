@@ -51,47 +51,63 @@
             &nbsp;ou &nbsp
             <a href="./speedy.html"><button class="modeButton">Speedy !</button></a>
             <br>
-        <p style="font-size: smaller; text-align: center; font-style: italic;"> (lisez la suite si vous ne savez pas jouer)</p>
+        <p style="font-size: smaller; text-align: center; font-style: italic;"> (lisez la suite si vous ne savez pas
+            jouer)</p>
         </p>
     </div>
     <h1>But du jeu</h1>
     <p>Dessiner entièrement les frontières des domaines remplissant entièrement un hexagone, chaque domaine étant rempli
-        avec des losanges (ou "calissons") de même orientation (même couleur).<br>
-        Un calisson est formé de l'assemblage de deux triangles équilatéraux ayant un côté commun.<br>
-    <p> Deux règles sont donc à respecter :</p>
+        avec des losanges (ou "calissons") de même orientation (même couleur).
+        Un calisson est formé de l'assemblage de deux triangles équilatéraux ayant un côté commun.
+    </p>
+    <p> Deux règles sont à respecter :</p>
     <ul>
-        <li>un calisson n'est jamais traversé par une arête</li>
-        <li>il n'y a pas d'arête entre deux calissons de même orientation</li>
+        <li><strong>un calisson n'est jamais traversé par une arête</strong> </li>
+        <li><strong> il n'y a pas d'arête entre deux calissons de même orientation</strong></li>
     </ul>
-
-    Pour rendre le pavage unique, certaines arêtes sont fixées au départ :
+    <p> Pour rendre le pavage unique, certaines arêtes sont fixées au départ :</p>
     <p align="center"> <img src="./pictures/C2-aretes.png" alt=""></p>
-    Pavage avec les calissons :
+    <p> Pavage avec les calissons :</p>
     <p align="center"> <img src="./pictures/C2-calissons.png" alt=""></p>
-    Pour gagner, il suffit de dessiner les frontières des domaines, en s'aidant au besoin du coloriage des calissons :
-    <p align="center" style="font-size: smaller; text-align: center; font-style: italic;"> <img src="./pictures/C2-fontieres.png" alt=""><br>position gagnante</p>
-
-    <p>Sur ordinateur, le dessin des arêtes manquantes s'effectue avec un clic-gauche sur le milieu de l'arête tandis que le coloriage d'un calisson est obtenu par un clic-droit sur le milieu du losange.
+    <p> Pour gagner, il suffit de dessiner les frontières des domaines, en s'aidant au besoin du coloriage des calissons
+        :</p>
+    <p align="center" style="font-size: smaller; text-align: center; font-style: italic;">
+        <img src="./pictures/C2-fontieres.png" alt="">
+        <br>
+        position gagnante
     </p>
-    <p>Sur tablette/téléphone/écran tactile :<br>
-        le toucher du milieu d'un arête provoque le dessin de l'arête ou le coloriage du losange en fonction de l'état d'un bouton de l'interface.
+    <p>
+        Sur ordinateur, le dessin des arêtes manquantes s'effectue avec un clic-gauche sur le milieu de l'arête tandis
+        que le coloriage d'un calisson est obtenu par un clic-droit sur le centre du losange.
     </p>
-        
-
+    <p>
+        Sur tablette/téléphone/écran tactile, le toucher du milieu d'un arête provoque le dessin de l'arête ou le
+        coloriage du losange en fonction de l'état d'un bouton de l'interface.
     </p>
-
-
+    <p style="font-size: smaller; font-style: italic; ">
+        Remarques facilitant la résolution :
+    <ul style="font-size: smaller; font-style: italic; ">
+        <li>deux arêtes formant un angle aigu déterminent entièrement un calisson</li>
+        <li>une arête sur la frontière d'un calisson détermine l'orientation du calisson voisin</li>
+    </ul>
+    </p>
 
     <h2>Mode <strong>Entraînement</strong></h2>
     <p>Dans ce mode, la durée du jeu n'est pas limitée et il est possible de choisir la taille et le niveau des grilles
-        à résoudre dans une liste déroulante.</p>
-    <p>Pour chaque grille résolue, le score obtenu est affiché, et une nouvelle grille est proposée.</p>
-    <p>En cas de changement de niveau, la grille en cours est abandonnée.</p>
+        à résoudre dans une liste déroulante.
+    </p>
+    <p>
+        Pour chaque grille résolue, le score obtenu est affiché, et une nouvelle grille est proposée.
+    </p>
+    <p>
+        En cas de changement de niveau, la grille en cours est abandonnée.
+    </p>
 
     <h2>Mode Challenge (Speedy !)</h2>
     <p>Ce mode vous permet de mettre à l'épreuve votre maîtrise du jeu !</p>
     <p>Le but est d'obtenir en un temps limité le score total le plus grand possible, en résolvant des grilles de taille
-        et difficulté croissantes analogues à celle de la page d'entraînement (mais les grilles sont différentes !).</p>
+        et difficulté croissantes analogues à celle de la page d'entraînement (mais les grilles sont différentes !).
+    </p>
     <ul>
         <li>crédit de temps initial : <strong>300 s</strong> </li>
         <li>tous les <strong>500</strong> pts, <strong>bonification de 60 s</strong></li>
@@ -128,8 +144,10 @@
         </li>
     </ul>
     </p>
-    <p>Pour revenir à l'écran d'accueil depuis les pages de jeu, cliquer sur la maison en haut à gauche <img
-            src="./pictures/icons8-home.gif" height="30px"></p>
+
+    <p>Pour revenir à l'écran d'accueil depuis les pages de jeu, cliquer sur la maison en haut à gauche 
+        <img src="./pictures/icons8-home.gif" height="30px">
+    </p>
 
     <h2>Jeu sur ordinateur ou Tablette/téléphone</h2>
     <p>Quand on joue sur ordinateur, il est possible de dessiner des calissons (ou losanges) en effectuant un clic-droit
@@ -161,8 +179,12 @@
     </ul>
     </p>
     <h2>Vision du jeu en 3 dimensions</h2>
-    <p>Le pavage de l'hexagone peut s'interpréter comme la projection isométrique d'un empilement de petites caisses cubiques dans une grande pièce elle-même cubique. Les caisses sont empilées en les poussant dans la pièce le plus loin possible, les piles étant de hauteurs croissantes vers les murs du fond.</p>
+    <p>Le pavage de l'hexagone peut s'interpréter comme la projection isométrique d'un empilement de petites caisses
+        cubiques dans une grande pièce elle-même cubique. Les caisses sont empilées en les poussant dans la pièce le
+        plus loin possible, les piles étant de hauteurs croissantes vers les murs du fond.</p>
     <p>Cette vision du jeu permet souvent de se passer des calissons pour dessiner la solution !</p>
+
+
     <h2>Crédits</h2>
     <p>"Speedy Calisson" est inspiré du jeu du Calisson, inventé par Olivier LONGUET. Pour une présentaton, s'informer
         sur les techniques de résolution et se confronter aux grilles proposées
