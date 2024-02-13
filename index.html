@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/popup.css">
-    <link rel="icon" type="image/x-icon" href="./pictures/favicon.png">
+    <link rel="icon" type="image/x-icon" href="./pictures/C2-calissons.png">
     <script src="./scripts/jquery-3.7.1.js"></script>
 
     <title>Speedy Calisson</title>
@@ -24,13 +24,16 @@
             background-color: cornflowerblue;
             color: white;
         }
+
         .titrePage {
-            text-align: center; 
-            border-style: solid; 
+            text-align: center;
+            border-style: solid;
             border-color: cornflowerblue;
             border-radius: 40px;
-            padding: 10px; margin-left: 100px; margin-right: 100px;
-             letter-spacing: 0.25rem;
+            padding: 10px;
+            margin-left: 100px;
+            margin-right: 100px;
+            letter-spacing: 0.25rem;
         }
     </style>
 </head>
@@ -41,20 +44,41 @@
     <p style="text-align: center;">
         <img src="/pictures/calissons.png" alt="" width="300px">
     </p>
-    <p>"Speedy Calisson" est inspiré du jeu du Calisson, inventé par Olivier LONGUET. Pour une présentaton, s'informer
-        sur les techniques de résolution et se confronter aux grilles proposées
-        par l'auteur, vous pouvez vous rendre sur le <a href="https://mathix.org/calisson/blog/" target="_blank"
-            rel="noopener noreferrer">site d'origine</a>.</p>
     <div style="border-style:double; border-width: 1;">
-        <p style="text-align: center;">Deux modes de jeu sont possibles :</p>
+        <p style="text-align: center;">cliquez/tapez pour jouer</p>
         <p style="text-align: center;">
             <a href="./training.html"><button class="modeButton">Entraînement</button></a>
             &nbsp;ou &nbsp
             <a href="./speedy.html"><button class="modeButton">Speedy !</button></a>
             <br>
-        <p style="text-align: center; font-size: 15px;">(cliquez/tapez pour jouer)</p>
+        <p style="font-size: smaller; text-align: center; font-style: italic;"> (lisez la suite si vous ne savez pas jouer)</p>
         </p>
     </div>
+    <h1>But du jeu</h1>
+    <p>Dessiner entièrement les frontières des domaines remplissant entièrement un hexagone, chaque domaine étant rempli
+        avec des losanges (ou "calissons") de même orientation (même couleur).<br>
+        Un calisson est formé de l'assemblage de deux triangles équilatéraux ayant un côté commun.<br>
+    <p> Deux règles sont donc à respecter :</p>
+    <ul>
+        <li>un calisson n'est jamais traversé par une arête</li>
+        <li>il n'y a pas d'arête entre deux calissons de même orientation</li>
+    </ul>
+
+    Pour rendre le pavage unique, certaines arêtes sont fixées au départ :
+    <p align="center"> <img src="./pictures/C2-aretes.png" alt=""></p>
+    Pavage avec les calissons :
+    <p align="center"> <img src="./pictures/C2-calissons.png" alt=""></p>
+    Pour gagner, il suffit de dessiner les frontières des domaines, en s'aidant au besoin du coloriage des calissons :
+    <p align="center" style="font-size: smaller; text-align: center; font-style: italic;"> <img src="./pictures/C2-fontieres.png" alt=""><br>position gagnante</p>
+
+    <p>Sur ordinateur, le dessin des arêtes manquantes s'effectue avec un clic-gauche sur le milieu de l'arête tandis que le coloriage d'un calisson est obtenu par un clic-droit sur le milieu du losange.
+    </p>
+    <p>Sur tablette/téléphone/écran tactile :<br>
+        le toucher du milieu d'un arête provoque le dessin de l'arête ou le coloriage du losange en fonction de l'état d'un bouton de l'interface.
+    </p>
+        
+
+    </p>
 
 
 
@@ -136,8 +160,16 @@
         </li>
     </ul>
     </p>
+    <h2>Vision du jeu en 3 dimensions</h2>
+    <p>Le pavage de l'hexagone peut s'interpréter comme la projection isométrique d'un empilement de petites caisses cubiques dans une grande pièce elle-même cubique. Les caisses sont empilées en les poussant dans la pièce le plus loin possible, les piles étant de hauteurs croissantes vers les murs du fond.</p>
+    <p>Cette vision du jeu permet souvent de se passer des calissons pour dessiner la solution !</p>
     <h2>Crédits</h2>
-    <p>Le code de la zone de jeu a été modifié à partir de celui d'Arnaud DURAND utilisé sur la page d'origine. <br>
+    <p>"Speedy Calisson" est inspiré du jeu du Calisson, inventé par Olivier LONGUET. Pour une présentaton, s'informer
+        sur les techniques de résolution et se confronter aux grilles proposées
+        par l'auteur, vous pouvez vous rendre sur le <a href="https://mathix.org/calisson/blog/" target="_blank"
+            rel="noopener noreferrer">site d'origine</a>.</p>
+
+    <p>Le code de la zone de jeu a été modifié à partir du code initial d'Arnaud DURAND. <br>
         Tous les contenus mentionnés sont sous licence <a
             href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr" target="_blank"
             rel="noopener noreferrer">Creative Commons CC-BY-SA-NC</a> </p>
