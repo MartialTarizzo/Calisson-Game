@@ -370,7 +370,7 @@ function restart(objScore) {
     nbAbandons += 1
     if (maxTime > 0) {
       gameTimer = setInterval(decompteTemps, 1000)
-      start(currentEnig, restart)
+      setTimeout(()=> start(currentEnig, restart), 0)
     }
     else {
       endGame()

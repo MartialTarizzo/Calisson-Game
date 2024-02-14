@@ -164,7 +164,7 @@ function restart(objScore) {
   }
   else {
       chronoarret()
-      start(currentEnig, restart)
+      setTimeout(()=> start(currentEnig, restart), 0)
   }
 }
 
