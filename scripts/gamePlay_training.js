@@ -79,6 +79,14 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
+// Deux variables globales pour le tirage des énigmes :
+// pour éviter une répétition trop proche du tirage au sort des énigmes,
+//  on range dans une file les énigmes proposées pour le niveau en cours.
+// Cette file fileEnigmes de taille maximale maxFileEnigmes conserve les index
+// des énigmes tirées
+
+let maxFileEnigmes = 20
+let fileIdxEnigmes = []
 
 function genEnigme () {
   let niveau = document.getElementById('selNiveau').value
@@ -86,14 +94,17 @@ function genEnigme () {
   enigs =enigs.split("\n")
   enigs.pop()
 
-  // tirage d'une énigme différente de l'énigme courante
-  let newEnig
-  do {
-    newEnig = {taille: niveau[0], niveau: niveau[1], tab: enigs[getRandomInt(enigs.length)]}
-  } while (currentEnig.tab == newEnig.tab) 
-  
-  currentEnig = newEnig
-  return currentEnig
+  // tirage d'un index qui n'est pas dans fileIdxEnigmes
+  let i
+  do {i = getRandomInt(enigs.length)} while (fileIdxEnigmes.includes(i))
+  // enfilage de l'index
+  fileIdxEnigmes.push(i)
+  // retrait du premier index si la taille max est atteinte
+  if (fileIdxEnigmes.length > maxFileEnigmes) {
+    fileIdxEnigmes.shift()
+  }
+  // récupération de l'énigme et affectation à la variable globale currentEnig
+  currentEnig = {taille: niveau[0], niveau: niveau[1], tab: enigs[i]}
 }
 
 
@@ -126,10 +137,7 @@ function cancelGrid() {
  * Tout ça doit permettre de faire des stats intéressantes ... 
 
  * La fonction
- * - ajoute dans l'objet score la date de fin de grille (champ dateEndGrid)
- * - met à jour listObjScore
  * - affiche le popup de score
- * - met à jour le score du joueur
  * - relance l'interface de résolution sur une nouvelle grille
  */
 function restart(objScore) {
@@ -163,6 +171,8 @@ function restart(objScore) {
 
 /**
  * La fonction de lancement du jeu
+ * appelée au chargement de la page et à chaque changement de niveau
+ * 
  * - définitions des variables globales et des timers
  * - appel de la fonction start de l'interface de résolution, en lui fournissant
  *   la fonction 'callback' restart qui sera appelée en cas de réussite de la grille.
@@ -171,6 +181,7 @@ function restart(objScore) {
  *   
  */
 export function beginGame() {
+  fileIdxEnigmes = []
   genEnigme()
   chronoarret()
   start(currentEnig, restart)

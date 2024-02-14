@@ -80,21 +80,21 @@ btcancel.onclick = cancelGrid;
 
 /** pour retourner la liste des énigmes d'une taille et d'un niveau donnés
  * 
- * @param {int} taille 
+ * @param {int} idx_taille 
  * la taille de la grille désirée, dans [0..3] pour les tailles réelles [3..6] 
- * @param {int} niveau 
+ * @param {int} idx_niveau 
  * le niveau des grilles dans [0..2] pour le niveau réel [1..3]
  * @returns
  * un tableau de chaînes, chaque chaîne codant une énigme
  */
-function getEnigmes(taille, niveau) {
+function getEnigmes(idx_taille, idx_niveau) {
   let e = [
     [enigme_3_1, enigme_3_2, enigme_3_3],
     [enigme_4_1, enigme_4_2, enigme_4_3],
     [enigme_5_1, enigme_5_2, enigme_5_3],
     [enigme_6_1, enigme_6_2, enigme_6_3]
   ]
-  let enigmes = e[taille][niveau].split("\n")
+  let enigmes = e[idx_taille][idx_niveau].split("\n")
   enigmes.pop()
   return enigmes
 }
@@ -119,26 +119,60 @@ function getRandomInt(max) {
  * effet de bord : la variable globale currentEnig contient la dernière énigme générée 
  */
 function mkGenEnigme() {
-  let taille = 0
-  let niveau = 0
+  // index de la taille et du niveau
+  // décalage de 3 pour la taille et de 1 pour le niveau / aux valeurs vraies
+  let idx_taille = 0
+  let idx_niveau = 0
+  let idx_taille_max = 3
+  let idx_niveau_max = 2
+
+  // pour éviter une répétition trop proche du tirage au sort des énigmes de niveau 6.3,
+  //  on range dans une file les index énigmes proposées pour ce niveau.
+  // Cette file fileEnigmes est de taille maximale maxFileEnigmes  
+  let maxFileEnigmes = 20
+  let fileIdxEnigmes = []
 
   function nextEnig() {
     // choix au hasard d'une énigme dans la taille et le niveau courants
-    let enigs = getEnigmes(taille, niveau)
-    let i = getRandomInt(enigs.length)
+    let enigs = getEnigmes(idx_taille, idx_niveau)
+
+    // l'index de l'énigme qui sera proposée
+    let i
+
+    if (idx_taille == idx_taille_max && idx_niveau == idx_niveau_max) {
+      // il faut éviter une répétition trop proche des mêmes énigmes
+      
+      // tirage au sort d'un nouvel index non présent dans les derniers tirages
+      do { i = getRandomInt(enigs.length) } while (fileIdxEnigmes.includes(i))
+
+      // enfilage de l'index
+      fileIdxEnigmes.push(i)
+      
+      // retrait du premier index si la taille max est atteinte
+      if (fileIdxEnigmes.length > maxFileEnigmes) {
+        fileIdxEnigmes.shift()
+      }
+
+    } else {
+      // dans les niveaux intermédiaires, une seule énigme est tirée au hasard
+      // pour chaque couple taille/niveau
+      // pas besoin de tester si elle a déjà été proposée dans cette partie !
+      i = getRandomInt(enigs.length)
+    }
+
     let r = {
-      taille: taille + 3,
-      niveau: niveau + 1,
+      taille: idx_taille + 3,
+      niveau: idx_niveau + 1,
       tab: enigs[i]
     }
     // incrémentation du couple taille/niveau : 0/0 -> 3/2 (grilles 3/1 -> 6/3)
-    if (niveau == 2) {
-      if (taille < 3) {
-        taille++;
-        niveau = 0
+    if (idx_niveau == 2) {
+      if (idx_taille < 3) {
+        idx_taille++;
+        idx_niveau = 0
       }
     }
-    else { niveau++ }
+    else { idx_niveau++ }
 
     // déf de currentEnig et valeur retournée
     currentEnig = r;
@@ -196,12 +230,12 @@ function endGame() {
     // C'est la somme des chronos des grilles résolues, ne tient donc pas compte 
     // du temps perdu lors des Reset, Abandon, et de la dernière grille inachevée
     let totalResTime
-    
+
     // la durée cumulée de résolution : durée totale de résolution des grilles achevées
     // elle comprend donc le temps perdu par reset et abandon, mais pas
     // la dernière grille inachevée
     let totalCumulTime
-    
+
     // le nombre total d'arêtes placées
     let totalAretes
     // idem pour les losanges
@@ -227,8 +261,8 @@ function endGame() {
       let durMoyenneArete = totalAretes / totalCumulTime
 
       // temps perdu (Reset, Abandon, dernière grille inachevée)
-      let tempsPerdu = (totalCumulTime - totalResTime) +  
-                       Math.floor((endDate - lastScore['dateEndGrid']) / 1000)
+      let tempsPerdu = (totalCumulTime - totalResTime) +
+        Math.floor((endDate - lastScore['dateEndGrid']) / 1000)
 
       msg = `
     Durée de la partie : <strong>${dureePartie} s</strong><br>
