@@ -143,14 +143,20 @@ function cancelGrid() {
 function restart(objScore) {
 
   function displaypopupEndGrid() {
+        // pour empêcher des clicks parasite pendant l'affichage du score (ça perturbait tout ...)
+        let modalEndGrid = document.getElementById("modalEndGrid");
+        modalEndGrid.style.display="block"
+    
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
+    // l'animation suivante dure 0+20+1000+400+0 = 1420 ms
     $('#popupEndGrid').css('display', 'flex').animate({
       'zoom': 1
-    }, 10).fadeIn(10).animate({
+    }, 0).fadeIn(10).animate({
       'zoom': 4
-    }, 1000).fadeOut(400).animate({
+    }, 1000).fadeOut(400)
+    .animate({
       'zoom': 1
-    }, 100);
+    }, 0);
   }
   let score = objScore.score
   if (score > 0) {
@@ -159,6 +165,9 @@ function restart(objScore) {
     setTimeout(() => {
       genEnigme()
       chronoarret()
+
+      modalEndGrid.style.display="none"
+
       start(currentEnig, restart)
     }, 1000)
   }

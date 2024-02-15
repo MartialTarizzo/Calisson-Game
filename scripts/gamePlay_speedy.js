@@ -141,13 +141,13 @@ function mkGenEnigme() {
 
     if (idx_taille == idx_taille_max && idx_niveau == idx_niveau_max) {
       // il faut éviter une répétition trop proche des mêmes énigmes
-      
+
       // tirage au sort d'un nouvel index non présent dans les derniers tirages
       do { i = getRandomInt(enigs.length) } while (fileIdxEnigmes.includes(i))
 
       // enfilage de l'index
       fileIdxEnigmes.push(i)
-      
+
       // retrait du premier index si la taille max est atteinte
       if (fileIdxEnigmes.length > maxFileEnigmes) {
         fileIdxEnigmes.shift()
@@ -287,12 +287,12 @@ function endGame() {
   const endDate = Date.now()
 
   document.getElementById('btNewGame').onclick = function (event) {
-    modal.style.display = "none";
+    modalEndGame.style.display = "none";
     beginGame()
   }
   document.getElementById('btRazStats').onclick = function (event) {
     localStorage.removeItem('bestScore');
-    modal.style.display = "none";
+    modalEndGame.style.display = "none";
     beginGame()
   }
 
@@ -310,10 +310,10 @@ function endGame() {
     msg += '<br><strong>Le score à battre est toujours de <br><span style="color: red">' + bestScore + ' pts</span></strong>'
   }
 
-  let modal = document.getElementById("modalEndGame");
+  let modalEndGame = document.getElementById("modalEndGame");
   let parMsg = document.getElementById("pEndGameMessage");
   parMsg.innerHTML = msg
-  modal.style.display = "block";
+  modalEndGame.style.display = "block";
 }
 
 /**
@@ -341,20 +341,29 @@ function endGame() {
 function restart(objScore) {
 
   function displaypopupEndGrid() {
+    // pour empêcher des clicks parasite pendant l'affichage du score (ça perturbait tout ...)
+    let modalEndGrid = document.getElementById("modalEndGrid");
+    modalEndGrid.style.display = "block"
+
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
+    // l'animation suivante dure 0+20+1000+400+0 = 1420 ms
     $('#popupEndGrid').css('display', 'flex').animate({
       'zoom': 1
-    }, 10).fadeIn(10).animate({
+    }, 0).fadeIn(10).animate({
       'zoom': 4
-    }, 1000).fadeOut(400).animate({
-      'zoom': 1
-    }, 100);
+    }, 1000).fadeOut(400)
+      .animate({
+        'zoom': 1
+      }, 0);
   }
+
   let score = objScore.score
   if (score > 0) {
     objScore['dateEndGrid'] = Date.now()
     listObjScore.push(objScore)
     displaypopupEndGrid()
+    // on relance une nouvelle grille avec un délai compatible avec
+    // la durée de l'animation du score
     setTimeout(() => {
       totalScore += score;
       if (totalScore >= scoreBonif) {
@@ -363,6 +372,9 @@ function restart(objScore) {
       }
       document.getElementById('score').innerHTML = 'Score total : ' + totalScore;
       genEnigme()
+
+      modalEndGrid.style.display = "none"
+
       start(currentEnig, restart)
     }, 1000)
   }
@@ -370,7 +382,10 @@ function restart(objScore) {
     nbAbandons += 1
     if (maxTime > 0) {
       gameTimer = setInterval(decompteTemps, 1000)
-      setTimeout(()=> start(currentEnig, restart), 0)
+      setTimeout(() => {
+        start(currentEnig, restart)
+      }
+        , 0)
     }
     else {
       endGame()

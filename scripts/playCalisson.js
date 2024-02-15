@@ -772,7 +772,7 @@ function ajouterenleversegment(evt) {
         if (testesolution()) {
             chronoarret()
             termine();
-            setTimeout(() => { messageok() }, 500)
+            setTimeout(() => { messageok() }, 0)
             // messageok()
         }
     }

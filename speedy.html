@@ -55,18 +55,6 @@
     <div> <canvas id="canvas" width="425" height="490" style="cursor: pointer;"></canvas>
     </div>
 
-    <!-- Le popup modal affiché au début du jeu  -->
-    <!-- <div id="popup">
-        <div class="overlay"></div>
-        <div class="box">
-            <div class="close" id="btClosePopup">&times; </div>
-            <div class="frame">
-                <div class="title">Speedy Calisson</div>
-                <iframe src="info.html"></iframe>
-            </div>
-        </div>
-    </div> -->
-
     <!-- le dialogue modal de fin de partie -->
     <div id="modalEndGame" class="modal">
         <!-- Modal content -->
@@ -81,31 +69,24 @@
                 <p id="pStats"></p>
             </div>
             <button id="btRazStats">Effacement du score à battre<br>et nouvelle partie</button>
-            <div><hr></div>
+            <div>
+                <hr>
+            </div>
             <button id="btNewGame">Nouvelle partie</button>
         </div>
     </div>
 
     <!-- l'affichage du score de fin de chaque grille -->
-    <div id="popupEndGrid">
-        <div>
-            <img style=' width: 60%;' src="pictures/240px-388-clapping-hands-2.svg.png">
-            <p id="pScoreFinal">100 pts</p>
+    <div id="modalEndGrid" class="modal">
+        <div id="popupEndGrid">
+            <div>
+                <img style=' width: 60%;' src="pictures/240px-388-clapping-hands-2.svg.png">
+                <p id="pScoreFinal">100 pts</p>
+            </div>
         </div>
     </div>
-    <script>
-        function displaypopupEndGrid() {
-            $('#popupEndGrid').css('display', 'flex').animate({
-                'zoom': 1
-            }, 10).fadeIn(10).animate({
-                'zoom': 3
-            }, 1000).fadeOut(400).animate({
-                'zoom': 1
-            }, 100);
-        }
-    </script>
 
-<footer style="  position: fixed;
+    <footer style="  position: fixed;
 left: 0;
 bottom: 0;
 width: 100%;
@@ -113,10 +94,10 @@ background-color: red;
 color: white;
 text-align: center;
 font-size: 15px;">
-      Speedy Calisson
-  </footer>
+        Speedy Calisson
+    </footer>
 
-    
+
 </body>
 
 </html>

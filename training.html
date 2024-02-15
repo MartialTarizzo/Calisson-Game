@@ -12,12 +12,12 @@
 </head>
 
 <body>
-        <div class="home">
-            <a href="./index.html">
-                <img src="./pictures/icons8-home-fixed.gif" alt="home Back">
-                <!-- <img src="./pictures/icons8-home.gif" class="img-top" alt="home Front"> -->
-            </a>
-        </div>
+    <div class="home">
+        <a href="./index.html">
+            <img src="./pictures/icons8-home-fixed.gif" alt="home Back">
+            <!-- <img src="./pictures/icons8-home.gif" class="img-top" alt="home Front"> -->
+        </a>
+    </div>
 
     <script type="module">
         import { beginGame } from "./scripts/gamePlay_training.js"
@@ -59,25 +59,15 @@
     </div>
 
     <!-- l'affichage du score de fin de chaque grille -->
-    <div id="popupEndGrid">
-        <div>
-            <img style=' width: 60%;' src="pictures/240px-388-clapping-hands-2.svg.png">
-            <p id="pScoreFinal">100 pts</p>
+    <div id="modalEndGrid" class="modal">
+        <div id="popupEndGrid">
+            <div>
+                <img style=' width: 60%;' src="pictures/240px-388-clapping-hands-2.svg.png">
+                <p id="pScoreFinal">100 pts</p>
+            </div>
         </div>
     </div>
-    <script>
-        function displaypopupEndGrid() {
-            $('#popupEndGrid').css('display', 'flex').animate({
-                'zoom': 1
-            }, 10).fadeIn(10).animate({
-                'zoom': 3
-            }, 1000).fadeOut(400).animate({
-                'zoom': 1
-            }, 100);
-        }
-    </script>
-
-<footer style="  position: fixed;
+    <footer style="  position: fixed;
 left: 0;
 bottom: 0;
 width: 100%;
@@ -85,8 +75,8 @@ background-color: cornflowerblue;
 color: white;
 text-align: center;
 font-size: 20px;">
-      Entraînement au Jeu du Calisson
-  </footer>
+        Entraînement au Jeu du Calisson
+    </footer>
 </body>
 
 </html>
