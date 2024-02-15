@@ -15,9 +15,8 @@ let modejeu;
 let solutionpresente;
 let nblosangeutilise;
 let chrono;
-let chronofin;
+let dateDebutResolution;
 let chronointerval;
-let numerogrille;
 let is_touch_device;
 let canvas, context;
 
@@ -104,11 +103,11 @@ function init() {
     // différents compteurs
     nblosangeutilise = 0;
     chrono = 0;
-    chronofin = 0;
+    dateDebutResolution = Date.now()
     chronointerval;
 
     // le numéro de la grille si présent à la fin de l'url
-    numerogrille = '';
+    // numerogrille = '';
 
     // réglage de l'interface sur un écran tactile 
     is_touch_device = function () {
@@ -466,6 +465,7 @@ function commencergrille() {
     // document.getElementById('messagediv').style.display = "none";
     modejeu = true;
     chrono = 0;
+    dateDebutResolution = Date.now()
     nblosangeutilise = 0;
     chronomarche();
     var tab = currentEnigme.tab;
@@ -517,7 +517,6 @@ function setZoomFactor() {
 // Associée au bouton 'Reset' : annule les actions de l'utilisateur
 function reset() {
     chronoarret();
-    chronofin = 0;
     commencergrille()
 }
 
@@ -793,8 +792,9 @@ function calcScore() {
     nbAretes += nbArUser;
     // proportion de losanges utilisée. meilleure si faible, entre 0 et 1
     let propLos = Math.min(nblosangeutilise / nbTotLos, 1);
-    // durée moyenne de placement d'une arête, > à 1 s  
-    let durPlacArUser = Math.max(chronofin, 1) / nbArUser;
+    // durée moyenne de placement d'une arête, > à 1 s 
+    let dureeResolution = Math.floor((Date.now() - dateDebutResolution) / 1000)
+    let durPlacArUser = Math.max(dureeResolution, 1) / nbArUser;
     // proportion d'arêtes à placer, entre 0 et 1. Croît avec la difficulté de la grille
     let perfAr = nbArUser / nbAretes;
     let durPlacAr = 2 // durée (en s) moyenne de placement d'une arête pour un bon joueur
@@ -813,7 +813,7 @@ function calcScore() {
         niveau: currentEnigme.niveau,
         nbAretesJoueur: nbArUser,
         nbLosanges: nblosangeutilise,
-        chronofin: chronofin,
+        chronofin: dureeResolution,
         score: scoreFinal
     }
 }
@@ -858,7 +858,6 @@ function chronomarche() {
 }
 
 function chronoarret() {
-    chronofin = chrono;
     clearInterval(chronointerval);
 }
 
