@@ -20,7 +20,7 @@
 
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/popup.css">
-    <link rel="icon" type="image/x-icon" href="./pictures/C2-calissons.png">
+    <link rel="icon" type="image/x-icon" href="./pictures/favicon.ico">
     <script src="./scripts/jquery-3.7.1.js"></script>
 
     <title>Speedy Calisson</title>
@@ -68,9 +68,10 @@
     </div>
     <h1>But du jeu</h1>
     <p>Dessiner entièrement les frontières des domaines remplissant entièrement un hexagone, chaque domaine étant rempli
-        avec des losanges (ou "calissons") de même orientation (même couleur).
-        Un calisson est formé de l'assemblage de deux triangles équilatéraux ayant un côté commun.
+        avec des losanges (ou "calissons") de même orientation (même couleur). Un calisson est formé de l'assemblage de deux triangles équilatéraux ayant un côté commun. <br>
+        Les domaines sont séparés par des <strong>arêtes</strong> tracées en trait plein, les positions des arêtes à déterminer sont tracées en pointillés, avec un petit cercle au milieu.
     </p>
+    <p></p>
     <p> Deux règles sont à respecter :</p>
     <ul>
         <li><strong>un calisson n'est jamais traversé par une arête</strong> </li>
@@ -83,7 +84,7 @@
     <p> Pour gagner, il suffit de dessiner les frontières des domaines, en s'aidant au besoin du coloriage des calissons
         :</p>
     <p align="center" style="font-size: smaller; text-align: center; font-style: italic;">
-        <img src="./pictures/C2-fontieres.png" alt="">
+        <img src="./pictures/C2-frontieres.png" alt="">
         <br>
         position gagnante
     </p>
@@ -98,11 +99,20 @@
     <p style="font-size: smaller; font-style: italic; ">
         Remarques facilitant la résolution :
     <ul style="font-size: smaller; font-style: italic; ">
-        <li>deux arêtes formant un angle aigu déterminent entièrement un calisson ("règle de l'angle aigu")</li>
-        <li>une arête sur la frontière d'un calisson détermine l'orientation du calisson voisin ("règle du pli")</li>
+        <li>deux arêtes connues (pleines ou pointillés) ayant un point commun et formant un angle aigu déterminent entièrement l'orientation du calisson correspondant ("règle de l'angle aigu")</li>
+        <li>une arête pleine sur la frontière d'un calisson connu détermine l'orientation du calisson ayant cette arête en commun ("règle du pli")</li>
     </ul>
     </p>
-
+    <h2>Exemple de résolution</h2>
+    <p>Solution d'une grille de taille 3 en utilisant les règles de <strong>l'angle aigu</strong> et du <strong>pli</strong>, avec dessin de tous les calissons.</p>
+    <p align="center">
+        <video width="640px" height="'480px" controls>
+            <source src="./video/calisson_screencast.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </p>
+    Avec de l'entraînement, on peut souvent se passer des calissons !
+<h1>Les deux modes de jeu</h1>
     <h2>Mode <strong>Entraînement</strong></h2>
     <p>Dans ce mode, la durée du jeu n'est pas limitée et il est possible de choisir la taille et le niveau des grilles
         à résoudre dans une liste déroulante.
@@ -181,7 +191,7 @@
         <li>
             Les grilles les plus faciles contiennent beaucoup plus d'arêtes que nécessaire. Leur résolution est
             généralement
-            possible sans utiiser le moindre calisson.
+            possible sans utiliser le moindre calisson.
         </li>
         <li>
             Les grilles les plus difficiles contiennent un nombre d'arêtes minimal, les résoudre sans calisson est en
@@ -194,16 +204,8 @@
         cubiques dans une grande pièce elle-même cubique. Les caisses sont empilées en les poussant dans la pièce le
         plus loin possible, les piles étant de hauteurs croissantes vers les murs du fond.</p>
     <p>Cette vision du jeu permet souvent de se passer des calissons pour dessiner la solution !</p>
-    <h2>Exemple de résolution</h2>
-    <p>Solution d'une grille de taille 3 en utilisant les règles de <strong>l'angle aigu</strong> et du <strong>pli</strong>, avec dessin de tous les calissons.</p>
-    <p align="center">
-        <video width="640px" height="'480px" controls>
-            <source src="./video/calisson_screencast.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </p>
-    Avec de l'entraînement, on peut souvent se passer des calissons !
-    <h2>Crédits</h2>
+
+    <h1>Crédits</h1>
     <p>"Speedy Calisson" est inspiré du jeu du Calisson, inventé par Olivier LONGUET. Pour une présentaton, s'informer
         sur les techniques de résolution et se confronter aux grilles proposées
         par l'auteur, vous pouvez vous rendre sur le <a href="https://mathix.org/calisson/blog/" target="_blank"
