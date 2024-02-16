@@ -27,18 +27,19 @@ let dashLineWidth = 1
 let gridLineWidth = 3
 let borderLineWidth = 4
 
-
 // pour empêcher le clignotement du canvas lors d'un toucher sur le canvas (interface tactile)
 document.body.addEventListener("touchstart", function (e) {
     if (e.target == canvas) {
         e.preventDefault();
     }
 }, { passive: false });
+
 document.body.addEventListener("touchend", function (e) {
     if (e.target == canvas) {
         e.preventDefault();
     }
 }, { passive: false });
+
 document.body.addEventListener("touchmove", function (e) {
     if (e.target == canvas) {
         e.preventDefault();
@@ -509,9 +510,9 @@ function setZoomFactor() {
     let dw = clw / (2 * taille) * 2 / Math.sqrt(3);
     let dh = clh / (2 * taille);
     longueur = Math.floor(Math.min(dw, dh));
-    gridLineWidth = Math.max(1, Math.floor(longueur/20))
+    gridLineWidth = Math.max(1, Math.floor(longueur / 20))
     borderLineWidth = gridLineWidth + 1
-    dashLineWidth =  Math.max(1, Math.floor(gridLineWidth/2))
+    dashLineWidth = Math.max(1, Math.floor(gridLineWidth / 2))
 }
 
 // Associée au bouton 'Reset' : annule les actions de l'utilisateur
@@ -700,7 +701,7 @@ function abandonGrille() {
         document.getElementById('btreset').style.display = "";
         document.getElementById('btmode').style.display = "";
         document.getElementById('btcancel').style.display = "";
-        funCallBack({score: 0})
+        funCallBack({ score: 0 })
     }
 
     document.getElementById('btreset').style.display = "none";
@@ -804,7 +805,7 @@ function calcScore() {
     // et de la valeur obtenue par le joueur
     let scorePlayer = 1 * taille ** 2 * (1.1 - propLos) * (durPlacAr / durPlacArUser) * (1 + perfAr / 2)
     // Calcul du score qui dépend de la taille de la grille et des variables précédentes
-    let scoreFinal =  Math.max(
+    let scoreFinal = Math.max(
         taille * 5,
         Math.round((taille - 2 + (currentEnigme.niveau - 1) / 3) * 50 * scorePlayer / scoreRef)
     )
@@ -816,6 +817,56 @@ function calcScore() {
         chronofin: dureeResolution,
         score: scoreFinal
     }
+}
+
+/** calcul du bonus en fin de partie 
+ * La formule de calcul est inspirée de celle utilisée pour le score
+ * avec un rapport scorePlayer / scoreRef égal à 1
+ * Le bonus max est inférieur à (taille - 2 + (currentEnigme.niveau - 1) / 3) * 50
+ * 
+ * ce qui donne dans le cas où il ne manque qu'une seule arête pour finir la grille :
+ * 3.1 -> bonus < 50
+ * 4.1 -> bonus < 100
+ * 5.1 -> bonus < 150
+ * 6.1 -> bonus < 200 
+ * 6.3 -> bonus < 266
+*/
+function calcBonus() {
+    /* bilan du placement des arêtes
+     * 
+     * nbCorrectes est le nombre d'arête correctement placées
+     * nbIncorrectes "    "          ""      incorrectement ""
+     * nb_a_placer est le nombre d'arêtes à placer pour résoudre
+     * 
+     * @returns [nbCorrectes, nbIncorrectes, nb_a_placer]
+     */
+    function bilanPlacementAretes() {
+        let nbCorrectes = 0
+        let nbIncorrectes = 0
+        let nb_a_Placer = 0
+        for (let i = 0; i < tabmilieu.length; i++) {
+            switch (solution[i]) {
+                case true:
+                    nb_a_Placer++
+                    if (tabmilieu[i][2] === true) {
+                        nbCorrectes++
+                        break
+                    }
+                case false:
+                    if (tabmilieu[i][2] === true) {
+                        nbIncorrectes++
+                    }
+            }
+        }
+        return [nbCorrectes, nbIncorrectes, nb_a_Placer]
+    }
+
+    let [nbCorrectes, nbIncorrectes, nbaPlacer] = bilanPlacementAretes()
+    return Math.max(
+        0,
+        Math.round((taille - 2 + (currentEnigme.niveau - 1) / 3) *
+            50 * (nbCorrectes - nbIncorrectes) / nbaPlacer)
+    )
 }
 
 function messageok() {
@@ -849,7 +900,6 @@ function curseur(evt) {
 }
 
 function chronomarche() {
-
     chronointerval = setInterval(
         function () {
             chrono++;
@@ -860,6 +910,7 @@ function chronomarche() {
 function chronoarret() {
     clearInterval(chronointerval);
 }
+
 
 function testesolution() {
     var bool = true;
@@ -932,5 +983,6 @@ export {
     messageok,
     abandonGrille,
     chronoarret,
-    dessinerSolution
+    dessinerSolution,
+    calcBonus
 };

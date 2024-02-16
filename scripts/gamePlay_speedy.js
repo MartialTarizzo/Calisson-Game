@@ -32,7 +32,8 @@ import {
   changemode,
   abandonGrille,
   chronoarret,
-  dessinerSolution
+  dessinerSolution,
+  calcBonus
 } from "./playCalisson.js";
 
 /***
@@ -70,6 +71,9 @@ let gameTimer;
 let startDate;
 
 let listObjScore = []
+
+//le bonus pour la dernière grille inachevée
+let bonus = 0
 
 /********
  * liaisons avec l'interface HTML
@@ -209,6 +213,7 @@ function decompteTemps() {
   if (maxTime <= 0) {
     clearInterval(gameTimer)
     chronoarret()
+    bonus = calcBonus()
     dessinerSolution()
     setTimeout(endGame, 0)
   }
@@ -236,7 +241,7 @@ function endGame() {
     // la dernière grille inachevée
     let totalCumulTime
 
-    // le nombre total d'arêtes placées
+    // le nombre total d'arêtes placées (grilles résolues)
     let totalAretes
     // idem pour les losanges
     let totalLosanges
@@ -271,6 +276,7 @@ function endGame() {
     Durée moyenne par grille : <strong>${durMoyenneGrille.toFixed(1)} s</strong><br>
     <hr>
     Temps perdu (Reset, Abandon, dernière grille inachevée) : <strong> ${tempsPerdu} s</strong><br>
+    Bonus de dernière tentative : <strong>${bonus} pts </strong><br>
     Nombre d'arêtes correctes placées : <strong>${totalAretes}</strong><br>
     Durée moyenne par arête correcte : <strong>${durMoyenneArete.toFixed(1)} s</strong><br>
     Nombre total de losange utilisés : <strong>${totalLosanges}</strong><br>
@@ -299,8 +305,9 @@ function endGame() {
   let parStats = document.getElementById('pStats')
   parStats.innerHTML = calcMsgStats()
 
+  let scoreFinal = totalScore + bonus
 
-  let msg = '- Limite de temps atteinte -<br> <strong>Score final = <span style="color: red">' + totalScore + " pts</span></strong>"
+  let msg = '- Limite de temps atteinte -<br> <strong>Score final = <span style="color: red">' + scoreFinal + " pts</span></strong>"
 
   if (totalScore > bestScore) {
     msg += '<br><strong>C\'est votre meilleur score !</strong>'
@@ -409,6 +416,7 @@ export function beginGame() {
   listObjScore = []
   nbAbandons = 0
   totalScore = 0
+  bonus = 0
   scoreBonif = 500
   incScoreBonif = 500
   timeBonif = 60   // 1 minute de plus !
