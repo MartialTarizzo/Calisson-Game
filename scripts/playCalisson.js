@@ -9,7 +9,7 @@ playCalisson.js pour la page HTML permettant de jouer au jeu de Calisson
 // Les variables globales
 // voir les commentaires dans la fonction init
 let taille, longueur, marge, mode, v1x, v1y, v2x, v2y, v3x, v3y, centrex, centrey;
-let style;
+let jeuPossible;
 let tabsegment, tabmilieu, solution;
 let modejeu;
 let solutionpresente;
@@ -61,10 +61,13 @@ function init() {
     centrex = Math.sqrt(3) / 2 * longueur * taille + marge
     centrey = marge;
 
-    // définit le 'style' (???) d'interaction avec le jeu
+    // définit le type d'interaction avec le jeu 
     // true -> on peut modifier la grille
     // false -> grille non modifiable, on peut téléverser la solution trouvée, etc.
-    style = true;
+    // vestige du script initial permettant de créer les grilles à la main
+    // ne sert plus maintenant que lors de l'affichage lors de l'abandon
+
+    jeuPossible = true;
 
     // on cache le bouton de téléchargement de la solution
     // document.getElementById('terminedl').style.display = "none";
@@ -75,7 +78,7 @@ function init() {
 
     /****************************************************
      tabmilieu est Le tableau fondamental, contenant la plus grande partie des infos sur la grille
-     ce tableau contient des tableuax de la forme [x, y, traceSegment, typeLosange, affichelosange]
+     ce tableau contient des tableaux de la forme [x, y, traceSegment, typeLosange, affichelosange]
     
     - x, y : coordonnées du milieu de l'arête
     - traceSegment : valeur parmi (true, false, 'bloquee', 'solution')
@@ -524,7 +527,7 @@ function reset() {
 // associée au bouton 'Ma grille est terminée'
 function termine() {
 
-    style = !style;
+    jeuPossible = !jeuPossible;
 
     dessinerlafigure();
 }
@@ -561,7 +564,7 @@ function dessinerlafigure() {
                 context.stroke();
                 context.closePath();
             }
-            if ((tabmilieu[i][2] != 'bloquee') && (style)) {
+            if ((tabmilieu[i][2] != 'bloquee') && (jeuPossible)) {
                 context.beginPath();
                 context.lineWidth = 1;
                 context.setLineDash([]);
@@ -572,7 +575,7 @@ function dessinerlafigure() {
                 context.stroke();
                 context.closePath();
             }
-            if ((tabmilieu[i][4]) && (style)) {
+            if ((tabmilieu[i][4]) && (jeuPossible)) {
                 var x = tabmilieu[i][0];
                 var y = tabmilieu[i][1];
                 let x1, y1, x2, y2, x3, y3, x4, y4, couleur;
@@ -698,6 +701,9 @@ function dessinerSolution() {
 function abandonGrille() {
 
     function restoreControlsAndCallback() {
+
+        jeuPossible = true
+
         document.getElementById('btreset').style.display = "";
         document.getElementById('btmode').style.display = "";
         document.getElementById('btcancel').style.display = "";
@@ -707,6 +713,8 @@ function abandonGrille() {
     document.getElementById('btreset').style.display = "none";
     document.getElementById('btmode').style.display = "none";
     document.getElementById('btcancel').style.display = "none";
+
+    jeuPossible = false
 
     dessinerSolution();
     chronoarret();
@@ -719,7 +727,7 @@ function abandonGrille() {
 function ajouterenleversegment(evt) {
 
     let taillePoint = calcTaillePoint()
-    if (style) {
+    if (jeuPossible) {
         var pos = getMousePos(canvas, evt)
         var x = pos.x
         var y = pos.y
@@ -773,8 +781,7 @@ function ajouterenleversegment(evt) {
         if (testesolution()) {
             chronoarret()
             termine();
-            setTimeout(() => { messageok() }, 0)
-            // messageok()
+            setTimeout(() => { returnToGamePlay() }, 0)
         }
     }
 }
@@ -869,22 +876,22 @@ function calcBonus() {
     )
 }
 
-function messageok() {
+function returnToGamePlay() {
     funCallBack(calcScore())
 }
 
 function curseur(evt) {
     let taillePoint = calcTaillePoint()
-    if (style) {
+    if (jeuPossible) {
         var pos = getMousePos(canvas, evt)
         var x = pos.x
         var y = pos.y
 
-        document.getElementById('canvas').style.cursor = 'auto';
+        canvas.style.cursor = 'auto';
 
         for (var i = 0; i < tabmilieu.length; i++) {
             if (curseurProcheMilieu(x, y, i)) {
-                document.getElementById('canvas').style.cursor = 'pointer';
+                canvas.style.cursor = 'pointer';
                 dessinerlafigure();
                 if (tabmilieu[i][2] != 'bloquee') {
                     context.beginPath();
@@ -980,7 +987,6 @@ export {
     changemode,
     rafraichit,
     rafraichitlongueur,
-    messageok,
     abandonGrille,
     chronoarret,
     dessinerSolution,

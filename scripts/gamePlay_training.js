@@ -31,8 +31,7 @@ import {
   reset,
   changemode,
   abandonGrille,
-  chronoarret,
-  dessinerSolution
+  chronoarret
 } from "./playCalisson.js";
 
 /***
