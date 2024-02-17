@@ -13,38 +13,23 @@
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-09KM2N4X02"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'G-09KM2N4X02');
+    gtag('config', 'G-09KM2N4X02');
 </script>
 
 <body>
     <div class="home">
-        <a href="./index.html">
-            <img src="./pictures/icons8-home-fixed.gif" alt="home Back">
-            <!-- <img src="./pictures/icons8-home.gif" class="img-top" alt="home Front"> -->
-        </a>
+        <img src="./pictures/icons8-home-fixed.gif" alt="Retour" onclick = 'window.location.replace("./index.html")'>
     </div>
-
 
     <script type="module">
         import { beginGame } from "./scripts/gamePlay_speedy.js"
-
-        // function closePopupuAndStart() {
-        //     document.getElementById('popup').style.display = "none"
-        //     beginGame()
-        // }
-
-        // btClosePopup.onclick = closePopupuAndStart
-
-        // MT - pour dev local -> à commenter en prod
-        // document.getElementById('popup').style.display = "none"
         beginGame()
-        // end dev local
-
     </script>
+
 
     <div id="controle">
         <button id="btreset">Reset</button>
@@ -96,14 +81,15 @@
         </div>
     </div>
 
-    <footer style="  position: fixed;
-left: 0;
-bottom: 0;
-width: 100%;
-background-color: red;
-color: white;
-text-align: center;
-font-size: 15px;">
+    <footer style="
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: red;
+        color: white;
+        text-align: center;
+        font-size: 15px;">
         Speedy Calisson
     </footer>
 
