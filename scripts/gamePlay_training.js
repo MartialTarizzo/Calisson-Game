@@ -195,3 +195,7 @@ export function beginGame() {
   start(currentEnig, restart)
 }
 
+function goHome () {
+  window.location.replace("./index.html")
+}
+document.getElementById('imgHome').onclick = goHome

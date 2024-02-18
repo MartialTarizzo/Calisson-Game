@@ -21,17 +21,16 @@
 </script>
 
 <body>
-    <div class="home">
-        <img src="./pictures/icons8-home-fixed.gif" alt="Retour" onclick = 'window.location.replace("./index.html")'>
-    </div>
-
     <script type="module">
         import { beginGame } from "./scripts/gamePlay_speedy.js"
         beginGame()
     </script>
 
+<div class="home">
+    <img id="imgHome" src="./pictures/icons8-home-fixed.gif" alt="Retour">
+</div>
 
-    <div id="controle">
+<div id="controle">
         <button id="btreset">Reset</button>
         <button id="btmode" style="display: none;">Mode arête</button>
         <button id="btcancel">Abandon</button>
