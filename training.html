@@ -14,11 +14,11 @@
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-09KM2N4X02"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'G-09KM2N4X02');
+    gtag('config', 'G-09KM2N4X02');
 </script>
 
 <body>
@@ -31,7 +31,7 @@
     </script>
 
     <div class="home">
-        <img id='imgHome' src="./pictures/icons8-home-fixed.gif" alt="Retour" >
+        <img id='imgHome' src="./pictures/icons8-home-fixed.gif" alt="Retour">
     </div>
 
     <div id="controle">
@@ -74,15 +74,31 @@
         </div>
     </div>
     <footer style="  position: fixed;
-left: 0;
-bottom: 0;
-width: 100%;
-background-color: cornflowerblue;
-color: white;
-text-align: center;
-font-size: 20px;">
+                    left: 0;
+                    bottom: 0;
+                    width: 100%;
+                    background-color: cornflowerblue;
+                    color: white;
+                    text-align: center;
+                    font-size: 20px;">
         Entraînement au Jeu du Calisson
     </footer>
+
+    <!-- le dialogue modal d'attente pour le retour à l'index -->
+    <div id="modalWait" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Retour à la page d'accueil</h3>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <img src="./pictures/spinningWait.gif" alt="">
+                </p>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

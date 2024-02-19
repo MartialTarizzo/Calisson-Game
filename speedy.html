@@ -26,11 +26,11 @@
         beginGame()
     </script>
 
-<div class="home">
-    <img id="imgHome" src="./pictures/icons8-home-fixed.gif" alt="Retour">
-</div>
+    <div class="home">
+        <img id="imgHome" src="./pictures/icons8-home-fixed.gif" alt="Retour">
+    </div>
 
-<div id="controle">
+    <div id="controle">
         <button id="btreset">Reset</button>
         <button id="btmode" style="display: none;">Mode arête</button>
         <button id="btcancel">Abandon</button>
@@ -91,6 +91,22 @@
         font-size: 15px;">
         Speedy Calisson
     </footer>
+
+    <!-- le dialogue modal d'attente pour le retour à l'index -->
+    <div id="modalWait" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Retour à la page d'accueil</h3>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <img src="./pictures/spinningWait.gif" alt="">
+                </p>
+            </div>
+        </div>
+    </div>
+
 
 
 </body>

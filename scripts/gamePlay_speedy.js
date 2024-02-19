@@ -433,8 +433,9 @@ function goHome() {
   clearInterval(gameTimer)
   chronoarret()
 // verrouillage de l'interface ...
-  let modalEndGrid = document.getElementById("modalEndGrid");
+  let modalEndGrid = document.getElementById("modalWait");
   modalEndGrid.style.display = "block"
-  window.location.replace("./index.html")
+  setTimeout(()=>
+  window.location.replace("./index.html"), 400)
 }
 document.getElementById('imgHome').onclick = goHome
