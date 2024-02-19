@@ -429,7 +429,12 @@ export function beginGame() {
   start(currentEnig, restart)
 }
 
-function goHome () {
+function goHome() {
+  clearInterval(gameTimer)
+  chronoarret()
+// verrouillage de l'interface ...
+  let modalEndGrid = document.getElementById("modalEndGrid");
+  modalEndGrid.style.display = "block"
   window.location.replace("./index.html")
 }
 document.getElementById('imgHome').onclick = goHome

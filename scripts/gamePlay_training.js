@@ -40,7 +40,7 @@ import {
  */
 
 // l'énigme en cours
-let currentEnig = {taille: 0, niveau: 0, tab: ""}
+let currentEnig = { taille: 0, niveau: 0, tab: "" }
 
 // Le score total de la partie en cours
 // let totalScore;
@@ -65,7 +65,7 @@ let enigmes = {
   "51": enigme_5_1,
   "52": enigme_5_2,
   "53": enigme_5_3,
-  "61":enigme_6_1,
+  "61": enigme_6_1,
   "62": enigme_6_2,
   "63": enigme_6_3
 }
@@ -87,15 +87,15 @@ function getRandomInt(max) {
 let maxFileEnigmes = 20
 let fileIdxEnigmes = []
 
-function genEnigme () {
+function genEnigme() {
   let niveau = document.getElementById('selNiveau').value
   let enigs = enigmes[niveau]
-  enigs =enigs.split("\n")
+  enigs = enigs.split("\n")
   enigs.pop()
 
   // tirage d'un index qui n'est pas dans fileIdxEnigmes
   let i
-  do {i = getRandomInt(enigs.length)} while (fileIdxEnigmes.includes(i))
+  do { i = getRandomInt(enigs.length) } while (fileIdxEnigmes.includes(i))
   // enfilage de l'index
   fileIdxEnigmes.push(i)
   // retrait du premier index si la taille max est atteinte
@@ -103,7 +103,7 @@ function genEnigme () {
     fileIdxEnigmes.shift()
   }
   // récupération de l'énigme et affectation à la variable globale currentEnig
-  currentEnig = {taille: niveau[0], niveau: niveau[1], tab: enigs[i]}
+  currentEnig = { taille: niveau[0], niveau: niveau[1], tab: enigs[i] }
 }
 
 
@@ -142,10 +142,10 @@ function cancelGrid() {
 function restart(objScore) {
 
   function displaypopupEndGrid() {
-        // pour empêcher des clicks parasite pendant l'affichage du score (ça perturbait tout ...)
-        let modalEndGrid = document.getElementById("modalEndGrid");
-        modalEndGrid.style.display="block"
-    
+    // pour empêcher des clicks parasite pendant l'affichage du score (ça perturbait tout ...)
+    let modalEndGrid = document.getElementById("modalEndGrid");
+    modalEndGrid.style.display = "block"
+
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
     // l'animation suivante dure 0+20+1000+400+0 = 1420 ms
     $('#popupEndGrid').css('display', 'flex').animate({
@@ -153,9 +153,9 @@ function restart(objScore) {
     }, 0).fadeIn(10).animate({
       'zoom': 4
     }, 1000).fadeOut(400)
-    .animate({
-      'zoom': 1
-    }, 0);
+      .animate({
+        'zoom': 1
+      }, 0);
   }
   let score = objScore.score
   if (score > 0) {
@@ -165,14 +165,14 @@ function restart(objScore) {
       genEnigme()
       chronoarret()
 
-      modalEndGrid.style.display="none"
+      modalEndGrid.style.display = "none"
 
       start(currentEnig, restart)
     }, 1000)
   }
   else {
-      chronoarret()
-      setTimeout(()=> start(currentEnig, restart), 0)
+    chronoarret()
+    setTimeout(() => start(currentEnig, restart), 0)
   }
 }
 
@@ -195,7 +195,13 @@ export function beginGame() {
   start(currentEnig, restart)
 }
 
-function goHome () {
+function goHome() {
+
+  // clearInterval(gameTimer)
+  chronoarret()
+// verrouillage de l'interface ...
+let modalEndGrid = document.getElementById("modalEndGrid");
+  modalEndGrid.style.display = "block"
   window.location.replace("./index.html")
 }
 document.getElementById('imgHome').onclick = goHome
