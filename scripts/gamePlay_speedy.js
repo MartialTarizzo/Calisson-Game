@@ -214,8 +214,12 @@ function decompteTemps() {
     clearInterval(gameTimer)
     chronoarret()
     bonus = calcBonus()
-    dessinerSolution()
-    setTimeout(endGame, 0)
+    // affichage temporaire de la solution de la grille inachevée
+    // pendant la durée définie dans la fonction abandonGrille
+    abandonGrille()
+    // dialogue de fin de partie, différé d'une durée compatible 
+    // avec la précédente
+    setTimeout(endGame, 1900)
   }
   else {
     document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
