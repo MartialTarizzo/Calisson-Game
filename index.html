@@ -1,4 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html lang="fr">
 
 <head>
     <title>Le jeu Speedy Calisson</title>
@@ -52,11 +53,11 @@
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-09KM2N4X02"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'G-09KM2N4X02');
+    gtag('config', 'G-09KM2N4X02');
 </script>
 
 <body style=" font-size: 20px; margin: 50px; text-align: left; border-width: 1px;">
@@ -66,7 +67,7 @@
         <img src="./pictures/calissons.png" alt="" width="300px">
     </p>
     <div style="border-style:double; border-width: 1;">
-        <p style="text-align: center;">cliquez/tapez pour jouer</p>
+        <p style="text-align: center;">cliquez/tapez pour choisir le mode de jeu</p>
         <p style="text-align: center;">
             <a href="./training.html"><button class="modeButton">Entraînement</button></a>
             &nbsp;ou &nbsp
@@ -78,8 +79,10 @@
     </div>
     <h1>But du jeu</h1>
     <p>Dessiner entièrement les frontières des domaines remplissant entièrement un hexagone, chaque domaine étant rempli
-        avec des losanges (ou "calissons") de même orientation (même couleur). Un calisson est formé de l'assemblage de deux triangles équilatéraux ayant un côté commun. <br>
-        Les domaines sont séparés par des <strong>arêtes</strong> tracées en trait plein, les positions des arêtes à déterminer sont tracées en pointillés, avec un petit cercle au milieu.
+        avec des losanges (ou "calissons") de même orientation (même couleur). Un calisson est formé de l'assemblage de
+        deux triangles équilatéraux ayant un côté commun. <br>
+        Les domaines sont séparés par des <strong>arêtes</strong> tracées en trait plein, les positions des arêtes à
+        déterminer sont tracées en pointillés, avec un petit cercle au milieu.
     </p>
     <p></p>
     <p> Deux règles sont à respecter :</p>
@@ -109,12 +112,22 @@
     <p style="font-size: smaller; font-style: italic; ">
         Remarques facilitant la résolution :
     <ul style="font-size: smaller; font-style: italic; ">
-        <li>deux arêtes connues (pleines ou pointillés) ayant un point commun et formant un angle aigu déterminent entièrement l'orientation du calisson correspondant ("règle de l'angle aigu")</li>
-        <li>une arête pleine sur la frontière d'un calisson connu détermine l'orientation du calisson ayant cette arête en commun ("règle du pli")</li>
+        <li>deux arêtes connues (pleines ou pointillés) ayant un point commun et formant un angle aigu déterminent
+            entièrement l'orientation du calisson correspondant ("règle de l'angle aigu")</li>
+        <li>une arête pleine sur la frontière d'un calisson connu détermine l'orientation du calisson ayant cette arête
+            en commun ("règle du pli")</li>
     </ul>
     </p>
+
+    <h2>Vision du jeu en 3 dimensions</h2>
+    <p>Le pavage de l'hexagone peut s'interpréter comme la projection isométrique d'un empilement de petites caisses
+        cubiques dans une grande pièce elle-même cubique. Les caisses sont empilées en les poussant dans la pièce le
+        plus loin possible, les piles étant de hauteurs croissantes vers les murs du fond.</p>
+    <p>Cette vision du jeu permet souvent de se passer des calissons pour dessiner la solution !</p>
+
     <h2>Exemple de résolution</h2>
-    <p>Solution d'une grille de taille 3 en utilisant les règles de <strong>l'angle aigu</strong> et du <strong>pli</strong>, avec dessin de tous les calissons.</p>
+    <p>Solution d'une grille de taille 3 en utilisant les règles de <strong>l'angle aigu</strong> et du
+        <strong>pli</strong>, avec dessin de tous les calissons.</p>
     <p align="center">
         <video width="640px" height="'480px" controls>
             <source src="./video/calisson_screencast.mp4" type="video/mp4">
@@ -122,7 +135,7 @@
         </video>
     </p>
     Avec de l'entraînement, on peut souvent se passer des calissons !
-<h1>Les deux modes de jeu</h1>
+    <h1>Les deux modes de jeu</h1>
     <h2>Mode <strong>Entraînement</strong></h2>
     <p>Dans ce mode, la durée du jeu n'est pas limitée et il est possible de choisir la taille et le niveau des grilles
         à résoudre dans une liste déroulante.
@@ -193,9 +206,10 @@
     <p>Pour obtenir un score important, il faut :</p>
     <ul>
         <li>trouver la solution de chaque grille le plus rapidement possible,</li>
-        <li>un bonus est accordé pour la tentative de résolution de la dernière grille (ne pas abandonner même si le temps est compté !)</li>
+        <li>un bonus est accordé pour la tentative de résolution de la dernière grille (ne pas abandonner même si le
+            temps est compté !)</li>
         <li>employer un minimum de calissons/losanges car le score diminue en fonction du nombre utilisé et cela prend
-            du temps : L'idéal est de n'en employer aucun ! 
+            du temps : L'idéal est de n'en employer aucun !
         </li>
     </ul>
     <p>Le score pour chaque grille augmente avec sa taille et sa difficulté :
@@ -211,12 +225,6 @@
         </li>
     </ul>
     </p>
-    <h2>Vision du jeu en 3 dimensions</h2>
-    <p>Le pavage de l'hexagone peut s'interpréter comme la projection isométrique d'un empilement de petites caisses
-        cubiques dans une grande pièce elle-même cubique. Les caisses sont empilées en les poussant dans la pièce le
-        plus loin possible, les piles étant de hauteurs croissantes vers les murs du fond.</p>
-    <p>Cette vision du jeu permet souvent de se passer des calissons pour dessiner la solution !</p>
-
     <h1>Crédits</h1>
     <p>"Speedy Calisson" est inspiré du jeu du Calisson, inventé par Olivier LONGUET. Pour une présentaton, s'informer
         sur les techniques de résolution et se confronter aux grilles proposées
@@ -234,3 +242,5 @@
         <em> contact : martial.tarizzo (at) gmail . com</em>
     </p>
 </body>
+
+</html>
