@@ -3,3 +3,5 @@
 CalissonGame.todo
 assets/*
 oldies/*
+dist/*
+package.json
