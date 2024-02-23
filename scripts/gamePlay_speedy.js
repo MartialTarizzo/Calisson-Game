@@ -312,10 +312,10 @@ function endGame() {
   let scoreFinal = totalScore + bonus
 
   let msg = '- Limite de temps atteinte -<br> <strong>Score final = <span style="color: red">' + scoreFinal + " pts</span></strong>"
-
-  if (totalScore > bestScore) {
+  
+  if (scoreFinal > bestScore) {
     msg += '<br><strong>C\'est votre meilleur score !</strong>'
-    localStorage.setItem('bestScore', JSON.stringify(totalScore))
+    localStorage.setItem('bestScore', JSON.stringify(scoreFinal))
   }
   else {
     msg += '<br><strong>Le score à battre est toujours de <br><span style="color: red">' + bestScore + ' pts</span></strong>'
