@@ -42,17 +42,11 @@ import {
 // l'énigme en cours
 let currentEnig = { taille: 0, niveau: 0, tab: "" }
 
-// Le score total de la partie en cours
-// let totalScore;
-
-// le nombre d'abandons
-// let nbAbandons;
-
 /********
  * liaisons avec l'interface HTML
  */
 btreset.onclick = reset;
-btmode.onclick = changemode;
+btmode.onclick = (() => changemode(langStrings));
 btcancel.onclick = cancelGrid;
 
 let enigmes = {
@@ -167,12 +161,12 @@ function restart(objScore) {
 
       modalEndGrid.style.display = "none"
 
-      start(currentEnig, restart)
+      start(currentEnig, restart, setLang)
     }, 1000)
   }
   else {
     chronoarret()
-    setTimeout(() => start(currentEnig, restart), 0)
+    setTimeout(() => start(currentEnig, restart, setLang), 0)
   }
 }
 
@@ -192,7 +186,7 @@ export function beginGame() {
   fileIdxEnigmes = []
   genEnigme()
   chronoarret()
-  start(currentEnig, restart)
+  start(currentEnig, restart, setLang)
 }
 function goHome() {
   // clearInterval(gameTimer)
@@ -201,6 +195,77 @@ function goHome() {
   let modalEndGrid = document.getElementById("modalWait");
   modalEndGrid.style.display = "block"
   setTimeout(() =>
-    window.location.replace("./index.html"), 400)
+    window.location.replace(homePageUrl()), 400)
 }
 document.getElementById('imgHome').onclick = goHome
+
+
+/*** Utilitaire de formatage de chaîne
+ * Usage :
+ * format("i can speak {language} since i was {age}",{language:'javascript',age:10});
+ * format("i can speak {0} since i was {1}",'javascript',10});
+ */
+
+let format = function (str, col) {
+  col = typeof col === 'object' ? col : Array.prototype.slice.call(arguments, 1);
+
+  return str.replace(/\{\{|\}\}|\{(\w+)\}/g, function (m, n) {
+    if (m == "{{") { return "{"; }
+    if (m == "}}") { return "}"; }
+    return col[n];
+  });
+};
+
+
+function homePageUrl() {
+  let langue = localStorage.getItem("langue");
+
+  if (langue == 'fr') {
+    return `./index.html`
+  }
+  else {
+    return `./index.${langue}.html`
+  }
+}
+
+let dico = {
+  "fr": {
+    btcancel: "Abandon",
+    btmode: "mode arête",
+    etiqNiveau: "Niveau : ",
+    etiqChrono: "Chrono :",
+    etiqFooter: "Entraînement au jeu du Calisson",
+    etiqRetour: "Retour à l'accueil",
+    mode_arete: "mode Arête",
+    mode_losange: "mode Losange"
+  },
+  "en": {
+    btcancel: "Abort",
+    btmode: "Edge mode",
+    etiqNiveau: "Level: ",
+    etiqChrono: "Chrono:",
+    etiqFooter: "Calisson Game Training",
+    etiqRetour: "Return to Home Screen",
+    mode_arete: "Edge mode",
+    mode_losange: "Diamond mode"
+  }
+}
+
+let langStrings;
+
+export function setLang() {
+  let langue = localStorage.getItem("langue");
+
+  if (langue == null) { langue = 'fr' }
+
+  langStrings = dico[langue]
+
+  let trads = dico[langue];
+  for (const [k, v] of Object.entries(trads)) {
+    try {
+      document.getElementById(k).innerHTML = v;
+    } catch (err) { }
+  }
+
+}
+

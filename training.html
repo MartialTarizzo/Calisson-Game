@@ -33,7 +33,7 @@
         <button id="btcancel">Abandon</button>
         <br>
         <div style="font-weight:bold; font-size:30px;">
-            <span>Niveau : </span>
+            <span id="etiqNiveau">Niveau : </span>
             <select name="simple" id="selNiveau" style="font-weight:bold; font-size:30px;height:40px; width:80px; ">
                 <option selected value="31">3.1</option>
                 <option value="32">3.2</option>
@@ -49,7 +49,7 @@
                 <option value="63">6.3</option>
             </select>
             <span id="chronospan">
-                &nbsp;&nbsp;Chrono :
+                &nbsp;&nbsp;<span id="etiqChrono"> Chrono :</span>
                 <span id="chrono">0 s</span>
             </span>
         </div>
@@ -66,7 +66,7 @@
             </div>
         </div>
     </div>
-    <footer style="  position: fixed;
+    <footer id="etiqFooter" style="  position: fixed;
                     left: 0;
                     bottom: 0;
                     width: 100%;
@@ -82,7 +82,7 @@
         <!-- Modal content -->
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Retour à la page d'accueil</h3>
+                <h3 id="etiqRetour">Retour à la page d'accueil</h3>
             </div>
             <div class="modal-body">
                 <p>
@@ -91,7 +91,7 @@
             </div>
         </div>
     </div>
-    
+
     <script type="module">
         import { beginGame } from "./scripts/gamePlay_training.js"
 

@@ -168,3 +168,14 @@ hr {
     margin-right: 100px;
     letter-spacing: 0.25rem;
 }
+
+#btnLang {
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+    background-color: cornflowerblue;
+    border-radius: 10px;
+    padding: 5px;
+    position : relative; 
+    top : 40px;    
+}

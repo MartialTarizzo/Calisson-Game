@@ -38,11 +38,21 @@
 </script>
 
 <body style=" font-size: 20px; margin: 50px; text-align: left; border-width: 1px;">
-    <h1 class="titrePageIndex">Speedy
-        Calisson</h1>
+
+    <h1 class="titrePageIndex">Speedy Calisson</h1>
+
+    <div style="float: right; align-items: center;">
+        <button id="btnLang" onclick="setTimeout(()=> {
+            localStorage.setItem('langue', 'en') ;
+            window.location.replace('./index.en.html')}, 0)">
+            <em>English <br> version</em>
+        </button>
+    </div>
+
     <p style="text-align: center;">
         <img src="./pictures/calissons.png" alt="" width="300px">
     </p>
+
     <div style="border-style:double; border-width: 1;">
         <p style="text-align: center;">cliquez/tapez pour choisir le mode de jeu</p>
         <p style="text-align: center;">

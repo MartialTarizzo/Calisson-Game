@@ -48,8 +48,8 @@ document.body.addEventListener("touchmove", function (e) {
 
 function init() {
     marge = 5;
-    mode = "arete";
-    document.getElementById("btmode").innerHTML = "Mode arête";
+    mode = "mode_arete";
+    // document.getElementById("btmode").innerHTML = "Mode arête";
 
     // valeurs utilisées pour le calcul des coordonnées des points/segments
     v1x = -Math.sqrt(3) * longueur / 2
@@ -479,7 +479,7 @@ function commencergrille() {
     rafraichit()
     solutionpresente = true;
 
-    document.getElementById("chronospan").style.display = '';
+    // document.getElementById("chronospan").style.display = '';
     document.getElementById("chrono").innerHTML = chrono + ' s'
 
     v1x = -Math.sqrt(3) * longueur / 2
@@ -754,7 +754,7 @@ function ajouterenleversegment(evt) {
                 }
             }
         } else {
-            if ((evt.button == 0) && (mode == "arete")) { //si pas clic droit
+            if ((evt.button == 0) && (mode == "mode_arete")) { //si pas clic droit
 
                 for (var i = 0; i < tabmilieu.length; i++) {
                     if (curseurProcheMilieu(x, y, i)) {
@@ -936,13 +936,14 @@ function testesolution() {
 /////////////////////////////////////////////
 let funCallBack;
 
-function start(enigme, callback) {
+function start(enigme, callback, funSetLang) {
     let tab = enigme.tab
     currentEnigme = enigme
     funCallBack = callback;
 
     calcTaille(tab)
     setZoomFactor();
+    funSetLang();
     init();
     modejeu = true;
     document.getElementById('btreset').style.display = "";
@@ -970,14 +971,14 @@ function rafraichitlongueur() {
 }
 
 // Associée au bouton de changement de mode pour interface tactile (arête/losange)
-function changemode() {
+function changemode(langStrings) {
     // console.log(mode)
-    if (mode == "arete") {
-        mode = "losange";
-        document.getElementById("btmode").innerHTML = "Mode losange";
+    if (mode == "mode_arete") {
+        mode = "mode_losange";
+        document.getElementById("btmode").innerHTML = langStrings[mode];
     } else {
-        mode = "arete";
-        document.getElementById("btmode").innerHTML = "Mode arête";
+        mode = "mode_arete";
+        document.getElementById("btmode").innerHTML =  langStrings[mode];
     }
 }
 

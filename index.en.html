@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html lang="en">
+
+<head>
+    <title>Le jeu Speedy Calisson</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="Content-Type" content="UTF-8">
+    <meta name="Content-Language" content="en">
+    <meta name="Keywords" content="jeu calisson pavage perspective">
+    <meta name="Author" content="Martial Tarizzo">
+    <meta name="Identifier-Url" content="https://martialtarizzo.github.io/Calisson-Game/">
+    <meta name="Robots" content="all">
+    <meta name="Rating" content="general">
+    <meta name="Distribution" content="global">
+    <meta name="Category" content="games">
+
+
+    <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/popup.css">
+    <link rel="icon" type="image/x-icon" href="./pictures/favicon.ico">
+
+    <title>Speedy Calisson</title>
+
+</head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-09KM2N4X02"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-09KM2N4X02');
+</script>
+
+<body style=" font-size: 20px; margin: 50px; text-align: left; border-width: 1px;">
+    <h1 class="titrePageIndex">Speedy
+        Calisson</h1>
+
+    <div style="float: right; align-items: center;">
+        <button id="btnLang" onclick="setTimeout(()=> {
+        localStorage.setItem('langue', 'fr') ;
+        window.location.replace('./index.html')}, 0)">
+            <em>Version <br> française</em>
+        </button>
+    </div>
+
+    <p style="text-align: center;">
+        <img src="./pictures/calissons.png" alt="" width="300px">
+    </p>
+    <div style="border-style:double; border-width: 1;">
+        <p style="text-align: center;">click/tap to play</p>
+        <p style="text-align: center;">
+            <a href="./training.html"><button class="modeButton">Training</button></a>
+            &nbsp;ou &nbsp
+            <a href="./speedy.html"><button class="modeButton">Speedy !</button></a>
+            <br>
+        <p style="font-size: smaller; text-align: center; font-style: italic;"> (read on if you don't know how to play)
+        </p>
+        </p>
+    </div>
+    <h1>Aim of the game</h1>
+    <p>Draw the borders of domains that completely fill a hexagon, each domain being filled with diamonds (or
+        "calissons") of the same orientation (same color).
+        A calisson is formed by joining two equilateral triangles with a common side.
+        <br>
+        The domains are separated by <strong>edges</strong> drawn as solid lines; the positions of the edges to be
+        determined are drawn as dotted lines, with a small circle in the middle.
+    </p>
+    <p></p>
+    <p> Two rules apply:</p>
+    <ul>
+        <li><strong>a calisson is never crossed by an edge</strong> </li>
+        <li><strong> there are no edges between two calissons of the same orientation.</strong></li>
+    </ul>
+    <p> To make the tiling unique, some edges are fixed at the start:</p>
+    <p align="center"> <img src="./pictures/C2-aretes.png" alt=""></p>
+    <p> Paving with calissons :</p>
+    <p align="center"> <img src="./pictures/C2-calissons.png" alt=""></p>
+    <p> To win, all you have to do is draw the borders of the domains, with the help of the calissons coloring if
+        necessary:</p>
+    <p align="center" style="font-size: smaller; text-align: center; font-style: italic;">
+        <img src="./pictures/C2-frontieres.png" alt="">
+        <br>
+        winning position
+    </p>
+    <h2>Viewing the game in 3 dimensions</h2>
+    <p>The hexagon's paving can be interpreted as the isometric projection of a stack of small cubic boxes in a large
+        cubic room. The boxes are stacked by pushing them into the room as far as possible, the stacks increasing in
+        height towards the back walls.</p>
+    <p>This vision of the game often means you don't need calissons to draw the solution!</p>
+
+    <h2>Drawing edges</h2>
+    <p>
+        On the computer, missing edges can be drawn by left-clicking on the center of the edge, while a calisson can be
+        colored by right-clicking on the center of the diamond.
+    </p>
+    <p>
+        On a tablet/telephone/touch screen, touching the middle of an edge causes the edge to be drawn or the diamond to
+        be colored, depending on the state of an interface button.
+    </p>
+    <p style="font-size: smaller; font-style: italic; ">
+        Notes on resolution:
+    <ul style="font-size: smaller; font-style: italic; ">
+        <li>two known edges (solid or dotted) having a common point and forming an acute angle fully determine the
+            orientation of the corresponding calisson ("acute angle rule" ["angle aigu" in the video just below])</li>
+        <li>a solid edge on the boundary of a known calisson determines the orientation of the calisson having this edge
+            in common ("fold rule" ["règle du pli" in the video])</li>
+    </ul>
+    </p>
+
+
+    <h2>Resolution example</h2>
+    <p>Solution of a size 3 grid using the acute angle and fold rules, with all calissons drawn.
+    </p>
+    <p align="center">
+        <video width="640px" height="'480px" controls>
+            <source src="./video/calisson_screencast.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </p>
+    With practice, you can often do without calissons!
+    <h1>The two game modes</h1>
+    <h2>Training mode</h2>
+    <p>In this mode, there's no time limit on the game, and you can choose the size and level of the grids to be solved
+        from a drop-down list.
+    </p>
+    <p>
+        For each grid solved, the score obtained is displayed, and a new grid is proposed.
+    </p>
+    <p>
+        In the event of a level change, the current grid is abandoned.
+    </p>
+
+    <h2>Challenge mode (Speedy!)</h2>
+    <p>This mode lets you put your game skills to the test!</p>
+    <p>The aim is to achieve the highest possible total score in the shortest possible time, by solving grids of
+        increasing size and difficulty similar to those on the training page (but with different grids!).
+    </p>
+    <ul>
+        <li>initial time credit: <strong>300 s</strong> </li>
+        <li>every <strong>500</strong> pts, <strong>bonus of 60 s</strong></li>
+        <li>The game is over when the time credit is used up.</li>
+    </ul>
+    <h2>Controls</h2>
+    <p>In both modes, two buttons can be used to change the flow of the game:
+    <ul>
+        <li>
+            <strong>Reset</strong> resets the grid to its original state.
+            <br>
+            Useful when you want to start from scratch if you get stuck. This has no effect on the score, but you'll
+            certainly have lost time in "Challenge" mode...
+        </li>
+        <li>
+            <strong>Abandon</strong> is more radical:
+            <ul>
+                <li>
+                    the current grid is abandoned,
+                </li>
+                <li>
+                    the solution is displayed for a brief moment,
+                </li>
+                <li>
+                    In Challenge mode, a penalty is applied to the time credit ( <strong>- 60
+                        s</strong> ),
+                </li>
+                <li>
+                    the current grid is proposed again for solving.
+                </li>
+            </ul>
+            This is useful when you find yourself completely stuck, or when you want to make it easier to start solving
+            grids with no obvious starting point.
+        </li>
+    </ul>
+    </p>
+
+    <p>To return to the home screen from the game pages, click on the home button in the top left-hand corner
+        <img src="./pictures/icons8-home.gif" height="30px">
+    </p>
+
+    <h2>Calisson coloring on computer or tablet/phone</h2>
+    <p>When playing on a computer, you can draw calissons (or diamonds) by right-clicking on the middle of an edge.</p>
+    <p>
+        On touch-screen devices where right-clicking is not possible, the game pages display an indicator between the
+        <strong>Reset</strong> and <strong>Abandon</strong> buttons, indicating whether pressing on the middle of an
+        edge will draw an edge (<strong>Edge mode</strong>) or a rhombus (<strong>Diamond mode</strong>). Simply tap the
+        indicator to change mode.
+
+    </p>
+    <h2>Tips</h2>
+    <p>To obtain a high score, you must:</p>
+    <ul>
+        <li>find the solution to each grid as quickly as possible,</li>
+        <li>a bonus is awarded for attempting to solve the last grid (don't give up, even if time is running out!)</li>
+        <li>use a minimum number of calissons/losanges, as the score decreases with the number used, and this takes
+            time: the ideal is to use none at all!
+        </li>
+    </ul>
+    <p>The score for each grid increases with its size and difficulty:
+    <ul>
+        <li>
+            The easiest grids contain many more edges than necessary. They can usually be solved without using a single
+            calisson.
+        </li>
+        <li>
+            The most difficult grids contain a minimum number of edges, so solving them without a calisson is generally
+            difficult.
+        </li>
+    </ul>
+    </p>
+    <h1>Credits</h1>
+    <p>"Speedy Calisson" is inspired by the Calisson game invented by Olivier LONGUET. For a presentation, to learn more
+        about solving techniques and to test yourself against the grids proposed by the author, please visit the <a
+            href="https://mathix.org/calisson/blog/" target="_blank" rel="noopener noreferrer">original website</a> (in
+        French).</p>
+
+    <p>The game zone code has been modified from Arnaud DURAND's original code. <br>
+        All content is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"
+            target="_blank" rel="noopener noreferrer">Creative Commons CC-BY-SA-NC</a> license.</p>
+    <br>
+    <hr>
+    Martial Tarizzo - 24/2/2024
+    <p>
+        <em> contact : martial.tarizzo (at) gmail . com</em>
+    </p>
+</body>
+
+</html>

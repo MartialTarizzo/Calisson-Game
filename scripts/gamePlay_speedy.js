@@ -79,7 +79,7 @@ let bonus = 0
  * liaisons avec l'interface HTML
  */
 btreset.onclick = reset;
-btmode.onclick = changemode;
+btmode.onclick = (() => changemode(langStrings));
 btcancel.onclick = cancelGrid;
 
 /** pour retourner la liste des énigmes d'une taille et d'un niveau donnés
@@ -273,21 +273,21 @@ function endGame() {
       let tempsPerdu = (totalCumulTime - totalResTime) +
         Math.floor((endDate - lastScore['dateEndGrid']) / 1000)
 
-      msg = `
-    Durée de la partie : <strong>${dureePartie} s</strong><br>
-    Dernier niveau résolu : <strong>${niveauMax}</strong><br>
-    <strong>${listObjScore.length}</strong> grilles trouvées en <strong>${totalCumulTime} s</strong><br>
-    Durée moyenne par grille : <strong>${durMoyenneGrille.toFixed(1)} s</strong><br>
-    <hr>
-    Temps perdu (Reset, Abandon, dernière grille inachevée) : <strong> ${tempsPerdu} s</strong><br>
-    Bonus de dernière tentative : <strong>${bonus} pts </strong><br>
-    Nombre d'arêtes correctes placées : <strong>${totalAretes}</strong><br>
-    Durée moyenne par arête correcte : <strong>${durMoyenneArete.toFixed(1)} s</strong><br>
-    Nombre total de losange utilisés : <strong>${totalLosanges}</strong><br>
-    Nombre d'abandons : <strong>${nbAbandons}</strong>
-    `
+      msg = format(langStrings["msgStats"], {
+        dureePartie: dureePartie,
+        niveauMax: niveauMax,
+        nbSolvedGrids: listObjScore.length,
+        totalCumulTime: totalCumulTime,
+        durMoyenneGrille: durMoyenneGrille.toFixed(1),
+        tempsPerdu: tempsPerdu,
+        bonus: bonus,
+        totalAretes: totalAretes,
+        durMoyenneArete: durMoyenneArete.toFixed(1),
+        totalLosanges: totalLosanges,
+        nbAbandons: nbAbandons
+      })
     } else {
-      msg = "Aucune grille résolue ..."
+      msg = langStrings["msgNoGridSolved"]
     }
     return msg
   }
@@ -311,14 +311,15 @@ function endGame() {
 
   let scoreFinal = totalScore + bonus
 
-  let msg = '- Limite de temps atteinte -<br> <strong>Score final = <span style="color: red">' + scoreFinal + " pts</span></strong>"
-  
+  let msg = format(langStrings["headerEndGame_1"], {scoreFinal: scoreFinal})
+
   if (scoreFinal > bestScore) {
-    msg += '<br><strong>C\'est votre meilleur score !</strong>'
+    msg += langStrings["headerEndGame_2"]
+
     localStorage.setItem('bestScore', JSON.stringify(scoreFinal))
   }
   else {
-    msg += '<br><strong>Le score à battre est toujours de <br><span style="color: red">' + bestScore + ' pts</span></strong>'
+    msg += format(langStrings["headerEndGame_3"], {bestScore: bestScore})
   }
 
   let modalEndGame = document.getElementById("modalEndGame");
@@ -381,12 +382,12 @@ function restart(objScore) {
         scoreBonif += incScoreBonif
         maxTime += timeBonif
       }
-      document.getElementById('score').innerHTML = 'Score total : ' + totalScore;
+      document.getElementById('valScore').innerHTML = totalScore;
       genEnigme()
 
       modalEndGrid.style.display = "none"
 
-      start(currentEnig, restart)
+      start(currentEnig, restart, setLang)
     }, 1000)
   }
   else {
@@ -394,7 +395,7 @@ function restart(objScore) {
     if (maxTime > 0) {
       gameTimer = setInterval(decompteTemps, 1000)
       setTimeout(() => {
-        start(currentEnig, restart)
+        start(currentEnig, restart, setLang)
       }
         , 0)
     }
@@ -425,21 +426,144 @@ export function beginGame() {
   incScoreBonif = 500
   timeBonif = 60   // 1 minute de plus !
   timePenalite = 60
-  document.getElementById('score').innerHTML = ''
+  document.getElementById('valScore').innerHTML = '0'
   genEnigme = mkGenEnigme();
   genEnigme()
   gameTimer = setInterval(decompteTemps, 1000)
   startDate = Date.now()
-  start(currentEnig, restart)
+  start(currentEnig, restart, setLang)
 }
 
 function goHome() {
   clearInterval(gameTimer)
   chronoarret()
-// verrouillage de l'interface ...
+  // verrouillage de l'interface ...
   let modalEndGrid = document.getElementById("modalWait");
   modalEndGrid.style.display = "block"
-  setTimeout(()=>
-  window.location.replace("./index.html"), 400)
+  setTimeout(() =>
+    window.location.replace(homePageUrl()), 400)
 }
 document.getElementById('imgHome').onclick = goHome
+
+
+
+/*** Utilitaire de formatage de chaîne
+ * Usage :
+ * format("i can speak {language} since i was {age}",{language:'javascript',age:10});
+ * format("i can speak {0} since i was {1}",'javascript',10});
+ */
+
+let format = function (str, col) {
+  col = typeof col === 'object' ? col : Array.prototype.slice.call(arguments, 1);
+
+  return str.replace(/\{\{|\}\}|\{(\w+)\}/g, function (m, n) {
+    if (m == "{{") { return "{"; }
+    if (m == "}}") { return "}"; }
+    return col[n];
+  });
+};
+
+
+function homePageUrl() {
+  let langue = localStorage.getItem("langue");
+
+  if (langue == 'fr') {
+    return `./index.html`
+  }
+  else {
+    return `./index.${langue}.html`
+  }
+}
+
+let dico = {
+  "fr": {
+    btcancel: "Abandon",
+    btmode: "mode arête",
+    etiqNiveau: "Niveau : ",
+    etiqChrono: "Chrono :",
+    etiqFooter: "Speedy Calisson",
+    etiqRetour: "Retour à l'accueil",
+    mode_arete: "mode Arête",
+    mode_losange: "mode Losange",
+    etiqTempsRestant: "Temps restant :",
+    etiqScore: "Score total : ",
+    modalEndGameTitle: "Partie terminée",
+    btRazStats: "Effacement du score à battre<br>et nouvelle partie",
+    btNewGame: "Nouvelle partie",
+    msgStats: `
+    Durée de la partie : <strong>{dureePartie} s</strong><br>
+    Dernier niveau résolu : <strong>{niveauMax}</strong><br>
+    <strong>{nbSolvedGrids}</strong> grilles trouvées en <strong>{totalCumulTime} s</strong><br>
+    Durée moyenne par grille : <strong>{durMoyenneGrille} s</strong><br>
+    <hr>
+    Temps perdu (Reset, Abandon, dernière grille inachevée) : <strong> {tempsPerdu} s</strong><br>
+    Bonus de dernière tentative : <strong>{bonus} pts </strong><br>
+    Nombre d'arêtes correctes placées : <strong>{totalAretes}</strong><br>
+    Durée moyenne par arête correcte : <strong>{durMoyenneArete} s</strong><br>
+    Nombre total de losange utilisés : <strong>{totalLosanges}</strong><br>
+    Nombre d'abandons : <strong>{nbAbandons}</strong>
+    `,
+    msgNoGridSolved: "Aucune grille résolue ...",
+    headerEndGame_1: `- Limite de temps atteinte -<br>
+     <strong>Score final = 
+     <span style="color: red">{scoreFinal} pts</span>
+     </strong>`,
+    headerEndGame_2: '<br><strong>C\'est votre meilleur score !</strong>',
+    headerEndGame_3: `<br><strong>Le score à battre est toujours de <br>
+     <span style="color: red">{bestScore} pts</span></strong>`,
+  },
+  "en": {
+    btcancel: "Abort",
+    btmode: "Edge mode",
+    etiqNiveau: "Level: ",
+    etiqChrono: "Chrono:",
+    etiqFooter: "Speedy Calisson",
+    etiqRetour: "Return to Home Screen",
+    mode_arete: "Edge mode",
+    mode_losange: "Diamond mode",
+    etiqTempsRestant: "Time left:",
+    etiqScore: "Total score: ",
+    modalEndGameTitle: "Game Over",
+    btRazStats: "Erase the best score<br>and play again",
+    btNewGame: "Play again",
+    msgStats: `
+    Length of Game: <strong>{dureePartie} s</strong><br>
+    Last level solved: <strong>{niveauMax}</strong><br>
+    <strong>{nbSolvedGrids}</strong> grids found in <strong>{totalCumulTime} s</strong><br>
+    Average time per grid: <strong>{durMoyenneGrille} s</strong><br>
+    <hr>
+    Lost time (Reset, Abort, last unfinished grid): <strong> {tempsPerdu} s</strong><br>
+    Last attempt bonus: <strong>{bonus} pts </strong><br>
+    Number of correct edges placed: <strong>{totalAretes}</strong><br>
+    Average time per correct edge: <strong>{durMoyenneArete} s</strong><br>
+    Total number of Diamonds used: <strong>{totalLosanges}</strong><br>
+    Number of abandonments: <strong>{nbAbandons}</strong>
+    `,
+    msgNoGridSolved: "No grid solved ...",
+    headerEndGame_1: `- Time limit reached -<br>
+    <strong>Final Score = 
+    <span style="color: red">{scoreFinal} pts</span>
+    </strong>`,
+   headerEndGame_2: '<br><strong>This is your best score!</strong>',
+   headerEndGame_3: `<br><strong>The score to beat is still <br>
+    <span style="color: red">{bestScore} pts</span></strong>`,
+  }
+}
+
+let langStrings;
+
+export function setLang() {
+  let langue = localStorage.getItem("langue");
+
+  if (langue == null) { langue = 'fr' }
+
+  langStrings = dico[langue]
+
+  let trads = dico[langue];
+  for (const [k, v] of Object.entries(trads)) {
+    try {
+      document.getElementById(k).innerHTML = v;
+    } catch (err) { }
+  }
+
+}
