@@ -467,7 +467,7 @@ let format = function (str, col) {
 function homePageUrl() {
   let langue = localStorage.getItem("langue");
 
-  if (langue == 'fr') {
+  if (langue == null || langue == 'fr') {
     return `./index.html`
   }
   else {
