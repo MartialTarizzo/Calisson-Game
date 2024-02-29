@@ -217,10 +217,9 @@ function decompteTemps() {
     // affichage temporaire de la solution de la grille inachevée
     // pendant la durée définie dans la fonction abandonGrille
     abandonGrille()
-    // dialogue de fin de partie, différé d'une durée compatible 
-    // avec la précédente
-    setTimeout(endGame, 1900)
-  }
+    // La fonction abandonGrille appelle la fonction de callback restart
+    // qui se chargera de l'affichage du dialogue de fin de partie
+    }
   else {
     document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
   }
@@ -391,8 +390,8 @@ function restart(objScore) {
     }, 1000)
   }
   else {
-    nbAbandons += 1
     if (maxTime > 0) {
+      nbAbandons += 1
       gameTimer = setInterval(decompteTemps, 1000)
       setTimeout(() => {
         start(currentEnig, restart, setLang)

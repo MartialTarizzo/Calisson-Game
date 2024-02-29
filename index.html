@@ -25,6 +25,13 @@
 
     <title>Speedy Calisson</title>
 
+    <script>
+        // redirection vers la page correcte si une langue a déjà été choisie
+        let langue = localStorage.getItem("langue");
+        if (!(langue == null || langue == 'fr')) {
+            window.location.replace(`./index.${langue}.html`)
+        }
+    </script>
 </head>
 
 <!-- Google tag (gtag.js) -->
