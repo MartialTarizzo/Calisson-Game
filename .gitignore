@@ -1,8 +1,8 @@
 .DS_Store
-.vscode/launch.json
+.vscode/*
 CalissonGame.todo
 assets/*
 oldies/*
 dist/*
+test/*
 package.json
-parcelRoot.html
