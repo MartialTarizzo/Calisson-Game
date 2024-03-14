@@ -28,10 +28,12 @@
     <script>
         // On conserve la taille max de grille dans le localstorage lors du 
         // changement de page
-        window.addEventListener("unload", function () {
+
+        function setMaxGridSize() {
             localStorage.setItem('maxGridSize',
                 document.getElementById('selMaxGridSize').value)
-        });
+        }
+        // window.addEventListener("unload", setMaxGridSize);
 
         // et on récupère cette taille max au chargement de la page
         function getMaxGridSize() {
@@ -79,7 +81,7 @@
         </p>
         <p class="maxGridSize">
             <span id="etiqMaxGridSize">Maximum grid size (Speedy) : </span>
-            <select name="simple" id="selMaxGridSize" class="maxGridSize">
+            <select name="simple" id="selMaxGridSize" class="maxGridSize" onchange="setMaxGridSize()">
                 <option selected value="6">6</option>
                 <option value="5">5</option>
                 <option value="4">4</option>

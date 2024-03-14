@@ -34,10 +34,12 @@
 
         // On conserve la taille max de grille dans le localstorage lors du 
         // changement de page
-        window.addEventListener("unload", function () {
+
+        function setMaxGridSize() {
             localStorage.setItem('maxGridSize',
                 document.getElementById('selMaxGridSize').value)
-        });
+        }
+        // window.addEventListener("unload", setMaxGridSize);
 
         // et on récupère cette taille max au chargement de la page
         function getMaxGridSize() {
@@ -47,6 +49,7 @@
         }
 
         document.addEventListener("DOMContentLoaded", getMaxGridSize);
+
     </script>
 </head>
 
@@ -85,8 +88,9 @@
             <br>
         </p>
         <p class="maxGridSize">
-            <span id="etiqMaxGridSize" >Taille maximale de grille (Speedy) : </span>
-            <select name="simple" id="selMaxGridSize" class="maxGridSize">
+            <span id="etiqMaxGridSize">Taille maximale de grille (Speedy) : </span>
+            <select name="simple" id="selMaxGridSize" class="maxGridSize"
+            onchange="setMaxGridSize()">
                 <option selected value="6">6</option>
                 <option value="5">5</option>
                 <option value="4">4</option>
@@ -180,7 +184,11 @@
         <li>La partie est terminée quand le crédit de temps est épuisé.</li>
     </ul>
     <p>
-        La taille de l'écran d'un smartphone étant limitée, il peut être difficile de jouer avec les grilles de taille importante. Pour faciliter le jeu dans ces conditions, il est possible de fixer la taille maximale des grilles qui seront proposées à l'aide de la liste déroulante située sous les boutons de lancement du jeu. <br> Le score obtenu pour chaque grille augmente avec cette taille maximale afin que la durée du jeu reste sensiblement constante.
+        La taille de l'écran d'un smartphone étant limitée, il peut être difficile de jouer avec les grilles de taille
+        importante. Pour faciliter le jeu dans ces conditions, il est possible de fixer la taille maximale des grilles
+        qui seront proposées à l'aide de la liste déroulante située sous les boutons de lancement du jeu. <br> Le score
+        obtenu pour chaque grille augmente avec cette taille maximale afin que la durée du jeu reste sensiblement
+        constante.
     </p>
     <h2>Contrôles</h2>
     <p>Dans les deux modes, deux boutons permettent de modifier le déroulement du jeu :
