@@ -136,17 +136,35 @@ function cancelGrid() {
 function restart(objScore) {
 
   function displaypopupEndGrid() {
+    // calcul du facteur de zoom
+    function calcZoomFactor() {
+      let screenH = window.innerHeight
+      let screenW = window.innerWidth
+
+      let popupW = getComputedStyle(document.getElementById('popupEndGrid')).width
+      popupW = Number(popupW.match(/[0-9]+/g)[0])
+      let popupH = getComputedStyle(document.getElementById('popupEndGrid')).height
+      popupH = Number(popupH.match(/[0-9]+/g)[0])
+
+      return 0.8 * Math.min(screenW / popupW, screenH / popupH)
+    }
+
     // pour empêcher des clicks parasite pendant l'affichage du score (ça perturbait tout ...)
     let modalEndGrid = document.getElementById("modalEndGrid");
     modalEndGrid.style.display = "block"
 
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
     // l'animation suivante dure 0+20+1000+400+0 = 1420 ms
-    $('#popupEndGrid').css('display', 'flex').animate({
-      'zoom': 1
-    }, 0).fadeIn(10).animate({
-      'zoom': 4
-    }, 1000).fadeOut(400)
+    $('#popupEndGrid')
+      .animate({ //css('display', 'inline').
+        'zoom': 1
+      }, 0)
+      .delay(1200)
+      .fadeIn(10)
+      .animate({
+        'zoom': calcZoomFactor()
+      }, 1000)
+      .fadeOut(400)
       .animate({
         'zoom': 1
       }, 0);
@@ -162,7 +180,7 @@ function restart(objScore) {
       modalEndGrid.style.display = "none"
 
       start(currentEnig, restart, setLang)
-    }, 1000)
+    }, 2500)
   }
   else {
     chronoarret()

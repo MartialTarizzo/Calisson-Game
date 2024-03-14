@@ -75,6 +75,21 @@ let listObjScore = []
 //le bonus pour la dernière grille inachevée
 let bonus = 0
 
+// La taille maxi des grilles, conservée dans le localStorage
+let maxGridSizeInStorage = localStorage.getItem('maxGridSize')
+let maxGridSize = maxGridSizeInStorage ? Number(maxGridSizeInStorage) : 6
+
+// Le coeff multiplicatif du score, lié à la taille maxi de grille
+// Ces valeurs proviennent d'une étude statistique du nombre d'arêtes
+// à placer par l'utilisateur selon le niveau de la grille :
+// en passant de 3.1 -> 6.3, le nombre moyen d'arêtes à placer évolue comme suit 
+// 12.4, 17.46, 21.90,   21.38, 29.7, 37.9,   33.8, 46.3, 59.9,   48.68, 65.04, 83.72
+// On suppose que le temps mis pour résoudre une grille dépend linéairement de ce nombre.
+// Pour que la durée de la partie soit approx. la même quellle que soit la taille maxi de
+// grille, on multipliera le score calculé pour une taille max de 6 par le coeff suivant
+
+let coeffGridSize = (new Map([[4, 37 / 83], [5, 60 / 83], [6, 1]])).get(maxGridSize)
+
 /********
  * liaisons avec l'interface HTML
  */
@@ -122,12 +137,12 @@ function getRandomInt(max) {
  * trois champs : taille (3..6), niveau (1..3) et enigme (chaîne représentant l'énigme)
  * effet de bord : la variable globale currentEnig contient la dernière énigme générée 
  */
-function mkGenEnigme() {
+function mkGenEnigme(idx_taille_max = 3) {
   // index de la taille et du niveau
   // décalage de 3 pour la taille et de 1 pour le niveau / aux valeurs vraies
   let idx_taille = 0
   let idx_niveau = 0
-  let idx_taille_max = 3
+  // let idx_taille_max = 3
   let idx_niveau_max = 2
 
   // pour éviter une répétition trop proche du tirage au sort des énigmes de niveau 6.3,
@@ -171,7 +186,7 @@ function mkGenEnigme() {
     }
     // incrémentation du couple taille/niveau : 0/0 -> 3/2 (grilles 3/1 -> 6/3)
     if (idx_niveau == 2) {
-      if (idx_taille < 3) {
+      if (idx_taille < idx_taille_max) {
         idx_taille++;
         idx_niveau = 0
       }
@@ -219,7 +234,7 @@ function decompteTemps() {
     abandonGrille()
     // La fonction abandonGrille appelle la fonction de callback restart
     // qui se chargera de l'affichage du dialogue de fin de partie
-    }
+  }
   else {
     document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
   }
@@ -310,7 +325,7 @@ function endGame() {
 
   let scoreFinal = totalScore + bonus
 
-  let msg = format(langStrings["headerEndGame_1"], {scoreFinal: scoreFinal})
+  let msg = format(langStrings["headerEndGame_1"], { scoreFinal: scoreFinal })
 
   if (scoreFinal > bestScore) {
     msg += langStrings["headerEndGame_2"]
@@ -318,7 +333,7 @@ function endGame() {
     localStorage.setItem('bestScore', JSON.stringify(scoreFinal))
   }
   else {
-    msg += format(langStrings["headerEndGame_3"], {bestScore: bestScore})
+    msg += format(langStrings["headerEndGame_3"], { bestScore: bestScore })
   }
 
   let modalEndGame = document.getElementById("modalEndGame");
@@ -352,6 +367,20 @@ function endGame() {
 function restart(objScore) {
 
   function displaypopupEndGrid() {
+    // calcul du facteur de zoom
+    function calcZoomFactor() {
+      let screenH = window.innerHeight
+      let screenW = window.innerWidth
+
+      let popupW = getComputedStyle(document.getElementById('popupEndGrid')).width
+      popupW = Number(popupW.match(/[0-9]+/g)[0])
+      let popupH = getComputedStyle(document.getElementById('popupEndGrid')).height
+      popupH = Number(popupH.match(/[0-9]+/g)[0])
+
+      return 0.8 * Math.min(screenW / popupW, screenH / popupH)
+    }
+
+
     // pour empêcher des clicks parasite pendant l'affichage du score (ça perturbait tout ...)
     let modalEndGrid = document.getElementById("modalEndGrid");
     modalEndGrid.style.display = "block"
@@ -361,7 +390,7 @@ function restart(objScore) {
     $('#popupEndGrid').css('display', 'flex').animate({
       'zoom': 1
     }, 0).fadeIn(10).animate({
-      'zoom': 4
+      'zoom': calcZoomFactor()
     }, 1000).fadeOut(400)
       .animate({
         'zoom': 1
@@ -369,7 +398,8 @@ function restart(objScore) {
   }
 
   let score = objScore.score
-  if (score > 0) {
+  score = Math.ceil(score * coeffGridSize)  // on tient compte de la taille max des grilles
+  if (score > 0) {  // score non nul => grille résolue
     objScore['dateEndGrid'] = Date.now()
     listObjScore.push(objScore)
     displaypopupEndGrid()
@@ -389,14 +419,13 @@ function restart(objScore) {
       start(currentEnig, restart, setLang)
     }, 1000)
   }
-  else {
+  else {  // score nul => grille abandonnée
     if (maxTime > 0) {
       nbAbandons += 1
       gameTimer = setInterval(decompteTemps, 1000)
       setTimeout(() => {
         start(currentEnig, restart, setLang)
-      }
-        , 0)
+      }, 0)
     }
     else {
       endGame()
@@ -426,7 +455,7 @@ export function beginGame() {
   timeBonif = 60   // 1 minute de plus !
   timePenalite = 60
   document.getElementById('valScore').innerHTML = '0'
-  genEnigme = mkGenEnigme();
+  genEnigme = mkGenEnigme(maxGridSize - 3);
   genEnigme()
   gameTimer = setInterval(decompteTemps, 1000)
   startDate = Date.now()
@@ -543,8 +572,8 @@ let dico = {
     <strong>Final Score = 
     <span style="color: red">{scoreFinal} pts</span>
     </strong>`,
-   headerEndGame_2: '<br><strong>This is your best score!</strong>',
-   headerEndGame_3: `<br><strong>The score to beat is still <br>
+    headerEndGame_2: '<br><strong>This is your best score!</strong>',
+    headerEndGame_3: `<br><strong>The score to beat is still <br>
     <span style="color: red">{bestScore} pts</span></strong>`,
   }
 }

@@ -176,6 +176,13 @@ hr {
     background-color: cornflowerblue;
     border-radius: 10px;
     padding: 5px;
-    position : relative; 
-    top : 40px;    
+    position: relative;
+    top: 40px;
 }
+
+.maxGridSize {
+    font-weight: bold;
+    font-size: 2rem;
+    text-align: center;
+}
+

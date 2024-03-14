@@ -25,6 +25,23 @@
 
     <title>Speedy Calisson</title>
 
+    <script>
+        // On conserve la taille max de grille dans le localstorage lors du 
+        // changement de page
+        window.addEventListener("unload", function () {
+            localStorage.setItem('maxGridSize',
+                document.getElementById('selMaxGridSize').value)
+        });
+
+        // et on récupère cette taille max au chargement de la page
+        function getMaxGridSize() {
+            let maxGridSizeInStorage = localStorage.getItem('maxGridSize')
+            let maxGridSize = maxGridSizeInStorage ? maxGridSizeInStorage : "6"
+            document.getElementById('selMaxGridSize').value = maxGridSize
+        }
+
+        document.addEventListener("DOMContentLoaded", getMaxGridSize);
+    </script>
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -59,8 +76,16 @@
             &nbsp;ou &nbsp
             <a href="./speedy.html"><button class="modeButton">Speedy !</button></a>
             <br>
-        <p style="font-size: smaller; text-align: center; font-style: italic;"> (read on if you don't know how to play)
         </p>
+        <p class="maxGridSize">
+            <span id="etiqMaxGridSize">Maximum grid size (Speedy) : </span>
+            <select name="simple" id="selMaxGridSize" class="maxGridSize">
+                <option selected value="6">6</option>
+                <option value="5">5</option>
+                <option value="4">4</option>
+            </select>
+        </p>
+        <p style="font-size: smaller; text-align: center; font-style: italic;"> (read on if you don't know how to play)
         </p>
     </div>
     <h1>Aim of the game</h1>
@@ -146,6 +171,13 @@
         <li>every <strong>500</strong> pts, <strong>bonus of 60 s</strong></li>
         <li>The game is over when the time credit is used up.</li>
     </ul>
+    <p>
+        The limited screen size of a smartphone can make it difficult to play with large grids. To make it easier to
+        play under these conditions, you can set the maximum size of grids to be offered using the drop-down list below
+        the game launch buttons. <br>
+        The score obtained for each grid increases with this maximum size, so that the duration of the game remains more
+        or less constant.
+    </p>
     <h2>Controls</h2>
     <p>In both modes, two buttons can be used to change the flow of the game:
     <ul>
