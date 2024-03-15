@@ -154,13 +154,12 @@ function restart(objScore) {
     modalEndGrid.style.display = "block"
 
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
-    // l'animation suivante dure 0+20+1000+400+0 = 1420 ms
+    // l'animation suivante dure 2400 ms
     $('#popupEndGrid')
-      .animate({ //css('display', 'inline').
+      .animate({ 
         'zoom': 1
       }, 0)
-      .delay(1200)
-      .fadeIn(10)
+      .fadeIn(1000)
       .animate({
         'zoom': calcZoomFactor()
       }, 1000)
@@ -180,7 +179,7 @@ function restart(objScore) {
       modalEndGrid.style.display = "none"
 
       start(currentEnig, restart, setLang)
-    }, 2500)
+    }, 2400)    // compatible (car >=) avec la durée de l'animation de popupEndGrid
   }
   else {
     chronoarret()

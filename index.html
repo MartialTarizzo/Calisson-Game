@@ -39,6 +39,8 @@
             localStorage.setItem('maxGridSize',
                 document.getElementById('selMaxGridSize').value)
         }
+
+        // unload non déclenché sur mon smartphone ...
         // window.addEventListener("unload", setMaxGridSize);
 
         // et on récupère cette taille max au chargement de la page
@@ -89,8 +91,7 @@
         </p>
         <p class="maxGridSize">
             <span id="etiqMaxGridSize">Taille maximale de grille (Speedy) : </span>
-            <select name="simple" id="selMaxGridSize" class="maxGridSize"
-            onchange="setMaxGridSize()">
+            <select name="simple" id="selMaxGridSize" class="maxGridSize" onchange="setMaxGridSize()">
                 <option selected value="6">6</option>
                 <option value="5">5</option>
                 <option value="4">4</option>
