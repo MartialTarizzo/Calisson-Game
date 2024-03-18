@@ -92,12 +92,14 @@ self.addEventListener('fetch', event => {
     }
 })
 
+// from https://microsoft.github.io/win-student-devs/#/30DaysOfPWA/core-concepts/05
 // install event handler (note async operation)
 // opens named cache, pre-caches identified resources above
 const CACHE_NAME = 'pwa-cache'
 const INITIAL_CACHED_RESOURCES = [
 
     // html
+    './',
     './index.html',
     './index.en.html',
     './speedy.html',
@@ -155,14 +157,8 @@ const INITIAL_CACHED_RESOURCES = [
 ];
 
 self.addEventListener('install', event => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then(function (cache) {
-            return cache.addAll(INITIAL_CACHED_RESOURCES)
-        })
-    )
-    // (async () => {
-    //     const cache = await caches.open(CACHE_NAME);
-    //     cache.addAll(INITIAL_CACHED_RESOURCES);
-    // })()
-    // );
+    event.waitUntil((async () => {
+        const cache = await caches.open(CACHE_NAME);
+        cache.addAll(INITIAL_CACHED_RESOURCES);
+    })());
 });
