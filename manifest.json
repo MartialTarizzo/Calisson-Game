@@ -1,0 +1,35 @@
+{
+    "name": "Speedy Calisson",
+    "short_name": "Speedy Calisson",
+    "start_url": "./index.html",
+    "id": "./index.html",
+    "display": "standalone",
+    "description": "Jeu Speedy Calisson",
+    "lang": "fr",
+    "dir": "auto",
+    "theme_color": "#000000",
+    "background_color": "#FFFFFF",
+    "orientation": "portrait",
+"icons": [
+    {
+        "src": "./PWA/iconCalisson_512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
+    },
+    {
+        "src": "./PWA/iconCalisson_192x192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any"
+    }
+],
+"screenshots": [
+    {
+        "src": "./PWA/750x1334-screenshot.png",
+        "sizes": "750x1334",
+        "type": "image/png",
+        "description": "Home page screenshot"
+    }
+]
+}

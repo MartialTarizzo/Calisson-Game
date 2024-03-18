@@ -2,22 +2,25 @@
 <html lang="fr">
 
 <head>
-    <title>Le jeu Speedy Calisson</title>
+    <title>Accueil</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="Content-Type" content="UTF-8">
     <meta name="Content-Language" content="fr">
-    <meta name="Keywords" content="jeu calisson pavage perspective">
+    <meta name="Keywords" content="game jeu calisson pavage perspective">
+    <meta name="description" content="Application PWA du jeu du calisson">
     <meta name="Author" content="Martial Tarizzo">
     <meta name="Identifier-Url" content="https://martialtarizzo.github.io/Calisson-Game/">
     <meta name="Robots" content="all">
     <meta name="Rating" content="general">
     <meta name="Distribution" content="global">
     <meta name="Category" content="games">
-
-
-    <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="black" 
+    
+    <!-- Makes your prototype chrome-less once bookmarked to your phone's
+        home screen -->
+    <!-- <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"> -->
 
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/popup.css">
@@ -52,7 +55,9 @@
 
         document.addEventListener("DOMContentLoaded", getMaxGridSize);
 
+        navigator.serviceWorker.register(location.origin + '/service-worker.js')
     </script>
+    <link rel="manifest" href="./manifest.json" />
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -78,7 +83,7 @@
     </div>
 
     <p style="text-align: center;">
-        <img src="./pictures/calissons.png" alt="" width="300px">
+        <img src="./pictures/calissons.png" alt="" width="300px" height="163px">
     </p>
 
     <div style="border-style:double; border-width: 1;">
@@ -115,13 +120,13 @@
         <li><strong> il n'y a pas d'arête entre deux calissons de même orientation</strong></li>
     </ul>
     <p> Pour rendre le pavage unique, certaines arêtes sont fixées au départ :</p>
-    <p align="center"> <img src="./pictures/C2-aretes.png" alt=""></p>
+    <p align="center"> <img src="./pictures/C2-aretes.png" alt="arêtes" width=291 height=336></p>
     <p> Pavage avec les calissons :</p>
-    <p align="center"> <img src="./pictures/C2-calissons.png" alt=""></p>
+    <p align="center"> <img src="./pictures/C2-calissons.png" alt="calissons" width=291 height=336></p>
     <p> Pour gagner, il faut dessiner les frontières des domaines, en s'aidant au besoin du coloriage des calissons
         :</p>
     <p align="center" style="font-size: smaller; text-align: center; font-style: italic;">
-        <img src="./pictures/C2-frontieres.png" alt="">
+        <img src="./pictures/C2-frontieres.png" alt="frontières" width=291 height=336>
         <br>
         position gagnante
     </p>
@@ -224,7 +229,7 @@
     </p>
 
     <p>Pour revenir à l'écran d'accueil depuis les pages de jeu, cliquer sur la maison en haut à gauche
-        <img src="./pictures/icons8-home.gif" height="30px">
+        <img src="./pictures/icons8-home.gif" height="30px" width="30px" alt="Home">
     </p>
 
     <h2>Dessin des calissons sur Tablette/téléphone</h2>
