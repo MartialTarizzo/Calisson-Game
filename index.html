@@ -55,7 +55,7 @@
 
         document.addEventListener("DOMContentLoaded", getMaxGridSize);
 
-        navigator.serviceWorker.register(location.origin + '/service-worker.js')
+        navigator.serviceWorker.register(location.origin + location.pathname + 'service-worker.js')
     </script>
     <link rel="manifest" href="./manifest.json" />
 </head>
