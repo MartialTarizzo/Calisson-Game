@@ -15,10 +15,8 @@
     <meta name="Distribution" content="global">
     <meta name="Category" content="games">
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-    <meta name="theme-color" content="black" 
-    
-    <!-- Makes your prototype chrome-less once bookmarked to your phone's
-        home screen -->
+    <meta name="theme-color" content="black" <!-- Makes your prototype chrome-less once bookmarked to your phone's home
+        screen -->
     <!-- <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black"> -->
 
@@ -26,9 +24,15 @@
     <link rel="stylesheet" href="./css/popup.css">
     <link rel="icon" type="image/x-icon" href="./pictures/favicon.ico">
 
+    <script src="./scripts/jquery-3.7.1.js"></script>
+
     <title>Speedy Calisson</title>
 
     <script>
+        // Enregistrement du serviece worker
+        let pagePath = location.pathname.split('/').slice(0, -1).join('/') + '/'
+        navigator.serviceWorker.register(location.origin + pagePath + 'service-worker.js')
+
         // redirection vers la page correcte si une langue a déjà été choisie
         let langue = localStorage.getItem("langue");
         if (!(langue == null || langue == 'fr')) {
@@ -54,8 +58,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", getMaxGridSize);
-
-        navigator.serviceWorker.register(location.origin + location.pathname + 'service-worker.js')
     </script>
     <link rel="manifest" href="./manifest.json" />
 </head>
