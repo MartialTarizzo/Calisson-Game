@@ -704,15 +704,15 @@ function abandonGrille() {
 
         jeuPossible = true
 
-        document.getElementById('btreset').style.display = "";
-        document.getElementById('btmode').style.display = "";
-        document.getElementById('btcancel').style.display = "";
+        document.getElementById('btreset').disabled = false;
+        document.getElementById('btmode').disabled = false;
+        document.getElementById('btcancel').disabled = false;
         funCallBack({ score: 0 })
     }
 
-    document.getElementById('btreset').style.display = "none";
-    document.getElementById('btmode').style.display = "none";
-    document.getElementById('btcancel').style.display = "none";
+    document.getElementById('btreset').disabled = true;
+    document.getElementById('btmode').disabled = true;
+    document.getElementById('btcancel').disabled = true;
 
     jeuPossible = false
 

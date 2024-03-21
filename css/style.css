@@ -48,6 +48,15 @@ input[type=number] {
     border-radius: 20px;
 }
 
+#btreset:disabled,
+#btcancel:disabled,
+#btmode:disabled
+ {
+    background-color: dimgrey;
+    color: linen;
+    opacity: 1;
+}
+
 #btNewGame,
 #btRazStats {
     font-size: 30px;
