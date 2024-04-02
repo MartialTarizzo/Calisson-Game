@@ -216,6 +216,20 @@ function cancelGrid() {
   abandonGrille();
   maxTime = Math.max(0, maxTime - timePenalite)
   document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
+  updateProgressBar()
+}
+
+/**
+ * Mise à jour de la barre de progression du temps restant
+ * la barre en pied de page voit sa longueur diminuer pendant la dernière minute du jeu
+ */
+function updateProgressBar() {
+  let pb = document.getElementById("timeprogressbar")
+  // p = pourcentage de temps restant pendant la dernière minute
+  let p = (Math.min(maxTime, 300) / 3)
+
+  // MAJ de la longueur de la barre
+  pb.style.width = `calc(${p}% - 2px)`
 }
 
 /** Chronométrage du jeu
@@ -237,6 +251,7 @@ function decompteTemps() {
   }
   else {
     document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
+    updateProgressBar()
   }
 }
 
@@ -446,6 +461,7 @@ function restart(objScore) {
 export function beginGame() {
   maxTime = 5 * 60
   document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
+  updateProgressBar()
   listObjScore = []
   nbAbandons = 0
   totalScore = 0

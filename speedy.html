@@ -5,7 +5,7 @@
     <title>Speedy !</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-    <meta name="theme-color" content="black"> 
+    <meta name="theme-color" content="black">
 
 
     <link rel="stylesheet" href="./css/style.css">
@@ -46,12 +46,13 @@
         &nbsp;&nbsp;
         <span id="etiqTempsRestant">Temps restant :</span>
         <span id="spTempsRestant">0 s</span>
-
+<br>
+<em>
+    <span id="etiqNiveau"> Niveau : </span>
+    <span id='spLevel'>3.1</span>
+</em>
     </div>
-    <em>
-        <span id="etiqNiveau"> Niveau : </span>
-        <span id='spLevel'>3.1</span>
-    </em>
+    
     <div> <canvas id="canvas" width="425" height="490" style="cursor: pointer;"></canvas>
     </div>
 
@@ -86,17 +87,28 @@
         </div>
     </div>
 
-    <footer id="etiqFooter" style="
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: red;
-        color: white;
-        text-align: center;
-        font-size: 15px;">
-        Speedy Calisson
-    </footer>
+    <!-- Le pied de page, avec barre de progression du temps restant -->
+    <div style="background-color: darkred; 
+                position: absolute;
+                left: 1px; 
+                bottom: 1px;
+                width: calc(100% - 2px); 
+                height: calc(1rem + 2px);">
+        <div id="timeprogressbar" style="background-color: red;
+                    width: calc(100% - 3px);
+                    position: absolute;
+                    left: 1px; 
+                    top: 2px;
+                    height: calc(1rem - 1px);">
+        </div>
+        <div id="etiqFooter" style=" width: 100%;  
+                    position: absolute;
+                    top: 0px;
+                    text-align: center;
+                    color: white;">
+            Speedy Calisson
+        </div>
+    </div>
 
     <!-- le dialogue modal d'attente pour le retour à l'index -->
     <div id="modalWait" class="modal">
