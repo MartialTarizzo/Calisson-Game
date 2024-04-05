@@ -532,12 +532,15 @@ function back() {
     let v = historique.pop();
     tabmilieu[v.indx][v.type] = v.prec; 
   
-    // dessin du point médian pour indiquer où s'es produite l'annulation
+    // dessin du point médian pour indiquer où s'est produite l'annulation
+    // marquée par un "gros" point rouge !
     dessinerlafigure()
+
+    let taillePoint = calcTaillePoint()
     context.beginPath();
     context.lineWidth = 1;
-    context.arc(tabmilieu[v.indx][0], tabmilieu[v.indx][1], 5, 0, 2 * Math.PI);
-    context.fillStyle = "black";
+    context.arc(tabmilieu[v.indx][0], tabmilieu[v.indx][1], taillePoint + 2, 0, 2 * Math.PI);
+    context.fillStyle = "red";
     context.fill();
     context.closePath();
   }
