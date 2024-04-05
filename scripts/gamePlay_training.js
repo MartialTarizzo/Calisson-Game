@@ -28,6 +28,7 @@ import { enigme_6_3 } from '../grids-training/enigmes_6_3.js';
  *****************/
 import {
   start,
+  back,
   reset,
   changemode,
   abandonGrille,
@@ -45,6 +46,7 @@ let currentEnig = { taille: 0, niveau: 0, tab: "" }
 /********
  * liaisons avec l'interface HTML
  */
+btback.onclick = back;
 btreset.onclick = reset;
 btmode.onclick = (() => changemode(langStrings));
 btcancel.onclick = cancelGrid;

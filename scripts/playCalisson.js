@@ -11,6 +11,7 @@ playCalisson.js pour la page HTML permettant de jouer au jeu de Calisson
 let taille, longueur, marge, mode, v1x, v1y, v2x, v2y, v3x, v3y, centrex, centrey;
 let jeuPossible;
 let tabsegment, tabmilieu, solution;
+let historique;
 let modejeu;
 let solutionpresente;
 let nblosangeutilise;
@@ -98,6 +99,10 @@ function init() {
     //  true -> arête de la solution, non affichée pendant le jeu (ça serait trop facile !)
     // false -> arête ne faisant pas partie de la solution
     solution = [];
+
+    // la pile de gestion de l'historique, permettant le retour en arrière
+    // lors de la résolution
+    historique = []
 
     // modejeu est un drapeau permettant de savoir si on est mode jeu ou design
     modejeu = false;
@@ -474,6 +479,8 @@ function commencergrille() {
     chronomarche();
     var tab = currentEnigme.tab;
 
+    historique = []
+
     // MT - zoom automatique à la bonne valeur
     setZoomFactor();
     rafraichit()
@@ -517,6 +524,23 @@ function setZoomFactor() {
     borderLineWidth = gridLineWidth + 1
     dashLineWidth = Math.max(1, Math.floor(gridLineWidth / 2))
 }
+
+// retour arrière danss l'historique
+function back() {
+    if (historique.length < 1) return;
+  
+    let v = historique.pop();
+    tabmilieu[v.indx][v.type] = v.prec; 
+  
+    // dessin du point médian pour indiquer où s'es produite l'annulation
+    dessinerlafigure()
+    context.beginPath();
+    context.lineWidth = 1;
+    context.arc(tabmilieu[v.indx][0], tabmilieu[v.indx][1], 5, 0, 2 * Math.PI);
+    context.fillStyle = "black";
+    context.fill();
+    context.closePath();
+  }
 
 // Associée au bouton 'Reset' : annule les actions de l'utilisateur
 function reset() {
@@ -671,11 +695,15 @@ function ajouteunlosange(x, y) {
     for (var i = 0; i < tabmilieu.length; i++) {
         if (curseurProcheMilieu(x, y, i)) {
             if (tabmilieu[i][2] != 'bloquee') {
-                if ((!tabmilieu[i][4]) && (solutionpresente)) {
+                let etat = tabmilieu[i][4];
+
+                if ((!etat) && (solutionpresente)) {
                     nblosangeutilise++;
                 }
                 tabmilieu[i][4] = !tabmilieu[i][4]
                 orientation = tabmilieu[i][3]
+
+                historique.push( {'indx': i, 'type': 4, 'prec': etat} );
             }
 
         }
@@ -704,12 +732,14 @@ function abandonGrille() {
 
         jeuPossible = true
 
+        document.getElementById('btback').disabled = false;
         document.getElementById('btreset').disabled = false;
         document.getElementById('btmode').disabled = false;
         document.getElementById('btcancel').disabled = false;
         funCallBack({ score: 0 })
     }
 
+    document.getElementById('btback').disabled = true;
     document.getElementById('btreset').disabled = true;
     document.getElementById('btmode').disabled = true;
     document.getElementById('btcancel').disabled = true;
@@ -737,12 +767,15 @@ function ajouterenleversegment(evt) {
                 if (curseurProcheMilieu(x, y, i)) {
 
                     if (tabmilieu[i][2] != 'bloquee') {
+                        let etat = tabmilieu[i][2];
+
                         if (tabmilieu[i][2] != 'solution') {
                             tabmilieu[i][2] = "solution"
                         } else {
                             tabmilieu[i][2] = false;
                         }
                         // console.log(tabmilieu[i][2]);
+                        historique.push( {'indx': i, 'type': 2, 'prec': etat} );
                     }
                     dessinerlafigure()
                     context.beginPath();
@@ -760,7 +793,11 @@ function ajouterenleversegment(evt) {
                     if (curseurProcheMilieu(x, y, i)) {
 
                         if (tabmilieu[i][2] != 'bloquee') {
+                            let etat = tabmilieu[i][2];
+
                             tabmilieu[i][2] = !tabmilieu[i][2];
+
+                            historique.push( {'indx': i, 'type': 2, 'prec': etat} );
                         }
                         dessinerlafigure()
                         context.beginPath();
@@ -984,6 +1021,7 @@ function changemode(langStrings) {
 
 export {
     start,
+    back,
     reset,
     changemode,
     rafraichit,

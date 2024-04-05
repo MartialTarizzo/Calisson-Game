@@ -28,6 +28,7 @@ import { enigme_6_3 } from '../grids-speedy/enigmes_6_3.js';
  *****************/
 import {
   start,
+  back,
   reset,
   changemode,
   abandonGrille,
@@ -93,6 +94,7 @@ let coeffGridSize = (new Map([[4, 37 / 83], [5, 60 / 83], [6, 1]])).get(maxGridS
 /********
  * liaisons avec l'interface HTML
  */
+btback.onclick = back;
 btreset.onclick = reset;
 btmode.onclick = (() => changemode(langStrings));
 btcancel.onclick = cancelGrid;
