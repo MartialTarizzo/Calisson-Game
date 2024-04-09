@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="74.494904mm"
+   height="48.063835mm"
+   viewBox="0 0 74.494904 48.063835"
+   version="1.1"
+   id="svg5"
+   inkscape:export-filename="losange.svg"
+   inkscape:export-xdpi="100.012"
+   inkscape:export-ydpi="100.012"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false" />
+  <defs
+     id="defs2">
+    <filter
+       style="color-interpolation-filters:sRGB"
+       inkscape:label="Drop Shadow"
+       id="filter1234"
+       x="-0.12862077"
+       y="-0.23905274"
+       width="1.2868392"
+       height="1.5431167">
+      <feFlood
+         flood-opacity="0.764706"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         id="feFlood1224" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="in"
+         result="composite1"
+         id="feComposite1226" />
+      <feGaussianBlur
+         in="composite1"
+         stdDeviation="2"
+         result="blur"
+         id="feGaussianBlur1228" />
+      <feOffset
+         dx="1.7134"
+         dy="2.02492"
+         result="offset"
+         id="feOffset1230" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         result="composite2"
+         id="feComposite1232" />
+    </filter>
+  </defs>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-66.489549,-42.263907)">
+    <path
+       style="fill:none;stroke:#534fee;stroke-width:5.29167;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter1234)"
+       d="M 73.93538,80.856991 131.82521,49.709744"
+       id="path245" />
+  </g>
+</svg>

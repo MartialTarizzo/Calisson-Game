@@ -21,12 +21,22 @@ let chronointerval;
 let is_touch_device;
 let canvas, context;
 
+
 let currentEnigme;
 
 // les largeurs des tracés
 let dashLineWidth = 1
 let gridLineWidth = 3
 let borderLineWidth = 4
+
+// réglage de l'interface sur un écran tactile 
+try {
+    document.createEvent("TouchEvent");
+    is_touch_device = true;
+} catch (e) {
+    is_touch_device = false;
+}
+
 
 // pour empêcher le clignotement du canvas lors d'un toucher sur le canvas (interface tactile)
 document.body.addEventListener("touchstart", function (e) {
@@ -50,6 +60,7 @@ document.body.addEventListener("touchmove", function (e) {
 function init() {
     marge = 5;
     mode = "mode_arete";
+    drawModeButtonsBorders()
     // document.getElementById("btmode").innerHTML = "Mode arête";
 
     // valeurs utilisées pour le calcul des coordonnées des points/segments
@@ -118,53 +129,48 @@ function init() {
     // le numéro de la grille si présent à la fin de l'url
     // numerogrille = '';
 
-    // réglage de l'interface sur un écran tactile 
-    is_touch_device = function () {
-        try {
-            document.createEvent("TouchEvent");
-            return true;
-        } catch (e) {
-            return false;
-        }
-    }
-
-    if (!(is_touch_device())) {
-        document.getElementById('btmode').style.display = 'none';
-    } else {
-        document.getElementById('btmode').style.display = '';
-    }
-
-    // variables permettant les dessins dans la page du navigateur
-    // canvas principal 
-    canvas = document.getElementById('canvas');
-    if (!canvas) {
-        alert("Impossible de récupérer le canvas");
-    }
-    // et son contexte
-    context = canvas.getContext('2d');
-    if (!context) {
-        alert("Impossible de récupérer le context du canvas");
-    }
-
-    if (canvas.getAttribute('listenerYetAdded') !== 'true') {
-        canvas.setAttribute('listenerYetAdded', 'true');
-        canvas.addEventListener('pointerdown', function (evt) {
-            ajouterenleversegment(evt)
-        }, false);
-
-        canvas.addEventListener('pointermove', function (evt) {
-            curseur(evt)
-        }, false);
-        canvas.addEventListener('pointerout', function (evt) {
-            dessinerlafigure()
-        }, false);
-    }
-    // empêche l'affichage du menu contextuel en cas de clic-droit sur la figure
-    canvas.oncontextmenu = function (event) {
-        event.preventDefault();
-    }
-    window.onresize = () => { setZoomFactor(); rafraichitlongueur() }
 }
+
+if (is_touch_device) {
+    // document.getElementById('btmode').style.display = '';
+    document.getElementById("butEdge").style.display = '';
+    document.getElementById("butDiamond").style.display = '';
+} else {
+    // document.getElementById('btmode').style.display = 'none';
+    document.getElementById("butEdge").style.display = 'none';
+    document.getElementById("butDiamond").style.display = 'none';
+}
+
+// variables permettant les dessins dans la page du navigateur
+// canvas principal 
+canvas = document.getElementById('canvas');
+if (!canvas) {
+    alert("Impossible de récupérer le canvas");
+}
+// et son contexte
+context = canvas.getContext('2d');
+if (!context) {
+    alert("Impossible de récupérer le context du canvas");
+}
+
+if (canvas.getAttribute('listenerYetAdded') !== 'true') {
+    canvas.setAttribute('listenerYetAdded', 'true');
+    canvas.addEventListener('pointerdown', function (evt) {
+        ajouterenleversegment(evt)
+    }, false);
+
+    canvas.addEventListener('pointermove', function (evt) {
+        curseur(evt)
+    }, false);
+    canvas.addEventListener('pointerout', function (evt) {
+        dessinerlafigure()
+    }, false);
+}
+// empêche l'affichage du menu contextuel en cas de clic-droit sur la figure
+canvas.oncontextmenu = function (event) {
+    event.preventDefault();
+}
+window.onresize = () => { setZoomFactor(); rafraichitlongueur() }
 
 /** fonction retournant la taille des points dessinés au mileu des arêtes */
 function calcTaillePoint() {
@@ -528,10 +534,10 @@ function setZoomFactor() {
 // retour arrière danss l'historique
 function back() {
     if (historique.length < 1) return;
-  
+
     let v = historique.pop();
-    tabmilieu[v.indx][v.type] = v.prec; 
-  
+    tabmilieu[v.indx][v.type] = v.prec;
+
     // dessin du point médian pour indiquer où s'est produite l'annulation
     // marquée par un "gros" point rouge !
     dessinerlafigure()
@@ -543,7 +549,7 @@ function back() {
     context.fillStyle = "red";
     context.fill();
     context.closePath();
-  }
+}
 
 // Associée au bouton 'Reset' : annule les actions de l'utilisateur
 function reset() {
@@ -689,6 +695,33 @@ function getMousePos(canvas, evt) {
     };
 }
 
+document.getElementById("butEdge").addEventListener(
+    "click",
+    () => {
+        mode = "mode_arete";
+        drawModeButtonsBorders()
+    })
+document.getElementById("butDiamond").addEventListener(
+    "click",
+    () => {
+        mode = "mode_losange";
+        drawModeButtonsBorders()
+    })
+
+function drawModeButtonsBorders() {
+    if (mode == "mode_arete") {
+        // drawcolor = "red"
+        document.getElementById("butEdge").style.borderColor = "navy"
+        document.getElementById("butDiamond").style.borderColor = "white"
+        // draw()
+    }
+    else {
+        // drawcolor = "blue"
+        document.getElementById("butEdge").style.borderColor = "white"
+        document.getElementById("butDiamond").style.borderColor = "navy"
+        // draw()
+    }
+}
 
 function ajouteunlosange(x, y) {
     var orientation;
@@ -706,7 +739,7 @@ function ajouteunlosange(x, y) {
                 tabmilieu[i][4] = !tabmilieu[i][4]
                 orientation = tabmilieu[i][3]
 
-                historique.push( {'indx': i, 'type': 4, 'prec': etat} );
+                historique.push({ 'indx': i, 'type': 4, 'prec': etat });
             }
 
         }
@@ -737,16 +770,23 @@ function abandonGrille() {
 
         document.getElementById('btback').disabled = false;
         document.getElementById('btreset').disabled = false;
-        document.getElementById('btmode').disabled = false;
+        // document.getElementById('btmode').disabled = false;
         document.getElementById('btcancel').disabled = false;
+        if (is_touch_device) {
+            document.getElementById('butEdge').style.display = "";
+            document.getElementById('butDiamond').style.display = "";
+        }
         funCallBack({ score: 0 })
     }
 
     document.getElementById('btback').disabled = true;
     document.getElementById('btreset').disabled = true;
-    document.getElementById('btmode').disabled = true;
+    // document.getElementById('btmode').disabled = true;
     document.getElementById('btcancel').disabled = true;
-
+    if (is_touch_device) {
+        document.getElementById('butEdge').style.display = "none";
+        document.getElementById('butDiamond').style.display = "none";
+    }
     jeuPossible = false
 
     dessinerSolution();
@@ -778,7 +818,7 @@ function ajouterenleversegment(evt) {
                             tabmilieu[i][2] = false;
                         }
                         // console.log(tabmilieu[i][2]);
-                        historique.push( {'indx': i, 'type': 2, 'prec': etat} );
+                        historique.push({ 'indx': i, 'type': 2, 'prec': etat });
                     }
                     dessinerlafigure()
                     context.beginPath();
@@ -800,7 +840,7 @@ function ajouterenleversegment(evt) {
 
                             tabmilieu[i][2] = !tabmilieu[i][2];
 
-                            historique.push( {'indx': i, 'type': 2, 'prec': etat} );
+                            historique.push({ 'indx': i, 'type': 2, 'prec': etat });
                         }
                         dessinerlafigure()
                         context.beginPath();
@@ -1015,11 +1055,12 @@ function changemode(langStrings) {
     // console.log(mode)
     if (mode == "mode_arete") {
         mode = "mode_losange";
-        document.getElementById("btmode").innerHTML = langStrings[mode];
+        // document.getElementById("btmode").innerHTML = langStrings[mode];
     } else {
         mode = "mode_arete";
-        document.getElementById("btmode").innerHTML =  langStrings[mode];
+        // document.getElementById("btmode").innerHTML = langStrings[mode];
     }
+    drawModeButtonsBorders()
 }
 
 export {

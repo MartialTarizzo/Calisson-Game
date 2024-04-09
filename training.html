@@ -13,7 +13,7 @@
     <script src="./scripts/jquery-3.7.1.js"></script>
 
     <title>Speedy Calisson</title>
-
+   
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -34,7 +34,6 @@
     <div id="controle">
         <button id="btback">&nbsp; &lt; &nbsp;</button>
         <button id="btreset">Reset</button>
-        <button id="btmode" style="display: none;">Mode arête</button>
         <button id="btcancel">Abandon</button>
         <br>
         <div style="font-weight:bold; font-size:30px;">
@@ -59,7 +58,15 @@
             </span>
         </div>
     </div>
-    <div> <canvas id="canvas" width="425" height="490" style="cursor: pointer;"></canvas>
+    <div>
+        <button id="butEdge" class="butMode butMode-edge" style="display: none;">
+            <img src="pictures/mode_arete.svg" alt="">
+        </button>
+        <button id="butDiamond" class="butMode butMode-diamond" style="display: none;">
+            <img src="pictures/mode_losange.svg" alt="">
+        </button>
+
+         <canvas id="canvas" width="425" height="490"></canvas>
     </div>
 
     <!-- l'affichage du score de fin de chaque grille -->

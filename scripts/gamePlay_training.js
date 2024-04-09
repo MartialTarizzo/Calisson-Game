@@ -48,7 +48,6 @@ let currentEnig = { taille: 0, niveau: 0, tab: "" }
  */
 btback.onclick = back;
 btreset.onclick = reset;
-btmode.onclick = (() => changemode(langStrings));
 btcancel.onclick = cancelGrid;
 
 let enigmes = {
@@ -250,7 +249,6 @@ function homePageUrl() {
 let dico = {
   "fr": {
     btcancel: "Abandon",
-    btmode: "mode arête",
     etiqNiveau: "Niveau : ",
     etiqChrono: "Chrono :",
     etiqFooter: "Entraînement au jeu du Calisson",
@@ -260,7 +258,6 @@ let dico = {
   },
   "en": {
     btcancel: "Abort",
-    btmode: "Edge mode",
     etiqNiveau: "Level: ",
     etiqChrono: "Chrono:",
     etiqFooter: "Calisson Game Training",

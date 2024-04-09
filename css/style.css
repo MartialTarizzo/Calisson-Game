@@ -4,7 +4,18 @@ body {
 }
 
 #controle {
+    /* position: absolute; */
+    top: 0;
+    left: 80px;
+    right: 0px;
+    text-align: center;
+    /* margin: 10px; */
     font-size: 20px;
+}
+
+#canvas {
+    position: relative;
+    cursor: pointer;
 }
 
 input {
@@ -27,7 +38,6 @@ input[type=number] {
 #btreset,
 #btcancel,
 #genurl,
-#btmode,
 #termine,
 #terminedl {
     font-size: 40px;
@@ -42,17 +52,10 @@ input[type=number] {
     padding: 10px;
 }
 
-#btmode {
-    color: black;
-    background-color: lightgray;
-    padding: 5px;
-    border-radius: 20px;
-}
 
 #btback:disabled,
 #btreset:disabled,
-#btcancel:disabled,
-#btmode:disabled
+#btcancel:disabled
  {
     background-color: dimgrey;
     color: linen;
@@ -142,7 +145,7 @@ hr {
     position: absolute;
     top: 0;
     left: 0;
-    margin: 20px;
+    margin: 10px;
     cursor: pointer;
 
 }
@@ -197,3 +200,31 @@ hr {
     text-align: center;
 }
 
+.butMode {
+    background-color: lavenderblush;
+    border-radius: 20px;
+    border-width: 4px;
+    border-color: white;
+    border-style: solid;
+    padding: 10px;
+    position: absolute;
+    z-index: 5;
+}
+
+.butMode:hover {
+    background-color: lavender;
+    cursor: pointer;
+}
+
+.butMode-edge {
+    left: 10px;
+}
+
+.butMode-diamond {
+    left: calc(100% - 100px);
+}
+
+.butMode img {
+    width: 60px;
+    height: 60px;
+}

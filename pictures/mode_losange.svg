@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="96.206009mm"
+   height="68.604622mm"
+   viewBox="0 0 96.206009 68.604622"
+   version="1.1"
+   id="svg5"
+   inkscape:export-filename="losange.svg"
+   inkscape:export-xdpi="100.012"
+   inkscape:export-ydpi="100.012"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false" />
+  <defs
+     id="defs2">
+    <filter
+       style="color-interpolation-filters:sRGB"
+       inkscape:label="Drop Shadow"
+       id="filter3914"
+       x="-0.16527624"
+       y="-0.16527624"
+       width="1.3413944"
+       height="1.4001576">
+      <feFlood
+         flood-opacity="0.764706"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         id="feFlood3904" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="in"
+         result="composite1"
+         id="feComposite3906" />
+      <feGaussianBlur
+         in="composite1"
+         stdDeviation="2"
+         result="blur"
+         id="feGaussianBlur3908" />
+      <feOffset
+         dx="0.46729"
+         dy="3"
+         result="offset"
+         id="feOffset3910" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         result="composite2"
+         id="feComposite3912" />
+    </filter>
+  </defs>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-48.008733,-127.20307)">
+    <rect
+       style="fill:none;stroke:#534fee;stroke-width:4.64691;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter3914)"
+       id="rect2537"
+       width="43.100296"
+       height="43.100296"
+       x="-101.84586"
+       y="175.05785"
+       transform="matrix(0.81418937,-0.5805994,0.81418937,0.5805994,0,0)" />
+  </g>
+</svg>

@@ -96,7 +96,6 @@ let coeffGridSize = (new Map([[4, 37 / 83], [5, 60 / 83], [6, 1]])).get(maxGridS
  */
 btback.onclick = back;
 btreset.onclick = reset;
-btmode.onclick = (() => changemode(langStrings));
 btcancel.onclick = cancelGrid;
 
 /** pour retourner la liste des énigmes d'une taille et d'un niveau donnés
@@ -489,6 +488,7 @@ function goHome() {
   setTimeout(() =>
     window.location.replace(homePageUrl()), 400)
 }
+
 document.getElementById('imgHome').onclick = goHome
 
 
@@ -524,7 +524,6 @@ function homePageUrl() {
 let dico = {
   "fr": {
     btcancel: "Abandon",
-    btmode: "mode arête",
     etiqNiveau: "Niveau : ",
     etiqChrono: "Chrono :",
     etiqFooter: "Speedy Calisson",
@@ -560,7 +559,6 @@ let dico = {
   },
   "en": {
     btcancel: "Abort",
-    btmode: "Edge mode",
     etiqNiveau: "Level: ",
     etiqChrono: "Chrono:",
     etiqFooter: "Speedy Calisson",
