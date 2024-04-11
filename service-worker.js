@@ -1,3 +1,4 @@
+const VERSION_SC = "1.0"
 
 // Based off of https://github.com/pwa-builder/PWABuilder/blob/main/docs/sw.js
 
