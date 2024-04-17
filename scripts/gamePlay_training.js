@@ -30,7 +30,6 @@ import {
   start,
   back,
   reset,
-  changemode,
   abandonGrille,
   chronoarret
 } from "./playCalisson.js";

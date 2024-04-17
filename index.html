@@ -29,7 +29,7 @@
     <title>Speedy Calisson</title>
 
     <script>
-        // Enregistrement du serviece worker
+        // Enregistrement du service worker
         let pagePath = location.pathname.split('/').slice(0, -1).join('/') + '/'
         navigator.serviceWorker.register(location.origin + pagePath + 'service-worker.js')
 

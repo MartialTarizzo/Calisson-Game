@@ -1,4 +1,15 @@
-const VERSION_SC = "1.0"
+/**
+ * service-wotker.js
+ * 
+ * # Auteur : Martial Tarizzo
+ *
+ * Licence : CC BY-NC-SA 4.0 DEED
+ * https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr
+*/
+
+// Le n° de version de l'appication PWA
+// Mettre à jour pour forcer l'actualisation du cache du navigateur
+const VERSION_SC = "2.3.1"
 
 // Based off of https://github.com/pwa-builder/PWABuilder/blob/main/docs/sw.js
 

@@ -1050,24 +1050,10 @@ function rafraichitlongueur() {
     dessinerlafigure()
 }
 
-// Associée au bouton de changement de mode pour interface tactile (arête/losange)
-function changemode(langStrings) {
-    // console.log(mode)
-    if (mode == "mode_arete") {
-        mode = "mode_losange";
-        // document.getElementById("btmode").innerHTML = langStrings[mode];
-    } else {
-        mode = "mode_arete";
-        // document.getElementById("btmode").innerHTML = langStrings[mode];
-    }
-    drawModeButtonsBorders()
-}
-
 export {
     start,
     back,
     reset,
-    changemode,
     rafraichit,
     rafraichitlongueur,
     abandonGrille,
