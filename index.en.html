@@ -44,6 +44,7 @@
 
         document.addEventListener("DOMContentLoaded", getMaxGridSize);
     </script>
+    <link rel="manifest" href="./manifest.json" />
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -75,7 +76,7 @@
         <p style="text-align: center;">click/tap to play</p>
         <p style="text-align: center;">
             <a href="./training.html"><button class="modeButton">Training</button></a>
-            &nbsp;ou &nbsp
+            &nbsp;or &nbsp
             <a href="./speedy.html"><button class="modeButton">Speedy !</button></a>
             <br>
         </p>
@@ -119,6 +120,13 @@
     <p>The hexagon's paving can be interpreted as the isometric projection of a stack of small cubic boxes in a large
         cubic room. The boxes are stacked by pushing them into the room as far as possible, the stacks increasing in
         height towards the back walls.</p>
+    <p align="center">Video example of stacking boxes in a cubic room :</p>
+    <p align="center">
+        <video width="480px" height="'480px" controls loop="true">
+            <source src="./video/empilage.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </p>
     <p>This vision of the game often means you don't need calissons to draw the solution!</p>
 
     <h2>Drawing edges</h2>
@@ -188,12 +196,14 @@
     <h2>Controls</h2>
     <p>In both modes, three buttons can be used to change the flow of the game:
     <ul>
-        <li> 
-            <span style="border:2px solid black; padding: 0px;"><strong>&nbsp; &lt; &nbsp;</strong></span> allows you to go back.
+        <li>
+            <span style="border:2px solid black; padding: 0px;"><strong>&nbsp; &lt; &nbsp;</strong></span> allows you to
+            go back.
             <br>&nbsp;
         </li>
         <li>
-            <span style="border:2px solid black;"><strong>&nbsp; Reset &nbsp;</strong></span> resets the grid to its original state.
+            <span style="border:2px solid black;"><strong>&nbsp; Reset &nbsp;</strong></span> resets the grid to its
+            original state.
             <br>
             Useful when you want to start from scratch if you get stuck. This has no effect on the score, but you'll
             certainly have lost time in "Challenge" mode...
@@ -229,10 +239,10 @@
     <h2>Calisson coloring on computer or tablet/phone</h2>
     <p>When playing on a computer, you can draw calissons (or diamonds) by right-clicking on the middle of an edge.</p>
     <p>
-        On touch-screen devices where right-clicking is not possible, the game pages display 
+        On touch-screen devices where right-clicking is not possible, the game pages display
         two buttons beside the hexagon, indicating whether pressing on the middle of an
-        edge will draw an edge (<strong>left button</strong>) or a rhombus (<strong>right button</strong>). Simply tap one
-        of the buttons to change mode.
+        edge will draw an edge (<strong>left button</strong>) or a rhombus (<strong>right button</strong>). Simply tap
+        one of the buttons to change mode.
 
     </p>
     <h2>Tips</h2>
