@@ -1,3 +1,15 @@
 {
-    "liveServer.settings.port": 8080
+    "liveServer.settings.port": 8080,
+    "auto-version-increment.info.notificationBar": true,
+    "auto-version-increment.update.versionRules": true,
+    "auto-version-increment.version.file": [
+
+        {
+            "path": "/Users/martial/Desktop/Calisson-Game/service-worker.js",
+            "prefix": "VERSION_SC = \"",
+            "sufix": "\"",
+            "primary": true,
+            "useWorkspacePath": false
+        }
+    ]
 }
