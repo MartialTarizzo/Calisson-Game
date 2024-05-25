@@ -9,7 +9,7 @@
 
 // Le n° de version de l'appication PWA
 // Mettre à jour pour forcer l'actualisation du cache du navigateur
-const VERSION_SC = "2.4.1"
+const VERSION_SC = "2.4.2"
 
 // Based off of https://github.com/pwa-builder/PWABuilder/blob/main/docs/sw.js
 
@@ -165,7 +165,8 @@ const INITIAL_CACHED_RESOURCES = [
     './grids-speedy/enigmes_6_3.js',
 
     // video
-    './video/calisson_screencast.mp4'
+    './video/calisson_screencast.mp4',
+    './video/empilage_2.mp4'
 ];
 
 self.addEventListener('install', event => {
