@@ -804,58 +804,33 @@ function ajouterenleversegment(evt) {
         var pos = getMousePos(canvas, evt)
         var x = pos.x
         var y = pos.y
-        if (evt.button == 1) {
-
+        if ((evt.button == 0) && (mode == "mode_arete")) {
+            //si clic gauche et mode arête
             for (var i = 0; i < tabmilieu.length; i++) {
                 if (curseurProcheMilieu(x, y, i)) {
 
                     if (tabmilieu[i][2] != 'bloquee') {
                         let etat = tabmilieu[i][2];
 
-                        if (tabmilieu[i][2] != 'solution') {
-                            tabmilieu[i][2] = "solution"
-                        } else {
-                            tabmilieu[i][2] = false;
-                        }
-                        // console.log(tabmilieu[i][2]);
+                        tabmilieu[i][2] = !tabmilieu[i][2];
+
                         historique.push({ 'indx': i, 'type': 2, 'prec': etat });
                     }
                     dessinerlafigure()
                     context.beginPath();
-                    context.lineWidth = 1;
+                    context.lineWidth = gridLineWidth;
                     context.arc(tabmilieu[i][0], tabmilieu[i][1], taillePoint, 0, 2 * Math.PI);
                     context.fillStyle = "black";
                     context.fill();
                     context.closePath();
                 }
             }
-        } else {
-            if ((evt.button == 0) && (mode == "mode_arete")) { //si pas clic droit
-
-                for (var i = 0; i < tabmilieu.length; i++) {
-                    if (curseurProcheMilieu(x, y, i)) {
-
-                        if (tabmilieu[i][2] != 'bloquee') {
-                            let etat = tabmilieu[i][2];
-
-                            tabmilieu[i][2] = !tabmilieu[i][2];
-
-                            historique.push({ 'indx': i, 'type': 2, 'prec': etat });
-                        }
-                        dessinerlafigure()
-                        context.beginPath();
-                        context.lineWidth = gridLineWidth;
-                        context.arc(tabmilieu[i][0], tabmilieu[i][1], taillePoint, 0, 2 * Math.PI);
-                        context.fillStyle = "black";
-                        context.fill();
-                        context.closePath();
-                    }
-                }
-            } else {
-                ajouteunlosange(x, y)
-                dessinerlafigure()
-            }
+        } else if (((evt.button == 0) && (mode == "mode_losange") || (evt.button == 2))) {
+            // (clic gauche et mode losange) ou (clic droit)
+            ajouteunlosange(x, y)
+            dessinerlafigure()
         }
+
     }
     if (modejeu && solutionpresente) {
         if (testesolution()) {

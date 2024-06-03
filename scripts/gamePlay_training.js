@@ -81,6 +81,93 @@ function getRandomInt(max) {
 let maxFileEnigmes = 20
 let fileIdxEnigmes = []
 
+// Pour les stats de fin de session d'entraînement, l'objet suivant
+// permet de garder un historique des scores et des durées de chaque
+// grille jouée
+let scoresAndTimes = {
+  // chaque tableau associée au niveau contient une liste d'objets
+  // {score, durée} pour la grille jouée
+  scoresByLevel: {
+    "31": [],
+    "32": [],
+    "33": [],
+    "41": [],
+    "42": [],
+    "43": [],
+    "51": [],
+    "52": [],
+    "53": [],
+    "61": [],
+    "62": [],
+    "63": [],
+  },
+  // initialisation de scoresByLevel
+  initScores() {
+    for (let k in this.scoresByLevel) {
+      this.scoresByLevel[k] = []
+    }
+  },
+  // méthode d'ajout d'un score et d'une durée pour une grille
+  addScore(lvl, score, time) {
+    this.scoresByLevel[lvl].push(
+      {
+        score: score,
+        time: time
+      }
+    )
+  },
+  // Calcul de la moyenne des scores et des durées pour un niveau
+  // retourne un objet {avg_score, avg_time}
+  calcMeans(lvl) {
+    let scores = this.scoresByLevel[lvl];
+    if (scores.length > 0) {
+      let tots = 0
+      let tott = 0
+      let n = 0
+      for (let { score, time } of scores) {
+        tots += score
+        tott += time
+        n += 1
+      }
+      return {
+        nb_grids: n,
+        avg_score: tots / n,
+        avg_time: tott / n
+      }
+    }
+    else {
+      return undefined
+    }
+
+  },
+
+  calcAllMeans() {
+    let r = {}
+    for (let k in this.scoresByLevel) {
+      r[k] = this.calcMeans(k)
+    }
+    return r
+  },
+
+  alertString() {
+    let stats = this.calcAllMeans()
+    let s = ""
+    for (let lvl in stats) {
+      let ss = stats[lvl]
+      if (ss != undefined) {
+        s += "Niveau " + lvl + ` : ${ss.nb_grids} grille(s) \n`
+        s += "   score moyen : " + (ss.avg_score).toFixed(1) + " pts ; "
+        s += "durée moyenne : " + (ss.avg_time).toFixed(1) + "s\n"
+      }
+    }
+    if (s != "") {
+      let pref = "Statistiques de l'entraînement\n\n"
+      s = pref + s
+    }
+    return s
+  }
+}
+
 function genEnigme() {
   let niveau = document.getElementById('selNiveau').value
   let enigs = enigmes[niveau]
@@ -156,7 +243,7 @@ function restart(objScore) {
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
     // l'animation suivante dure 2400 ms
     $('#popupEndGrid')
-      .animate({ 
+      .animate({
         'zoom': 1
       }, 0)
       .fadeIn(1000)
@@ -168,8 +255,13 @@ function restart(objScore) {
         'zoom': 1
       }, 0);
   }
+
   let score = objScore.score
   if (score > 0) {
+    scoresAndTimes.addScore(
+      objScore.taille + objScore.niveau,
+      score,
+      objScore.chronofin)
     displaypopupEndGrid()
 
     setTimeout(() => {
@@ -203,17 +295,23 @@ export function beginGame() {
   fileIdxEnigmes = []
   genEnigme()
   chronoarret()
+  // scoresAndTimes.initScores()
   start(currentEnig, restart, setLang)
 }
 function goHome() {
   // clearInterval(gameTimer)
   chronoarret()
+  let msg = scoresAndTimes.alertString()
+  if (msg.length > 0) {
+    alert(msg)
+  }
   // verrouillage de l'interface ...
   let modalEndGrid = document.getElementById("modalWait");
   modalEndGrid.style.display = "block"
   setTimeout(() =>
     window.location.replace(homePageUrl()), 400)
 }
+
 document.getElementById('imgHome').onclick = goHome
 
 
