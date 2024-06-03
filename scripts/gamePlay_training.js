@@ -150,18 +150,39 @@ let scoresAndTimes = {
   },
 
   alertString() {
+    let langue = localStorage.getItem("langue");
+    if (langue == null) { langue = 'fr' }
+
     let stats = this.calcAllMeans()
     let s = ""
     for (let lvl in stats) {
       let ss = stats[lvl]
       if (ss != undefined) {
-        s += "Niveau " + lvl + ` : ${ss.nb_grids} grille(s) \n`
-        s += "   score moyen : " + (ss.avg_score).toFixed(1) + " pts ; "
-        s += "durée moyenne : " + (ss.avg_time).toFixed(1) + "s\n"
+        switch (langue) {
+          case 'fr':
+            s += "Niveau " + lvl[0] + '.' + lvl[1] + ` : ${ss.nb_grids} grille(s) \n`
+            s += "   score moyen : " + (ss.avg_score).toFixed(1) + " pts ; "
+            s += "durée moyenne : " + (ss.avg_time).toFixed(1) + "s\n"
+            break
+          case 'en':
+            s += "Level " + lvl[0] + '.' + lvl[1] + ` : ${ss.nb_grids} grid(s) \n`
+            s += "   average score : " + (ss.avg_score).toFixed(1) + " pts ; "
+            s += "average time : " + (ss.avg_time).toFixed(1) + "s\n"
+            break
+        }
+
       }
     }
     if (s != "") {
-      let pref = "Statistiques de l'entraînement\n\n"
+      let pref = ''
+      switch (langue) {
+        case 'fr':
+          pref = "Statistiques de l'entraînement\n\n"
+          break
+        case 'en':
+          pref = "Training statistics\n\n"
+          break
+      }
       s = pref + s
     }
     return s
