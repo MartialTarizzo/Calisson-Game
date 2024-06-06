@@ -139,8 +139,8 @@ let scoresAndTimes = {
       }
       return {
         nb_grids: n,
-        avg_score: tots / n,
-        avg_time: tott / n,
+        avg_score: (tots / n).toFixed(2),
+        avg_time: (tott / n).toFixed(2),
         min_score: mins,
         max_score: maxs,
         min_time: mint,
@@ -345,17 +345,7 @@ export function beginGame() {
 }
 
 function showStatistics(msg) {
-  let langue = localStorage.getItem("langue");
-  if (langue == null) { langue = 'fr' }
   let modalEndGame = document.getElementById("modalStatistics");
-  switch (langue) {
-    case "fr":
-      document.getElementById("pEndGameMessage").innerHTML = "<strong>Moyenne</strong> [Min &rarr; Max]";
-      break;
-    case 'en':
-      document.getElementById("pEndGameMessage").innerHTML = "<strong>Average</strong> [Min &rarr; Max]"
-      break;
-  }
   let parMsg = document.getElementById("pStats");
   parMsg.innerHTML = msg;
   modalEndGame.style.display = "block";
@@ -405,7 +395,9 @@ let dico = {
     etiqFooter: "Entraînement au jeu du Calisson",
     etiqRetour: "Retour à l'accueil",
     mode_arete: "mode Arête",
-    mode_losange: "mode Losange"
+    mode_losange: "mode Losange",
+    modalEndGameTitle: "Statistiques de l'entraînement",
+    pEndGameMessage: "<strong>Moyenne</strong> [Min &rarr; Max]"
   },
   "en": {
     btcancel: "Abort",
@@ -414,7 +406,9 @@ let dico = {
     etiqFooter: "Calisson Game Training",
     etiqRetour: "Return to Home Screen",
     mode_arete: "Edge mode",
-    mode_losange: "Diamond mode"
+    mode_losange: "Diamond mode",
+    modalEndGameTitle: "Training statistics",
+    pEndGameMessage: "<strong>Average</strong> [Min &rarr; Max]"
   }
 }
 
