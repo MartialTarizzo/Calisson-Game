@@ -1,7 +1,7 @@
 /*
-gamePlay.js
+gamePlay_training.js
 
-Ce fichier définit la mécanique du jeu du calisson
+Ce fichier définit la mécanique du jeu du calisson en mode entraînement
 
 # Auteur : Martial Tarizzo
 #
@@ -122,17 +122,29 @@ let scoresAndTimes = {
     let scores = this.scoresByLevel[lvl];
     if (scores.length > 0) {
       let tots = 0
+      let mins = Number.MAX_SAFE_INTEGER
+      let maxs = 0
+      let mint = Number.MAX_SAFE_INTEGER
+      let maxt = 0
       let tott = 0
       let n = 0
       for (let { score, time } of scores) {
         tots += score
         tott += time
         n += 1
+        if (score < mins) { mins = score }
+        if (score > maxs) { maxs = score }
+        if (time < mint) { mint = time }
+        if (time > maxt) { maxt = time }
       }
       return {
         nb_grids: n,
         avg_score: tots / n,
-        avg_time: tott / n
+        avg_time: tott / n,
+        min_score: mins,
+        max_score: maxs,
+        min_time: mint,
+        max_time: maxt,
       }
     }
     else {
@@ -149,41 +161,53 @@ let scoresAndTimes = {
     return r
   },
 
-  alertString() {
+  statsHTML() {
     let langue = localStorage.getItem("langue");
     if (langue == null) { langue = 'fr' }
 
     let stats = this.calcAllMeans()
     let s = ""
+    let slvl
+    let data
+    let ng
     for (let lvl in stats) {
       let ss = stats[lvl]
       if (ss != undefined) {
+        slvl = lvl[0] + '.' + lvl[1]
+        data = stats[lvl]
+        ng = data.nb_grids
         switch (langue) {
           case 'fr':
-            s += "Niveau " + lvl[0] + '.' + lvl[1] + ` : ${ss.nb_grids} grille(s) \n`
-            s += "   score moyen : " + (ss.avg_score).toFixed(1) + " pts ; "
-            s += "durée moyenne : " + (ss.avg_time).toFixed(1) + "s\n"
+            if (ng == 1) {
+              s += "<span  style='margin-left: 0em;color:green;'><strong>Niveau " + slvl + ` : ${data.nb_grids} grille </strong></span><br>`
+              s += "<span  style='margin-left: 2em;color:blue;'>score &rarr;   " + `<strong>${data.avg_score}</strong>` + " pts</span><br>"
+              s += "<span  style='margin-left: 2em;color:red;'>durée &rarr;   " + `<strong>${data.avg_time}</strong>` + " s</span><br><br>"
+
+            }
+            else {
+              s += "<span  style='margin-left: 0em;color:green;'><strong>Niveau " + slvl + ` : ${data.nb_grids} grilles </strong></span><br>`
+              s += "<span  style='margin-left: 2em;color:blue;'>score :  " + `<strong>${data.avg_score}</strong> [${data.min_score} &rarr; ${data.max_score}]` + " pts</span><br>"
+              s += "<span  style='margin-left: 2em;color:red;'>durée :  " + `<strong>${data.avg_time}</strong> [${data.min_time} &rarr; ${data.max_time}]` + " s</span><br><br>"
+
+            }
             break
           case 'en':
-            s += "Level " + lvl[0] + '.' + lvl[1] + ` : ${ss.nb_grids} grid(s) \n`
-            s += "   average score : " + (ss.avg_score).toFixed(1) + " pts ; "
-            s += "average time : " + (ss.avg_time).toFixed(1) + "s\n"
+            if (ng == 1) {
+              s += "<span  style='margin-left: 0em;color:green;'><strong>Level " + slvl + ` : ${data.nb_grids} grid </strong></span><br>`
+              s += "<span  style='margin-left: 2em;color:blue;'>score &rarr;   " + `<strong>${data.avg_score}</strong>` + " pts</span><br>"
+              s += "<span  style='margin-left: 2em;color:red;'>time &rarr;   " + `<strong>${data.avg_time}</strong>` + " s</span><br><br>"
+
+            }
+            else {
+              s += "<span  style='margin-left: 0em;color:green;'><strong>Level " + slvl + ` : ${data.nb_grids} grids </strong></span><br>`
+              s += "<span  style='margin-left: 2em;color:blue;'>score :  " + `<strong>${data.avg_score}</strong> [${data.min_score} &rarr; ${data.max_score}]` + " pts</span><br>"
+              s += "<span  style='margin-left: 2em;color:red;'>time :  " + `<strong>${data.avg_time}</strong> [${data.min_time} &rarr; ${data.max_time}]` + " s</span><br><br>"
+
+            }
             break
         }
 
       }
-    }
-    if (s != "") {
-      let pref = ''
-      switch (langue) {
-        case 'fr':
-          pref = "Statistiques de l'entraînement\n\n"
-          break
-        case 'en':
-          pref = "Training statistics\n\n"
-          break
-      }
-      s = pref + s
     }
     return s
   }
@@ -319,13 +343,40 @@ export function beginGame() {
   // scoresAndTimes.initScores()
   start(currentEnig, restart, setLang)
 }
+
+function showStatistics(msg) {
+  let langue = localStorage.getItem("langue");
+  if (langue == null) { langue = 'fr' }
+  let modalEndGame = document.getElementById("modalStatistics");
+  switch (langue) {
+    case "fr":
+      document.getElementById("pEndGameMessage").innerHTML = "<strong>Moyenne</strong> [Min &rarr; Max]";
+      break;
+    case 'en':
+      document.getElementById("pEndGameMessage").innerHTML = "<strong>Average</strong> [Min &rarr; Max]"
+      break;
+  }
+  let parMsg = document.getElementById("pStats");
+  parMsg.innerHTML = msg;
+  modalEndGame.style.display = "block";
+}
+
+document.getElementById('btNewGame').onclick = returnToHome
+
 function goHome() {
   // clearInterval(gameTimer)
   chronoarret()
-  let msg = scoresAndTimes.alertString()
+  let msg = scoresAndTimes.statsHTML()
   if (msg.length > 0) {
-    alert(msg)
+    showStatistics(msg)
+  } else {
+    returnToHome()
   }
+}
+
+function returnToHome() {
+  let modalEndGame = document.getElementById("modalStatistics");
+  modalEndGame.style.display = "";
   // verrouillage de l'interface ...
   let modalEndGrid = document.getElementById("modalWait");
   modalEndGrid.style.display = "block"
@@ -334,24 +385,6 @@ function goHome() {
 }
 
 document.getElementById('imgHome').onclick = goHome
-
-
-/*** Utilitaire de formatage de chaîne
- * Usage :
- * format("i can speak {language} since i was {age}",{language:'javascript',age:10});
- * format("i can speak {0} since i was {1}",'javascript',10});
- */
-
-let format = function (str, col) {
-  col = typeof col === 'object' ? col : Array.prototype.slice.call(arguments, 1);
-
-  return str.replace(/\{\{|\}\}|\{(\w+)\}/g, function (m, n) {
-    if (m == "{{") { return "{"; }
-    if (m == "}}") { return "}"; }
-    return col[n];
-  });
-};
-
 
 function homePageUrl() {
   let langue = localStorage.getItem("langue");
