@@ -116,9 +116,10 @@ let scoresAndTimes = {
       }
     )
   },
-  // Calcul de la moyenne des scores et des durées pour un niveau
-  // retourne un objet {avg_score, avg_time}
-  calcMeans(lvl) {
+  // Calcul des stats pour un niveau
+  // retourne un objet contenant les résultats des calculs 
+  // ou undefined si pas de grilles jouées dans ce niveau
+  calcLevelStats(lvl) {
     let scores = this.scoresByLevel[lvl];
     if (scores.length > 0) {
       let tots = 0
@@ -137,6 +138,7 @@ let scoresAndTimes = {
         if (time < mint) { mint = time }
         if (time > maxt) { maxt = time }
       }
+      /* l'objet retourné par la fonction */
       return {
         nb_grids: n,
         avg_score: (tots / n).toFixed(2),
@@ -153,23 +155,28 @@ let scoresAndTimes = {
 
   },
 
-  calcAllMeans() {
+  // calcul des stats pour tous les niveaux
+  // regroupe dans un objet indexé par les niveaux
+  calcAllStats() {
     let r = {}
     for (let k in this.scoresByLevel) {
-      r[k] = this.calcMeans(k)
+      r[k] = this.calcLevelStats(k)
     }
     return r
   },
 
+  // Calcul de la chaîne HTML permettant d'afficher le récapitulatif 
+  // à la fin de l'entraînement
   statsHTML() {
     let langue = localStorage.getItem("langue");
     if (langue == null) { langue = 'fr' }
 
-    let stats = this.calcAllMeans()
-    let s = ""
-    let slvl
-    let data
-    let ng
+    let stats = this.calcAllStats()
+    let s = ""  /* valeur de retour */
+    let slvl    /* chaîne par niveau */
+    let data    /* données stat d'un niveau */
+    let ng      /* nbre de grilles du niveau */
+
     for (let lvl in stats) {
       let ss = stats[lvl]
       if (ss != undefined) {
@@ -182,13 +189,11 @@ let scoresAndTimes = {
               s += "<span  style='margin-left: 0em;color:green;'><strong>Niveau " + slvl + ` : ${data.nb_grids} grille </strong></span><br>`
               s += "<span  style='margin-left: 2em;color:blue;'>score &rarr;   " + `<strong>${data.avg_score}</strong>` + " pts</span><br>"
               s += "<span  style='margin-left: 2em;color:red;'>durée &rarr;   " + `<strong>${data.avg_time}</strong>` + " s</span><br><br>"
-
             }
             else {
               s += "<span  style='margin-left: 0em;color:green;'><strong>Niveau " + slvl + ` : ${data.nb_grids} grilles </strong></span><br>`
               s += "<span  style='margin-left: 2em;color:blue;'>score :  " + `<strong>${data.avg_score}</strong> [${data.min_score} &rarr; ${data.max_score}]` + " pts</span><br>"
               s += "<span  style='margin-left: 2em;color:red;'>durée :  " + `<strong>${data.avg_time}</strong> [${data.min_time} &rarr; ${data.max_time}]` + " s</span><br><br>"
-
             }
             break
           case 'en':
@@ -196,17 +201,14 @@ let scoresAndTimes = {
               s += "<span  style='margin-left: 0em;color:green;'><strong>Level " + slvl + ` : ${data.nb_grids} grid </strong></span><br>`
               s += "<span  style='margin-left: 2em;color:blue;'>score &rarr;   " + `<strong>${data.avg_score}</strong>` + " pts</span><br>"
               s += "<span  style='margin-left: 2em;color:red;'>time &rarr;   " + `<strong>${data.avg_time}</strong>` + " s</span><br><br>"
-
             }
             else {
               s += "<span  style='margin-left: 0em;color:green;'><strong>Level " + slvl + ` : ${data.nb_grids} grids </strong></span><br>`
               s += "<span  style='margin-left: 2em;color:blue;'>score :  " + `<strong>${data.avg_score}</strong> [${data.min_score} &rarr; ${data.max_score}]` + " pts</span><br>"
               s += "<span  style='margin-left: 2em;color:red;'>time :  " + `<strong>${data.avg_time}</strong> [${data.min_time} &rarr; ${data.max_time}]` + " s</span><br><br>"
-
             }
             break
         }
-
       }
     }
     return s
@@ -217,7 +219,7 @@ function genEnigme() {
   let niveau = document.getElementById('selNiveau').value
   let enigs = enigmes[niveau]
   enigs = enigs.split("\n")
-  enigs.pop()
+  enigs.pop() /* retrait de la dernière ligne qui vaut "" */
 
   // tirage d'un index qui n'est pas dans fileIdxEnigmes
   let i
@@ -240,11 +242,8 @@ function genEnigme() {
  * - retranche 60 s au temps (si possible)
  */
 function cancelGrid() {
-
-  // clearInterval(gameTimer)
   abandonGrille();
 }
-
 
 /**
  * fonction de callback en cas de succès de la résolution d'une grille
@@ -263,6 +262,7 @@ function cancelGrid() {
 
  * La fonction
  * - affiche le popup de score
+ * - enregistre le score/durée pour les stats
  * - relance l'interface de résolution sur une nouvelle grille
  */
 function restart(objScore) {
@@ -324,7 +324,6 @@ function restart(objScore) {
   }
 }
 
-
 /**
  * La fonction de lancement du jeu
  * appelée au chargement de la page et à chaque changement de niveau
@@ -344,6 +343,10 @@ export function beginGame() {
   start(currentEnig, restart, setLang)
 }
 
+/**
+ * affiche le dialogue modal des stats en fin d'entraînement
+ * @param {string} msg 
+ */
 function showStatistics(msg) {
   let modalEndGame = document.getElementById("modalStatistics");
   let parMsg = document.getElementById("pStats");
@@ -351,10 +354,33 @@ function showStatistics(msg) {
   modalEndGame.style.display = "block";
 }
 
+// btNewGame est le bouton de fermeture du dialogue des stats
 document.getElementById('btNewGame').onclick = returnToHome
 
+/**
+ * affichage de l'animation final et retour à la page d'index
+ */
+function returnToHome() {
+  // retrait du dialogue de stats ...
+  let modalEndGame = document.getElementById("modalStatistics");
+  modalEndGame.style.display = "";
+
+  // et affichage de l'animation finale ...
+  let modalEndGrid = document.getElementById("modalWait");
+  modalEndGrid.style.display = "block"
+  
+  // retour à l'index 
+  setTimeout(() =>
+    window.location.replace(homePageUrl()), 400)
+}
+
+// imgHome est l'image de la maison en haut à gauche
+document.getElementById('imgHome').onclick = goHome
+
+/**
+ * retour à la page d'index, avec affichage des stats si nécessaire
+ */
 function goHome() {
-  // clearInterval(gameTimer)
   chronoarret()
   let msg = scoresAndTimes.statsHTML()
   if (msg.length > 0) {
@@ -364,18 +390,10 @@ function goHome() {
   }
 }
 
-function returnToHome() {
-  let modalEndGame = document.getElementById("modalStatistics");
-  modalEndGame.style.display = "";
-  // verrouillage de l'interface ...
-  let modalEndGrid = document.getElementById("modalWait");
-  modalEndGrid.style.display = "block"
-  setTimeout(() =>
-    window.location.replace(homePageUrl()), 400)
-}
-
-document.getElementById('imgHome').onclick = goHome
-
+/**
+ * calcul de l'url de la page d'index
+ * @returns l'url dépendant de la langue courante
+ */
 function homePageUrl() {
   let langue = localStorage.getItem("langue");
 
@@ -387,6 +405,9 @@ function homePageUrl() {
   }
 }
 
+/**
+ * dictionnaire pour la gestion des langues
+ */
 let dico = {
   "fr": {
     btcancel: "Abandon",
