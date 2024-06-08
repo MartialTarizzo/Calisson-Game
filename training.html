@@ -2,7 +2,7 @@
 <html lang="fr">
 
 <head>
-    <title>Entraînement</title>
+    <title>Entraînement au jeu du calisson</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <meta name="theme-color" content="black">
@@ -11,9 +11,6 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/popup.css">
     <script src="./scripts/jquery-3.7.1.js"></script>
-
-    <title>Speedy Calisson</title>
-
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -24,6 +21,14 @@
     gtag('js', new Date());
 
     gtag('config', 'G-09KM2N4X02');
+</script>
+
+<script>
+    // MAJ du titre de la page en fct de la langue
+    let langue = localStorage.getItem("langue");
+    if (langue == 'en') { 
+        document.title = 'Calisson game Training'
+     }
 </script>
 
 <body>
