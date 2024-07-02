@@ -11,6 +11,33 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/popup.css">
     <script src="./scripts/jquery-3.7.1.js"></script>
+
+    <!-- pour le tableau récapitulatif des stats dans la popup de fin d'entraînement -->
+     <style>
+    table {
+      border: 2px solid #555;
+      border-collapse: collapse;
+      width: 95%;
+      margin: auto;
+    }
+
+    th,
+    td {
+      border: 1px solid #bbb;
+      padding: 2px 8px 0;
+      text-align: center;
+    }
+
+    table>caption {
+      background-color: rgb(226, 224, 179);
+      border-bottom: 2px solid #999;
+    }
+
+    thead>tr>th {
+      background-color: rgb(215, 215, 255);
+      border-bottom: 2px solid #999;
+    }
+  </style>
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -106,6 +133,10 @@
             </div>
             <div class="divStat">
                 <p id="pStats"></p>
+            </div>
+            <button id="btRazStats">Effacement des statistiques</button>
+            <div>
+                <hr>
             </div>
             <button id="btNewGame">Ok</button>
         </div>

@@ -152,7 +152,6 @@ let scoresAndTimes = {
     else {
       return undefined
     }
-
   },
 
   // calcul des stats pour tous les niveaux
@@ -160,7 +159,10 @@ let scoresAndTimes = {
   calcAllStats() {
     let r = {}
     for (let k in this.scoresByLevel) {
-      r[k] = this.calcLevelStats(k)
+      let s = this.calcLevelStats(k)
+      if (s != undefined) {
+        r[k] = this.calcLevelStats(k)
+      }
     }
     return r
   },
@@ -179,38 +181,101 @@ let scoresAndTimes = {
 
     for (let lvl in stats) {
       let ss = stats[lvl]
-      if (ss != undefined) {
-        slvl = lvl[0] + '.' + lvl[1]
-        data = stats[lvl]
-        ng = data.nb_grids
-        switch (langue) {
-          case 'fr':
-            if (ng == 1) {
-              s += "<span  style='margin-left: 0em;color:green;'><strong>Niveau " + slvl + ` : ${data.nb_grids} grille </strong></span><br>`
-              s += "<span  style='margin-left: 2em;color:blue;'>score &rarr;   " + `<strong>${data.avg_score}</strong>` + " pts</span><br>"
-              s += "<span  style='margin-left: 2em;color:red;'>durée &rarr;   " + `<strong>${data.avg_time}</strong>` + " s</span><br><br>"
-            }
-            else {
-              s += "<span  style='margin-left: 0em;color:green;'><strong>Niveau " + slvl + ` : ${data.nb_grids} grilles </strong></span><br>`
-              s += "<span  style='margin-left: 2em;color:blue;'>score :  " + `<strong>${data.avg_score}</strong> [${data.min_score} &rarr; ${data.max_score}]` + " pts</span><br>"
-              s += "<span  style='margin-left: 2em;color:red;'>durée :  " + `<strong>${data.avg_time}</strong> [${data.min_time} &rarr; ${data.max_time}]` + " s</span><br><br>"
-            }
-            break
-          case 'en':
-            if (ng == 1) {
-              s += "<span  style='margin-left: 0em;color:green;'><strong>Level " + slvl + ` : ${data.nb_grids} grid </strong></span><br>`
-              s += "<span  style='margin-left: 2em;color:blue;'>score &rarr;   " + `<strong>${data.avg_score}</strong>` + " pts</span><br>"
-              s += "<span  style='margin-left: 2em;color:red;'>time &rarr;   " + `<strong>${data.avg_time}</strong>` + " s</span><br><br>"
-            }
-            else {
-              s += "<span  style='margin-left: 0em;color:green;'><strong>Level " + slvl + ` : ${data.nb_grids} grids </strong></span><br>`
-              s += "<span  style='margin-left: 2em;color:blue;'>score :  " + `<strong>${data.avg_score}</strong> [${data.min_score} &rarr; ${data.max_score}]` + " pts</span><br>"
-              s += "<span  style='margin-left: 2em;color:red;'>time :  " + `<strong>${data.avg_time}</strong> [${data.min_time} &rarr; ${data.max_time}]` + " s</span><br><br>"
-            }
-            break
-        }
+      slvl = lvl[0] + '.' + lvl[1]
+      data = stats[lvl]
+      ng = data.nb_grids
+      switch (langue) {
+        case 'fr':
+          if (ng == 1) {
+            s += "<span  style='margin-left: 0em;color:green;'><strong>Niveau " + slvl + ` : ${data.nb_grids} grille </strong></span><br>`
+            s += "<span  style='margin-left: 2em;color:blue;'>score &rarr;   " + `<strong>${data.avg_score}</strong>` + " pts</span><br>"
+            s += "<span  style='margin-left: 2em;color:red;'>durée &rarr;   " + `<strong>${data.avg_time}</strong>` + " s</span><br><br>"
+          }
+          else {
+            s += "<span  style='margin-left: 0em;color:green;'><strong>Niveau " + slvl + ` : ${data.nb_grids} grilles </strong></span><br>`
+            s += "<span  style='margin-left: 2em;color:blue;'>score :  " + `<strong>${data.avg_score}</strong> [${data.min_score} &rarr; ${data.max_score}]` + " pts</span><br>"
+            s += "<span  style='margin-left: 2em;color:red;'>durée :  " + `<strong>${data.avg_time}</strong> [${data.min_time} &rarr; ${data.max_time}]` + " s</span><br><br>"
+          }
+          break
+        case 'en':
+          if (ng == 1) {
+            s += "<span  style='margin-left: 0em;color:green;'><strong>Level " + slvl + ` : ${data.nb_grids} grid </strong></span><br>`
+            s += "<span  style='margin-left: 2em;color:blue;'>score &rarr;   " + `<strong>${data.avg_score}</strong>` + " pts</span><br>"
+            s += "<span  style='margin-left: 2em;color:red;'>time &rarr;   " + `<strong>${data.avg_time}</strong>` + " s</span><br><br>"
+          }
+          else {
+            s += "<span  style='margin-left: 0em;color:green;'><strong>Level " + slvl + ` : ${data.nb_grids} grids </strong></span><br>`
+            s += "<span  style='margin-left: 2em;color:blue;'>score :  " + `<strong>${data.avg_score}</strong> [${data.min_score} &rarr; ${data.max_score}]` + " pts</span><br>"
+            s += "<span  style='margin-left: 2em;color:red;'>time :  " + `<strong>${data.avg_time}</strong> [${data.min_time} &rarr; ${data.max_time}]` + " s</span><br><br>"
+          }
+          break
       }
     }
+
+    // si s="", c'est qu'aucune partie n'a été jouée ...
+    // on retourne la chaîne vide
+    if (s.length == 0) {
+      return s
+    }
+
+    // MAJ des stats cumulées
+    let trainingStats = localStorage.getItem("trainingStats")
+    let cumulStats = trainingStats ? JSON.parse(trainingStats) : {}
+
+    for (let lvl in stats) {
+      let data = stats[lvl]
+      let ngd = data.nb_grids
+      let asd = data.avg_score
+      let atd = data.avg_time
+      let cumulData = {}
+      let ngc = 0 // suffixe 'c' pour les grandeurs cumulées, affectées ci-dessous
+      let asc = 0
+      let atc = 0
+
+      if (lvl in cumulStats) {
+        cumulData = cumulStats[lvl]
+        ngc = cumulData.nb_grids
+        asc = cumulData.avg_score
+        atc = cumulData.avg_time
+      }
+      // MAJ des valeurs cumulées
+      cumulData.nb_grids = ngc + ngd
+      cumulData.avg_score = (ngd * asd + ngc * asc) / (ngd + ngc)
+      cumulData.avg_time = (ngd * atd + ngc * atc) / (ngd + ngc)
+
+      cumulStats[lvl] = cumulData
+    }
+    // sauvegarde des stats dans le stockage local
+    localStorage.setItem('trainingStats', JSON.stringify(cumulStats))
+
+    // code HTML de la mise en forme du tableau récapitulatif des stats 
+    switch (langue) {
+      case 'fr':
+        s += "<table> <caption> Récapitulatif </caption> \
+        <thead> <tr>\
+            <th scope='col'>Niveau</th> <th scope='col'>Grilles jouées</th>\
+            <th scope='col'>Score moyen</th> <th scope='col'>durée</th>\
+          </tr> </thead>\
+        <tbody>"
+        break
+      case 'en':
+        s += "<table> <caption> Summary </caption> \
+        <thead> <tr>\
+            <th scope='col'>Level</th> <th scope='col'>Played grids</th>\
+            <th scope='col'>Average Score</th> <th scope='col'>time</th>\
+          </tr> </thead>\
+        <tbody>"
+        break
+    }
+    for (let lvl in cumulStats) { // remplissage du tableau
+      let slvl = lvl[0] + '.' + lvl[1]
+      let data = cumulStats[lvl]
+      s += `<tr> <th scope='row'>${slvl}</th> <td>${data.nb_grids}</td>\
+     <td>${data.avg_score.toFixed(0)}</td> <td>${data.avg_time.toFixed(1)}</td> </tr>`
+    }
+    s += "</tbody>  </table >"
+    // fin du code HTML du tableau
+
     return s
   }
 }
@@ -368,7 +433,7 @@ function returnToHome() {
   // et affichage de l'animation finale ...
   let modalEndGrid = document.getElementById("modalWait");
   modalEndGrid.style.display = "block"
-  
+
   // retour à l'index 
   setTimeout(() =>
     window.location.replace(homePageUrl()), 400)
@@ -377,6 +442,11 @@ function returnToHome() {
 // imgHome est l'image de la maison en haut à gauche
 document.getElementById('imgHome').onclick = goHome
 
+// script associé au bouton de RAZ des stats
+document.getElementById('btRazStats').onclick = function (event) {
+  localStorage.removeItem('trainingStats');
+  returnToHome()
+}
 /**
  * retour à la page d'index, avec affichage des stats si nécessaire
  */
@@ -418,7 +488,8 @@ let dico = {
     mode_arete: "mode Arête",
     mode_losange: "mode Losange",
     modalEndGameTitle: "Statistiques de l'entraînement",
-    pEndGameMessage: "<strong>Moyenne</strong> [Min &rarr; Max]"
+    pEndGameMessage: "<strong>Moyenne</strong> [Min &rarr; Max]",
+    btRazStats: "Effacement des statistiques"
   },
   "en": {
     btcancel: "Abort",
@@ -429,7 +500,8 @@ let dico = {
     mode_arete: "Edge mode",
     mode_losange: "Diamond mode",
     modalEndGameTitle: "Training statistics",
-    pEndGameMessage: "<strong>Average</strong> [Min &rarr; Max]"
+    pEndGameMessage: "<strong>Average</strong> [Min &rarr; Max]",
+    btRazStats: "Clear statistics"
   }
 }
 
