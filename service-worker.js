@@ -9,7 +9,11 @@
 
 // Le n° de version de l'appication PWA
 // Mettre à jour pour forcer l'actualisation du cache du navigateur
-const VERSION_SC = "2.5.2"
+const VERSION_SC = "2.6.0"
+
+// Enregistrement du n° de version dans le local storage
+localStorage.setItem('appVersion', VERSION_SC)
+
 
 // Based off of https://github.com/pwa-builder/PWABuilder/blob/main/docs/sw.js
 
