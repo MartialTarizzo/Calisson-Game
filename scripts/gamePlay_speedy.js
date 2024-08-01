@@ -368,8 +368,14 @@ function endGame() {
   // on sauve tout ça dans le storage local
   localStorage.setItem('bestScores', JSON.stringify(bestScores))
   // affichage des meilleurs scores
-  let strBestScores = bestScores.toString().replaceAll(',', ' - ')
-  document.getElementById('bestScores').innerText = strBestScores
+  if (bestScores.length > 1) {
+    document.getElementById('bestScoresDiv').style.display = ""
+    let strBestScores = bestScores.toString().replaceAll(',', ' - ')
+    document.getElementById('bestScores').innerText = strBestScores
+  
+  } else {
+    document.getElementById('bestScoresDiv').style.display = "none"    
+  }
 
   // affichage du popup de fin de partie
   let modalEndGame = document.getElementById("modalEndGame");
