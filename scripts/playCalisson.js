@@ -174,7 +174,7 @@ window.onresize = () => { setZoomFactor(); rafraichitlongueur() }
 
 /** fonction retournant la taille des points dessinés au mileu des arêtes */
 function calcTaillePoint() {
-    return canvas.width / 30 / taille
+    return longueur / 15
 }
 
 /** le point de coordonnées (x, y) dans le canvas est-il assez proche du point d'indice i dans tabmileu ? */

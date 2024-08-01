@@ -321,8 +321,13 @@ function endGame() {
     return msg
   }
 
+  // récupération du meilleur score dans le storage
   const bestScoreInStorage = localStorage.getItem('bestScore')
   const bestScore = bestScoreInStorage ? JSON.parse(bestScoreInStorage) : 0
+  // idem pour le tableau des meilleurs scores
+  const bestScoresInStorage = localStorage.getItem('bestScores')
+  let bestScores = bestScoresInStorage ? JSON.parse(bestScoresInStorage) : []
+
   const endDate = Date.now()
 
   document.getElementById('btNewGame').onclick = function (event) {
@@ -351,9 +356,23 @@ function endGame() {
     msg += format(langStrings["headerEndGame_3"], { bestScore: bestScore })
   }
 
-  let modalEndGame = document.getElementById("modalEndGame");
+  // affichage du message
   let parMsg = document.getElementById("pEndGameMessage");
   parMsg.innerHTML = msg
+
+  // mise à jour du tableau des meilleurs scores :
+  // on ajoute le score courant, tri en ordre décroissant, on garde les 6 premiers
+  bestScores.push(scoreFinal)
+  bestScores.sort((a,b) => b-a)
+  bestScores = bestScores.slice(0, 6)
+  // on sauve tout ça dans le storage local
+  localStorage.setItem('bestScores', JSON.stringify(bestScores))
+  // affichage des meilleurs scores
+  let strBestScores = bestScores.toString().replaceAll(',', ' - ')
+  document.getElementById('bestScores').innerText = strBestScores
+
+  // affichage du popup de fin de partie
+  let modalEndGame = document.getElementById("modalEndGame");
   modalEndGame.style.display = "block";
 }
 
@@ -532,8 +551,9 @@ let dico = {
     etiqTempsRestant: "Temps restant :",
     etiqScore: "Score total : ",
     modalEndGameTitle: "Partie terminée",
-    btRazStats: "Effacement du score à battre<br>et nouvelle partie",
+    btRazStats: "Effacement des scores<br>et nouvelle partie",
     btNewGame: "Nouvelle partie",
+    bestScoresCaption: "Meilleurs scores",
     msgStats: `
     Durée de la partie : <strong>{dureePartie} s</strong><br>
     Dernier niveau résolu : <strong>{niveauMax}</strong><br>
@@ -567,8 +587,9 @@ let dico = {
     etiqTempsRestant: "Time left:",
     etiqScore: "Total score: ",
     modalEndGameTitle: "Game Over",
-    btRazStats: "Erase the best score<br>and play again",
+    btRazStats: "Erase the scores<br>and play again",
     btNewGame: "Play again",
+    bestScoresCaption: "Best scores",
     msgStats: `
     Length of Game: <strong>{dureePartie} s</strong><br>
     Last level solved: <strong>{niveauMax}</strong><br>

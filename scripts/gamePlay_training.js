@@ -304,7 +304,6 @@ function genEnigme() {
  * fonction appelée quand le joueur clique sur le bouton d'abandon
  * - affiche la solution pendant une durée fixée et lance la fonction 
  *   de callback avec un score nul (cf abandonGrille dans le fichier de résolution)
- * - retranche 60 s au temps (si possible)
  */
 function cancelGrid() {
   abandonGrille();
