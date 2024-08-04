@@ -321,15 +321,9 @@ function endGame() {
     return msg
   }
 
-  // récupération du meilleur score dans le storage
-  const bestScoreInStorage = localStorage.getItem('bestScore')
-  const bestScore = bestScoreInStorage ? JSON.parse(bestScoreInStorage) : 0
-  // idem pour le tableau des meilleurs scores
-  const bestScoresInStorage = localStorage.getItem('bestScores')
-  let bestScores = bestScoresInStorage ? JSON.parse(bestScoresInStorage) : []
-
   const endDate = Date.now()
 
+  // fonctions associées aux boutons de la fenête popup
   document.getElementById('btNewGame').onclick = function (event) {
     modalEndGame.style.display = "none";
     beginGame()
@@ -340,16 +334,22 @@ function endGame() {
     beginGame()
   }
 
-  let parStats = document.getElementById('pStats')
-  parStats.innerHTML = calcMsgStats()
-
+  // Calcul du score final de la partie
   let scoreFinal = totalScore + bonus
 
+  // récupération du meilleur score dans le storage
+  const bestScoreInStorage = localStorage.getItem('bestScore')
+  const bestScore = bestScoreInStorage ? JSON.parse(bestScoreInStorage) : 0
+  // idem pour le tableau des meilleurs scores
+  const bestScoresInStorage = localStorage.getItem('bestScores')
+  let bestScores = bestScoresInStorage ? JSON.parse(bestScoresInStorage) : []
+
+  // début de fabrication du message pour le score de la partie en cours
   let msg = format(langStrings["headerEndGame_1"], { scoreFinal: scoreFinal })
 
+  // message additionnel du score en cours
   if (scoreFinal > bestScore) {
     msg += langStrings["headerEndGame_2"]
-
     localStorage.setItem('bestScore', JSON.stringify(scoreFinal))
   }
   else {
@@ -360,9 +360,22 @@ function endGame() {
   let parMsg = document.getElementById("pEndGameMessage");
   parMsg.innerHTML = msg
 
+  // message des stats de la partie en cours
+  let parStats = document.getElementById('pStats')
+  parStats.innerHTML = calcMsgStats()
+
   // mise à jour du tableau des meilleurs scores :
-  // on ajoute le score courant, tri en ordre décroissant, on garde les 6 premiers
-  bestScores.push(scoreFinal)
+  // ajout du best score si > 0
+  if (bestScore > 0) {bestScores.push(bestScore)}
+  // on ajoute le score courant si > 0
+  if (scoreFinal > 0) {bestScores.push(scoreFinal)}
+  // élimination des doublons en passant par un set
+  let setScores = new Set()
+  for (let s of bestScores) {
+    setScores.add(s)
+  }
+  bestScores = Array.from(setScores)
+  // tri en ordre décroissant, on garde les 6 premiers
   bestScores.sort((a,b) => b-a)
   bestScores = bestScores.slice(0, 6)
   // on sauve tout ça dans le storage local
