@@ -330,6 +330,7 @@ function endGame() {
   }
   document.getElementById('btRazStats').onclick = function (event) {
     localStorage.removeItem('bestScore');
+    localStorage.removeItem('bestScores');
     modalEndGame.style.display = "none";
     beginGame()
   }
