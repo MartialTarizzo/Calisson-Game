@@ -58,13 +58,20 @@
 </script>
 
 <body style=" font-size: 20px; margin: 50px; text-align: left; border-width: 1px;">
-    <h1 class="titrePageIndex">Speedy
-        Calisson</h1>
+    <h1 class="titrePageIndex">Speedy Calisson</h1>
+
+    <div style="float: left; align-items: center;">
+        <a href="https://discord.gg/uyTBhBcruF" target="_blank">
+            <img src="pictures/DiscordCalisson_192x192.png" width="128" height="128">
+            <br>
+            <span>Discord Server</span>
+        </a>
+    </div>
 
     <div style="float: right; align-items: center;">
         <button id="btnLang" onclick="setTimeout(()=> {
-        localStorage.setItem('langue', 'fr') ;
-        window.location.replace('./index.html')}, 0)">
+            localStorage.setItem('langue', 'fr') ;
+            window.location.replace('./index.html')}, 0)">
             <em>Version <br> française</em>
         </button>
     </div>
@@ -178,7 +185,7 @@
         In the event of a level change, the current grid is abandoned.
     </p>
     <p>
-        When returning to the home page, statistics for the current training session 
+        When returning to the home page, statistics for the current training session
         as well as the previous ones are displayed.
     </p>
 
