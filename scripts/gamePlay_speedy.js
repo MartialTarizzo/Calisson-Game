@@ -353,8 +353,8 @@ function endGame() {
     msg += langStrings["headerEndGame_2"]
     localStorage.setItem('bestScore', JSON.stringify(scoreFinal))
   }
-  else {
-    msg += format(langStrings["headerEndGame_3"], { bestScore: bestScore })
+  else if (scoreFinal > (bestScores[bestScores.length - 1] ?? 0)) {
+    msg += langStrings["headerEndGame_4"]
   }
 
   // affichage du message
@@ -593,8 +593,7 @@ let dico = {
      <span style="color: red">{scoreFinal} pts</span>
      </strong>`,
     headerEndGame_2: '<br><strong>C\'est votre meilleur score !</strong>',
-    headerEndGame_3: `<br><strong>Le score à battre est toujours de <br>
-     <span style="color: red">{bestScore} pts</span></strong>`,
+     headerEndGame_4: '<br>C\'est un des meilleurs scores !'
   },
   "en": {
     btcancel: "Abort",
@@ -629,8 +628,7 @@ let dico = {
     <span style="color: red">{scoreFinal} pts</span>
     </strong>`,
     headerEndGame_2: '<br><strong>This is your best score!</strong>',
-    headerEndGame_3: `<br><strong>The score to beat is still <br>
-    <span style="color: red">{bestScore} pts</span></strong>`,
+    headerEndGame_4: '<br>It\'s one of the best scores !'
   }
 }
 
