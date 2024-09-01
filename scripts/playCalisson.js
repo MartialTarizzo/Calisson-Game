@@ -24,6 +24,12 @@ let canvas, context;
 
 let currentEnigme;
 
+// l'index du dernier segment survolé par le curseur (pointeur souris)
+// Pour ne dessiner la grille que si nécessaire lors du déplacement
+// du curseur
+let lastCursorIndex = -1
+
+
 // les largeurs des tracés
 let dashLineWidth = 1
 let gridLineWidth = 3
@@ -163,6 +169,7 @@ if (canvas.getAttribute('listenerYetAdded') !== 'true') {
         curseur(evt)
     }, false);
     canvas.addEventListener('pointerout', function (evt) {
+        lastCursorIndex = -1;
         dessinerlafigure()
     }, false);
 }
@@ -203,6 +210,7 @@ function rafraichit() {
     v3y = longueur / 2;
     centrex = Math.sqrt(3) / 2 * longueur * taille + marge
     centrey = marge;
+    lastCursorIndex = -1;
 
     miseajourpoint();   // remplit les tableaux de travail
     dessinerlafigure()  // puis affichage
@@ -945,7 +953,8 @@ function curseur(evt) {
         canvas.style.cursor = 'auto';
 
         for (var i = 0; i < tabmilieu.length; i++) {
-            if (curseurProcheMilieu(x, y, i)) {
+            if (curseurProcheMilieu(x, y, i) && i != lastCursorIndex) {
+                lastCursorIndex = i;
                 canvas.style.cursor = 'pointer';
                 dessinerlafigure();
                 if (tabmilieu[i][2] != 'bloquee') {
@@ -956,6 +965,7 @@ function curseur(evt) {
                     context.fill();
                     context.closePath();
                 }
+                break;
             }
         }
     }
@@ -1020,6 +1030,7 @@ function rafraichitlongueur() {
     centrey = marge;
     canvas.width = Math.sqrt(3) * taille * longueur + 2 * marge;
     canvas.height = taille * longueur * 2 + 2 * marge;
+    lastCursorIndex = -1;
 
     miseajourpointencours()
     dessinerlafigure()
