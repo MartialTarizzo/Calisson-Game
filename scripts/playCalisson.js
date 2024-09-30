@@ -567,7 +567,7 @@ function termine() {
 
     jeuPossible = !jeuPossible;
 
-    dessinerlafigure();
+    // dessinerlafigure();
 }
 
 function dessinerlafigure() {

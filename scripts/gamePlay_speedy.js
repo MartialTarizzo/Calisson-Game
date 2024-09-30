@@ -242,6 +242,7 @@ function decompteTemps() {
   if (maxTime <= 0) {
     clearInterval(gameTimer)
     chronoarret()
+    document.getElementById('spTempsRestant').innerHTML = "0 s"
     bonus = calcBonus()
     // affichage temporaire de la solution de la grille inachevée
     // pendant la durée définie dans la fonction abandonGrille
