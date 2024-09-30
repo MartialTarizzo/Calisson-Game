@@ -440,10 +440,11 @@ function restart(objScore) {
     modalEndGrid.style.display = "block"
 
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
-    // l'animation suivante dure 0+20+1000+400+0 = 1420 ms
-    $('#popupEndGrid').css('display', 'flex').animate({
+    // l'animation suivante dure 0+1000+1000+400+0 = 2400 ms
+    $('#popupEndGrid')
+    .animate({
       'zoom': 1
-    }, 0).fadeIn(10).animate({
+    }, 0).fadeIn(1000).animate({
       'zoom': calcZoomFactor()
     }, 1000).fadeOut(400)
       .animate({
@@ -463,7 +464,9 @@ function restart(objScore) {
       totalScore += score;
       if (totalScore >= scoreBonif) {
         scoreBonif += incScoreBonif
-        maxTime += timeBonif
+        maxTime += timeBonif + 2
+      } else {
+        maxTime += 2
       }
       document.getElementById('valScore').innerHTML = totalScore;
       genEnigme()
@@ -471,7 +474,7 @@ function restart(objScore) {
       modalEndGrid.style.display = "none"
 
       start(currentEnig, restart, setLang)
-    }, 1000)
+    }, 2400)
   }
   else {  // score nul => grille abandonnée
     if (maxTime > 0) {
