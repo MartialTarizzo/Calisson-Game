@@ -217,39 +217,38 @@ function rafraichit() {
 }
 
 // recalcule toutes les grandeurs géométriques dans tabsegment et tabmilieu
-function miseajourpointencours() {
+function recalcGeoData() {
     let cpt = 0;
     // console.log(taille)
     //côté gauche avec diagonale verticale
     for (let j = 0; j < 2 * taille; j++) {
 
         for (let i = 0; i < Math.min(taille + 1, 2 * taille - j); i++) {
-            let k = 0;
             if ((j > 0) && (i < taille)) {
                 tabsegment[cpt] = [
-                    [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-                    [centrex + (i + 1) * v1x + j * v2x + k * v3x, centrey + (i + 1) * v1y + j * v2y + k * v3y]
+                    [centrex + i * v1x + j * v2x, centrey + i * v1y + j * v2y],
+                    [centrex + (i + 1) * v1x + j * v2x, centrey + (i + 1) * v1y + j * v2y]
                 ];
-                tabmilieu[cpt][0] = centrex + (i + 0.5) * v1x + j * v2x + k * v3x;
-                tabmilieu[cpt][1] = centrey + (i + 0.5) * v1y + j * v2y + k * v3y;
+                tabmilieu[cpt][0] = centrex + (i + 0.5) * v1x + j * v2x;
+                tabmilieu[cpt][1] = centrey + (i + 0.5) * v1y + j * v2y;
                 cpt++
             }
             if (i < taille) {
                 tabsegment[cpt] = [
-                    [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-                    [centrex + i * v1x + (j + 1) * v2x + k * v3x, centrey + i * v1y + (j + 1) * v2y + k * v3y]
+                    [centrex + i * v1x + j * v2x, centrey + i * v1y + j * v2y],
+                    [centrex + i * v1x + (j + 1) * v2x, centrey + i * v1y + (j + 1) * v2y]
                 ];
-                tabmilieu[cpt][0] = centrex + i * v1x + (j + 0.5) * v2x + k * v3x;
-                tabmilieu[cpt][1] = centrey + i * v1y + (j + 0.5) * v2y + k * v3y;
+                tabmilieu[cpt][0] = centrex + i * v1x + (j + 0.5) * v2x;
+                tabmilieu[cpt][1] = centrey + i * v1y + (j + 0.5) * v2y;
                 cpt++
             }
             if (i > 0) {
                 tabsegment[cpt] = [
-                    [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-                    [centrex + i * v1x + j * v2x + (k + 1) * v3x, centrey + i * v1y + j * v2y + (k + 1) * v3y]
+                    [centrex + i * v1x + j * v2x, centrey + i * v1y + j * v2y],
+                    [centrex + i * v1x + j * v2x + v3x, centrey + i * v1y + j * v2y + v3y]
                 ];
-                tabmilieu[cpt][0] = centrex + i * v1x + j * v2x + (k + 0.5) * v3x;
-                tabmilieu[cpt][1] = centrey + i * v1y + j * v2y + (k + 0.5) * v3y;
+                tabmilieu[cpt][0] = centrex + i * v1x + j * v2x + v3x / 2;
+                tabmilieu[cpt][1] = centrey + i * v1y + j * v2y + v3y / 2;
                 cpt++
             }
         }
@@ -258,36 +257,34 @@ function miseajourpointencours() {
     for (let j = 0; j < 2 * taille; j++) {
         for (let k = 0; k < Math.min(taille + 1, 2 * taille - j); k++) {
 
-            let i = 0;
-
             if ((j > 0) && (k < taille)) {
                 tabsegment[cpt] = [
-                    [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-                    [centrex + i * v1x + j * v2x + (k + 1) * v3x, centrey + i * v1y + j * v2y + (k + 1) * v3y]
+                    [centrex + j * v2x + k * v3x, centrey + j * v2y + k * v3y],
+                    [centrex + j * v2x + (k + 1) * v3x, centrey + j * v2y + (k + 1) * v3y]
                 ];
-                tabmilieu[cpt][0] = centrex + i * v1x + j * v2x + (k + 0.5) * v3x;
-                tabmilieu[cpt][1] = centrey + i * v1y + j * v2y + (k + 0.5) * v3y;
+                tabmilieu[cpt][0] = centrex + j * v2x + (k + 0.5) * v3x;
+                tabmilieu[cpt][1] = centrey + j * v2y + (k + 0.5) * v3y;
                 cpt++
             }
             if ((k < taille) && (k > 0)) {
 
                 tabsegment[cpt] = [
-                    [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-                    [centrex + i * v1x + (j + 1) * v2x + k * v3x, centrey + i * v1y + (j + 1) * v2y + k * v3y]
+                    [centrex + j * v2x + k * v3x, centrey + j * v2y + k * v3y],
+                    [centrex + (j + 1) * v2x + k * v3x, centrey + (j + 1) * v2y + k * v3y]
                 ];
-                tabmilieu[cpt][0] = centrex + i * v1x + (j + 0.5) * v2x + k * v3x;
-                tabmilieu[cpt][1] = centrey + i * v1y + (j + 0.5) * v2y + k * v3y;
+                tabmilieu[cpt][0] = centrex + (j + 0.5) * v2x + k * v3x;
+                tabmilieu[cpt][1] = centrey + (j + 0.5) * v2y + k * v3y;
                 cpt++
             }
 
             if (k > 0) {
 
                 tabsegment[cpt] = [
-                    [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-                    [centrex + (i + 1) * v1x + j * v2x + k * v3x, centrey + (i + 1) * v1y + j * v2y + k * v3y]
+                    [centrex + j * v2x + k * v3x, centrey + j * v2y + k * v3y],
+                    [centrex + v1x + j * v2x + k * v3x, centrey + v1y + j * v2y + k * v3y]
                 ];
-                tabmilieu[cpt][0] = centrex + (i + 0.5) * v1x + j * v2x + k * v3x;
-                tabmilieu[cpt][1] = centrey + (i + 0.5) * v1y + j * v2y + k * v3y;
+                tabmilieu[cpt][0] = centrex + v1x / 2 + j * v2x + k * v3x;
+                tabmilieu[cpt][1] = centrey + v1y / 2 + j * v2y + k * v3y;
                 cpt++
             }
         }
@@ -570,7 +567,7 @@ function termine() {
 
     jeuPossible = !jeuPossible;
 
-    dessinerlafigure();
+    // dessinerlafigure();
 }
 
 function dessinerlafigure() {
@@ -616,7 +613,8 @@ function dessinerlafigure() {
                 context.stroke();
                 context.closePath();
             }
-            if ((tabmilieu[i][4]) && (jeuPossible)) {
+            // if ((tabmilieu[i][4]) && (jeuPossible==jeuPossible)) {
+            if (tabmilieu[i][4]) {
                 var x = tabmilieu[i][0];
                 var y = tabmilieu[i][1];
                 let x1, y1, x2, y2, x3, y3, x4, y4, couleur;
@@ -767,8 +765,191 @@ function dessinerSolution() {
             case 'bloquee': tabmilieu[i][2] = true;
         }
     }
-    dessinerlafigure();
+    remplirLosanges()
+    dessinerlafigure()
 }
+
+/*
+Comment dans le code javascript du jeu du calisson dessiner les losanges de couleur ?
+On ne peut pas faire comme en Python, car on ne travaille pas à partir de la modélisation 3D.
+On dispose des données géométriques dans les tableaux tabmilieu et tabsegment. De plus,
+le tableau solution contient l'état du tracé de la solution pour tous les points :
+- Si true ou "bloquee", le segment fait partie du tracé de la solution 
+- Si false, il ne faut pas tracer de segment -> on peut alors avoir un losange rempli 
+centré sur le point en question. 
+Pour cela, il faut qu'on connaisse deux segments bordant le losange formant un angle aigu.
+
+Idée : 
+- fabriquer à partir de tabmilieu et de solution un nouveau tableau (nommé tabmilbor)
+  ressemblant à tabmilieu sauf : 
+  - le deuxième champ (2) mis à jour à partir de solution
+  - ajout d'un champ d'index pointant vers la position dans le tableau d'origine
+    (ceci est nécessaire pour le repérage des points voisins)
+  - de plus, on ajoute les segments du bord de l'hexagone à ce tableau
+
+le but final est de mettre à jour le champ (4) de chaque élément de tabmilieu
+pour un dessin correct des losanges à colorier : ceci est fait en appelant 
+la fonction remplirLosanges
+*/
+function remplirLosanges() {
+    // Les coordonnées des points dans tabmilieu sont des nombres flottants.
+    // pour éviter les erreurs de comparaison entre nombres flottants, 
+    // on convertit dans les tableaux les coordonnées (avec n décimales) 
+    // en entiers (x -> round(10**n * x))
+    // La fonction suivante effectue cette transformation pour tous les 
+    // nombres contenus dans l'argument x (ou sur x lui même si c'est un nombre)
+    function ar(x, n = 2) {
+        if (Array.isArray(x)) {
+            return x.map((e) => ar(e, n))
+        } else if (typeof x === "number") {
+            return Math.round(10 ** n * x)
+        } else {
+            return x
+        }
+    }
+
+    /*
+    Les points milieux des losanges candidats à être coloriés sont extraits de
+    tabmilbor : ce sont ceux pour lesquels le champ 2 est ni "true", ni "bloquee" 
+    donc "false".
+
+    Parmi ces points, seuls ceux vérifiant la règle de l'angle aigu 
+    (deux de ses côtés formés par une arête tracée ou le bord d'un losange
+    colorié forment un angle aigu) sont à colorier
+    */
+    function losanges_a_remplir() {
+        // mise à false du tracé du losange, et ajout de l'index
+        function addLast(arrMilieu, index) {
+            arrMilieu[4] = false
+            arrMilieu.push(index)
+            return arrMilieu
+        }
+        // la fonction ptsVoisins(a) retourne une liste de la forme [[p1, p2], [p3, p4]],
+        // chaque p_ retourné donne le point dans tabmilbor du milieu d'un segment entourant
+        //  le losange défini par le point milieu a.
+        // a est un élément de tabmilbor
+        // Les points sont regroupés par couples, chaque couple représentant deux arêtes formant
+        // un angle aigu du losange de centre a.
+
+        // les calculs internes sont effectués sur les coordonnées réelles des points contenues
+        //  dans tabmilieu pour éviter les erreurs liées à la manipulation des flottants
+
+        // si les segments définis par [pt1, pt2] sont à tracer (true ou bloquee), le losange doit
+        // être rempli. De même pour [pt3, pt4].
+        // comme pt_i ne donne que les coordonnées, il faut retrouver les pts en parcourant tabmilbor
+        function ptsVoisins(a) {
+            function samecoord(p, c) {
+                let [x, y] = c
+                return (p[0] == x) && (p[1] == y)
+            }
+
+            let pt1, pt2, pt3, pt4
+            let index = a.at(-1)
+            let ptX = tabmilieu[index][0]
+            let ptY = tabmilieu[index][1]
+            let orient = tabmilieu[index][3]
+
+            switch (orient) {
+                case 'hori':
+                    pt1 = ar([ptX + v1x / 2, ptY - v1y / 2])
+                    pt2 = ar([ptX + v1x / 2, ptY + v1y / 2])
+                    pt3 = ar([ptX + v3x / 2, ptY - v3y / 2])
+                    pt4 = ar([ptX + v3x / 2, ptY + v3y / 2])
+                    break
+                case 'gauche':
+                    pt1 = ar([ptX + v1x / 2, ptY - v1y / 2])
+                    pt2 = ar([ptX, ptY - v1y])
+                    pt3 = ar([ptX + v3x / 2, ptY + v3y / 2])
+                    pt4 = ar([ptX, ptY + v3y])
+                    break
+                case 'droite':
+                    pt1 = ar([ptX + v3x / 2, ptY - v3y / 2])
+                    pt2 = ar([ptX, ptY - v3y])
+                    pt3 = ar([ptX + v1x / 2, ptY + v3y / 2])
+                    pt4 = ar([ptX, ptY + v3y])
+                    break
+            }
+            let p1 = tabmilbor.find((p) => samecoord(p, pt1))
+            let p2 = tabmilbor.find((p) => samecoord(p, pt2))
+            let p3 = tabmilbor.find((p) => samecoord(p, pt3))
+            let p4 = tabmilbor.find((p) => samecoord(p, pt4))
+            return [[p1, p2], [p3, p4]]
+        }
+
+        // fabrication du tableau des bords de l'hexagone
+        let bords = []
+        for (let i = 0; i < taille; i++) {
+            bords.push([centrex + (i + 1 / 2) * v1x, centrey + (i + 1 / 2) * v1y, "bloquee", "gauche", false])
+            bords.push([centrex + (i + 1 / 2) * v3x, centrey + (i + 1 / 2) * v3y, "bloquee", "droite", false])
+
+            bords.push([centrex + taille * v1x, centrey + taille * v1y + longueur * (i + 1 / 2), "bloquee", "hori", false])
+            bords.push([centrex + taille * v3x, centrey + taille * v3y + longueur * (i + 1 / 2), "bloquee", "hori", false])
+
+            bords.push([centrex + (i + 1 / 2) * v1x, 2 * taille * longueur + centrey - (i + 1 / 2) * v1y, "bloquee", "droite", false])
+            bords.push([centrex + (i + 1 / 2) * v3x, 2 * taille * longueur + centrey - (i + 1 / 2) * v3y, "bloquee", "gauche", false])
+        }
+
+        // le tableau de travail principal tabmilbor
+        // contient les points milieux de tous les segments en coordonnées entières
+        // avec ajout des index, complété par les points milieux des segments
+        // définissant l'hexagone
+        let tabmilbor = ar(tabmilieu.concat(bords)).map(addLast)
+
+        // mise à jour du tracé du segment à partir du tableau solution
+        for (let i = 0; i < tabmilieu.length; i++) {
+            tabmilbor[i][2] = !!solution[i]
+        }
+
+        // le nombre de losanges peints. À la fin du travail, sera égal à 3*taille**2
+        let nbLosPeints = 0
+
+        // L'idée est de balayer tabmilbor pour tous les points p. 
+        // Si p[2]=false, on n'a pas de segment=>on doit peut être colorier le losange centré sur e.
+        // Pour le savoir, on récupère les index des voisins (indexVoisins(p)->[[i1, i2], [i3, i4]]). 
+        // On doit colorier le losange si les points pointés par [i1, i2] ou [i3, i4] forment un
+        // couple dont les deux segments doivent être tracés : on doit donc remplir le losange si
+        // (tabmilbor[i1][2] != false) && (tabmilbor[i2][2] != false) ou la même chose pour i3,i4
+        // si on remplit le losange, tous les segments l'entourant qui étaient à false passent 
+        // à "virtuel" permettant ainsi l'application de la règle de l'angle aigu.
+        while (nbLosPeints < 3 * taille ** 2) {
+            for (let p of tabmilbor) {
+                // seuls les points internes sont à examiner (pas les bords)
+                // et ces points ne doivent pas déjà être coloriés 
+                if ((p.at(-1) < tabmilieu.length) && !p[4]) {
+                    // seuls les points sans arête sont intéressants
+                    if (!p[2]) {
+                        let [[p1, p2], [p3, p4]] = ptsVoisins(p)
+                        if ((p1[2] && p2[2]) || (p3[2] && p4[2])) {
+                            // au moins un des deux couples des points voisins forme
+                            // un angle aigu : le losange doit être peint
+                            nbLosPeints++
+                            p[4] = true
+                            // ajout des segments "virtuels" permettant d'appliquer
+                            // la règle de l'angle aigu (segments bordant un losange colorié)
+                            for (let pp of [p1, p2, p3, p4]) {
+                                if (!pp[2]) {
+                                    pp[2] = "virtuel"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // C'est fini : on retourne le tableau de même taille que tabmilieu
+        // contenant toutes les valeurs indiquant si le losange doit être colorié
+        return tabmilbor.slice(0, tabmilieu.length).map((e) => e[4])
+    }
+
+    // calcul du tableau indiquant si le losange doit être rempli
+    let tablos = losanges_a_remplir()
+    
+    // mise à jour de tabmilieu
+    for (let i = 0; i < tabmilieu.length; i++) {
+        tabmilieu[i][4] = tablos[i]
+    }
+}
+
 
 function abandonGrille() {
 
@@ -940,6 +1121,7 @@ function calcBonus() {
 }
 
 function returnToGamePlay() {
+    remplirLosanges()
     funCallBack(calcScore())
 }
 
@@ -1032,7 +1214,7 @@ function rafraichitlongueur() {
     canvas.height = taille * longueur * 2 + 2 * marge;
     lastCursorIndex = -1;
 
-    miseajourpointencours()
+    recalcGeoData()
     dessinerlafigure()
 }
 
