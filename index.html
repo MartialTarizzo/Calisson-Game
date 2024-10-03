@@ -93,8 +93,7 @@
             border-width: 1px;
         }
 
-        .active,
-        .accordion:hover {
+        .active {
             background-color: lightblue;
             color: blue;
         }
@@ -173,18 +172,16 @@
         <script>
             var acc = document.getElementsByClassName("accordion");
             var i;
-            // Gestion de l'accordéon
-            for (i = 0; i < acc.length; i++) {
-                acc[i].addEventListener("click", function () {
-                    this.classList.toggle("active");
-                    var panel = document.getElementById("panelStats");
-                    if (panel.style.display === "block") {
-                        panel.style.display = "none";
-                    } else {
-                        panel.style.display = "block";
-                    }
-                });
-            }
+            // Gestion du bouton pour l'affichage des stats
+            acc[0].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var panel = document.getElementById("panelStats");
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+            });
             // récupération des stats d'entraînement
             let cumulStatsInStorage = localStorage.getItem('trainingStats')
             let cumulStats = cumulStatsInStorage ? JSON.parse(cumulStatsInStorage) : {}

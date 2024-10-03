@@ -79,8 +79,7 @@
             border-width: 1px;
         }
 
-        .active,
-        .accordion:hover {
+        .active {
             background-color: lightblue;
             color: blue;
         }
@@ -130,94 +129,92 @@
             <a href="./speedy.html"><button class="modeButton">Speedy !</button></a>
             <br>
         </p>
-                <!-- affichages des statistiques des parties déjà jouées -->
-                <p style="text-align: center;">
-                    <button class="accordion">
-                        Statistics
-                    </button>
-                    <!-- le div global d'affichage des stats -->
-                <div class="divStat" id="panelStats" style="display:none">
-                    <!-- le div d'affichage des stats en mode training -->
-                    <div id="d_trainingTable">
-                        <h3 style="text-align: center;">Training</h3>
-                        <div id="d_statGrid">
-                            <!-- emplacement pour le tableau définitif, calculé par le script qui suit -->
-                        </div>
-                    </div>
-                    <!-- le div d'affichage des meilleurs scores -->
-                    <div id="d_statBestScores">
-                        <h3 style="text-align: center;margin-block-end: 0em;">Best "Speedy" scores</h3>
-                        <p id="p_statBestScores" style="text-align: center; font-size: 1.5rem; margin-block-start: 0.3em;">
-                            <!-- emplacement pour les meilleurs scores -->
-                        </p>
-                    </div>
+        <!-- affichages des statistiques des parties déjà jouées -->
+        <p style="text-align: center;">
+            <button class="accordion">
+                Statistics
+            </button>
+            <!-- le div global d'affichage des stats -->
+        <div class="divStat" id="panelStats" style="display:none">
+            <!-- le div d'affichage des stats en mode training -->
+            <div id="d_trainingTable">
+                <h3 style="text-align: center;">Training</h3>
+                <div id="d_statGrid">
+                    <!-- emplacement pour le tableau définitif, calculé par le script qui suit -->
                 </div>
+            </div>
+            <!-- le div d'affichage des meilleurs scores -->
+            <div id="d_statBestScores">
+                <h3 style="text-align: center;margin-block-end: 0em;">Best "Speedy" scores</h3>
+                <p id="p_statBestScores" style="text-align: center; font-size: 1.5rem; margin-block-start: 0.3em;">
+                    <!-- emplacement pour les meilleurs scores -->
                 </p>
-        
-                <!-- Le script de remplissage des stats -->
-                <script>
-                    var acc = document.getElementsByClassName("accordion");
-                    var i;
-                    // Gestion de l'accordéon
-                    for (i = 0; i < acc.length; i++) {
-                        acc[i].addEventListener("click", function () {
-                            this.classList.toggle("active");
-                            var panel = document.getElementById("panelStats");
-                            if (panel.style.display === "block") {
-                                panel.style.display = "none";
-                            } else {
-                                panel.style.display = "block";
-                            }
-                        });
-                    }
-                    // récupération des stats d'entraînement
-                    let cumulStatsInStorage = localStorage.getItem('trainingStats')
-                    let cumulStats = cumulStatsInStorage ? JSON.parse(cumulStatsInStorage) : {}
-                    // fabrication du tableau 
-                    let s = ""
-                    if (!jQuery.isEmptyObject(cumulStats)) {
-                        // code HTML de la mise en forme du tableau récapitulatif des stats 
-                        s += "<table class='center'>  \
+            </div>
+        </div>
+        </p>
+
+        <!-- Le script de remplissage des stats -->
+        <script>
+            var acc = document.getElementsByClassName("accordion");
+            var i;
+            // Gestion du bouton pour l'affichage des stats
+            acc[0].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var panel = document.getElementById("panelStats");
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+            });
+            // récupération des stats d'entraînement
+            let cumulStatsInStorage = localStorage.getItem('trainingStats')
+            let cumulStats = cumulStatsInStorage ? JSON.parse(cumulStatsInStorage) : {}
+            // fabrication du tableau 
+            let s = ""
+            if (!jQuery.isEmptyObject(cumulStats)) {
+                // code HTML de la mise en forme du tableau récapitulatif des stats 
+                s += "<table class='center'>  \
                                 <thead> <tr>\
                                     <th scope='col'>Level</th> <th scope='col'>Played grids</th>\
                                     <th scope='col'>Average score</th> <th scope='col'>Time</th>\
                                 </tr> </thead>\
                                 <tbody>"
-                        for (let lvl in cumulStats) { // remplissage du tableau
-                            let slvl = lvl[0] + '.' + lvl[1]
-                            let data = cumulStats[lvl]
-                            s += `<tr> <th scope='row'>${slvl}</th> <td>${data.nb_grids}</td>\
+                for (let lvl in cumulStats) { // remplissage du tableau
+                    let slvl = lvl[0] + '.' + lvl[1]
+                    let data = cumulStats[lvl]
+                    s += `<tr> <th scope='row'>${slvl}</th> <td>${data.nb_grids}</td>\
                                  <td>${data.avg_score.toFixed(0)}</td> <td>${data.avg_time.toFixed(1)}</td> </tr>`
-                        }
-                        s += "</tbody>  </table >"
-                        // fin du code HTML du tableau
-                    }
-                    // incorporation du tableau si non vide
-                    if (s.length > 0) {
-                        document.getElementById("d_statGrid").innerHTML = s
-                    } else {
-                        document.getElementById("d_trainingTable").style = "display:none;"
-                    }
-                    // récupération des meilleurs scores speedy
-                    const bestScoresInStorage = localStorage.getItem('bestScores')
-                    let bestScores = bestScoresInStorage ? JSON.parse(bestScoresInStorage) : []
-                    // incorporation si nécessaire
-                    if (bestScores.length > 0) {
-                        let s = "";
-                        for (score of bestScores) {
-                            s = s + score + " - "
-                        }
-                        document.getElementById("p_statBestScores").innerHTML = s.slice(0, -3)
-                    } else {
-                        document.getElementById("d_statBestScores").style = "display:none;"
-                    }
-        
-                    if (s.length == 0 && bestScores.length == 0) {
-                        // pas de stats à afficher
-                        document.getElementById("panelStats").innerHTML = '<h3 style="text-align: center;">No data available !</h3>'
-                    }
-                </script>
-        
+                }
+                s += "</tbody>  </table >"
+                // fin du code HTML du tableau
+            }
+            // incorporation du tableau si non vide
+            if (s.length > 0) {
+                document.getElementById("d_statGrid").innerHTML = s
+            } else {
+                document.getElementById("d_trainingTable").style = "display:none;"
+            }
+            // récupération des meilleurs scores speedy
+            const bestScoresInStorage = localStorage.getItem('bestScores')
+            let bestScores = bestScoresInStorage ? JSON.parse(bestScoresInStorage) : []
+            // incorporation si nécessaire
+            if (bestScores.length > 0) {
+                let s = "";
+                for (score of bestScores) {
+                    s = s + score + " - "
+                }
+                document.getElementById("p_statBestScores").innerHTML = s.slice(0, -3)
+            } else {
+                document.getElementById("d_statBestScores").style = "display:none;"
+            }
+
+            if (s.length == 0 && bestScores.length == 0) {
+                // pas de stats à afficher
+                document.getElementById("panelStats").innerHTML = '<h3 style="text-align: center;">No data available !</h3>'
+            }
+        </script>
+
         <p class="maxGridSize">
             <span id="etiqMaxGridSize">Maximum grid size (Speedy) : </span>
             <select name="simple" id="selMaxGridSize" class="maxGridSize" onchange="setMaxGridSize()">
