@@ -833,10 +833,6 @@ function remplirLosanges() {
 
         // les calculs internes sont effectués sur les coordonnées réelles des points contenues
         //  dans tabmilieu pour éviter les erreurs liées à la manipulation des flottants
-
-        // si les segments définis par [pt1, pt2] sont à tracer (true ou bloquee), le losange doit
-        // être rempli. De même pour [pt3, pt4].
-        // comme pt_i ne donne que les coordonnées, il faut retrouver les pts en parcourant tabmilbor
         function ptsVoisins(a) {
             function samecoord(p, c) {
                 let [x, y] = c
@@ -869,6 +865,8 @@ function remplirLosanges() {
                     pt4 = ar([ptX, ptY + v3y])
                     break
             }
+            // Comme pt_i ne donne que les coordonnées, il faut retrouver les pts en parcourant tabmilbor
+
             let p1 = tabmilbor.find((p) => samecoord(p, pt1))
             let p2 = tabmilbor.find((p) => samecoord(p, pt2))
             let p3 = tabmilbor.find((p) => samecoord(p, pt3))
@@ -895,7 +893,7 @@ function remplirLosanges() {
         // définissant l'hexagone
         let tabmilbor = ar(tabmilieu.concat(bords)).map(addLast)
 
-        // mise à jour du tracé du segment à partir du tableau solution
+        // dans tabmilbor, mise à jour du tracé du segment à partir du tableau solution
         for (let i = 0; i < tabmilieu.length; i++) {
             tabmilbor[i][2] = !!solution[i]
         }
@@ -904,28 +902,36 @@ function remplirLosanges() {
         let nbLosPeints = 0
 
         // L'idée est de balayer tabmilbor pour tous les points p. 
-        // Si p[2]=false, on n'a pas de segment=>on doit peut être colorier le losange centré sur e.
-        // Pour le savoir, on récupère les index des voisins (indexVoisins(p)->[[i1, i2], [i3, i4]]). 
-        // On doit colorier le losange si les points pointés par [i1, i2] ou [i3, i4] forment un
-        // couple dont les deux segments doivent être tracés : on doit donc remplir le losange si
-        // (tabmilbor[i1][2] != false) && (tabmilbor[i2][2] != false) ou la même chose pour i3,i4
-        // si on remplit le losange, tous les segments l'entourant qui étaient à false passent 
+        // Si p[2]=false, on n'a pas de segment => on doit peut être colorier le losange centré sur p.
+        // Pour le savoir, on récupère les points voisins (ptsVoisins(p)->[[p1, p2], [p3, p4]]). 
+        // On doit colorier le losange si les points [p1, p2] ou [p3, p4] forment un
+        // couple dont les deux segments sont différents de false : on remplit le losange si
+        // (p1[2] != false) && (p2[2] != false) ou la même chose pour p3,p4
+        // Si on remplit le losange, tous les segments l'entourant qui étaient à false passent 
         // à "virtuel" permettant ainsi l'application de la règle de l'angle aigu.
+
+        // Il y a plusieurs passes (boucle while) du balayage (boucle for), car la détermination
+        // du coloriage d'un losange dépend du coloriage préalable des losanges voisins (pour
+        // lesquels des arêtes vont passer à "virtuel")
+        // Les passes sont terminées quand le nombre de losanges coloriés est égal au nombre
+        // total de losanges à colorier  (3 * taille ** 2)
         while (nbLosPeints < 3 * taille ** 2) {
+            // il reste des losanges non coloriés
             for (let p of tabmilbor) {
                 // seuls les points internes sont à examiner (pas les bords)
                 // et ces points ne doivent pas déjà être coloriés 
                 if ((p.at(-1) < tabmilieu.length) && !p[4]) {
-                    // seuls les points sans arête sont intéressants
+                    // seuls les points sans arête (réelle ou virtuelle) sont intéressants
                     if (!p[2]) {
+                        // recherche des pts voisins
                         let [[p1, p2], [p3, p4]] = ptsVoisins(p)
                         if ((p1[2] && p2[2]) || (p3[2] && p4[2])) {
                             // au moins un des deux couples des points voisins forme
                             // un angle aigu : le losange doit être peint
                             nbLosPeints++
-                            p[4] = true
-                            // ajout des segments "virtuels" permettant d'appliquer
-                            // la règle de l'angle aigu (segments bordant un losange colorié)
+                            // peinture du losange
+                            p[4] = true 
+                            // ajout des segments "virtuels"
                             for (let pp of [p1, p2, p3, p4]) {
                                 if (!pp[2]) {
                                     pp[2] = "virtuel"
@@ -943,8 +949,8 @@ function remplirLosanges() {
 
     // calcul du tableau indiquant si le losange doit être rempli
     let tablos = losanges_a_remplir()
-    
-    // mise à jour de tabmilieu
+
+    // mise à jour dans tabmilieu de l'état de coloriage des losanges
     for (let i = 0; i < tabmilieu.length; i++) {
         tabmilieu[i][4] = tablos[i]
     }
