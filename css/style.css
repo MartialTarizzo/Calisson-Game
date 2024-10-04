@@ -79,9 +79,13 @@ input[type=number] {
 }
 
 #btRazStats {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: normal;
     background-color: lightgray;
+}
+
+#btNewGame {
+    width: 250px;
 }
 
 hr {

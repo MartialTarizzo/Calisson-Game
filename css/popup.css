@@ -37,8 +37,15 @@ style du popup de fin de partie
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
-    animation-duration: 0.4s
+    animation-duration: 0.4s;
+    font-size: 30px;
 }
+
+@media screen and (min-width: 700px) {
+    .modal-content {
+        font-size: 20px;
+    }
+} 
 
 /* Add Animation */
 @-webkit-keyframes animatetop {
