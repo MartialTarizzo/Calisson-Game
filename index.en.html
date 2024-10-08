@@ -106,10 +106,51 @@
 </script>
 
 <body style=" font-size: 20px; margin: 50px; text-align: left; border-width: 1px;">
+
+    <!-- le dialogue modal pour discord, avec le même style que pour les fins de partie -->
+    <div id="modalEndGame" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content" style="text-align: center;">
+            <div class="modal-header">
+                <h3 id="modalEndGameTitle">Discord Server</h3>
+            </div>
+            <div class="modal-body">
+                <img src="pictures/DiscordCalisson_192x192.png" alt="">
+                <p id="pEndGameMessage">
+                    A Discord server is available for the players of "Speedy Calisson".
+                </p>
+                <p> Come and discuss the game, the solving techniques,
+                    suggest improvements, report bugs...
+                </p>
+                </p>
+            </div>
+            <div>
+                <a href="https://discord.gg/uyTBhBcruF" target="_blank" style="text-decoration: none;">
+                    <button id="btRazStats" style="font-size: 30px;">Open Discord</button>
+                </a>
+            </div>
+            <hr>
+            <button id="btNewGame">Close</button>
+        </div>
+    </div>
+    <script>
+        let modalEndGame = document.getElementById("modalEndGame");
+        modalEndGame.style.display = "none";
+
+        document.getElementById('btNewGame').onclick = function (event) {
+            modalEndGame.style.display = "none";
+        }
+
+        function openPopupDiscord() {
+            document.getElementById('modalEndGame').style.display = "block";
+            return false
+        }
+    </script>
+
     <h1 class="titrePageIndex">Speedy Calisson</h1>
 
     <div style="float: left; align-items: center;">
-        <a href="https://discord.gg/uyTBhBcruF" target="_blank">
+        <a href="" onclick="return openPopupDiscord()">
             <img src="pictures/DiscordCalisson_192x192.png" width="128" height="128">
             <br>
             <span>Discord Server</span>
