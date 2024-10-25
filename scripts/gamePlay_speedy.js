@@ -368,9 +368,9 @@ function endGame() {
 
   // mise à jour du tableau des meilleurs scores :
   // ajout du best score si > 0
-  if (bestScore > 0) {bestScores.push(bestScore)}
+  if (bestScore > 0) { bestScores.push(bestScore) }
   // on ajoute le score courant si > 0
-  if (scoreFinal > 0) {bestScores.push(scoreFinal)}
+  if (scoreFinal > 0) { bestScores.push(scoreFinal) }
   // élimination des doublons en passant par un set
   let setScores = new Set()
   for (let s of bestScores) {
@@ -378,7 +378,7 @@ function endGame() {
   }
   bestScores = Array.from(setScores)
   // tri en ordre décroissant, on garde les 6 premiers
-  bestScores.sort((a,b) => b-a)
+  bestScores.sort((a, b) => b - a)
   bestScores = bestScores.slice(0, 6)
   // on sauve tout ça dans le storage local
   localStorage.setItem('bestScores', JSON.stringify(bestScores))
@@ -387,9 +387,9 @@ function endGame() {
     document.getElementById('bestScoresDiv').style.display = ""
     let strBestScores = bestScores.toString().replaceAll(',', ' - ')
     document.getElementById('bestScores').innerText = strBestScores
-  
+
   } else {
-    document.getElementById('bestScoresDiv').style.display = "none"    
+    document.getElementById('bestScoresDiv').style.display = "none"
   }
 
   // affichage du popup de fin de partie
@@ -420,6 +420,8 @@ function endGame() {
  * - relance l'interface de résolution sur une nouvelle grille
  */
 function restart(objScore) {
+  // délai avant l'animation du score
+  let delai = 1000
 
   function displaypopupEndGrid() {
     // calcul du facteur de zoom
@@ -443,11 +445,12 @@ function restart(objScore) {
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
     // l'animation suivante dure 0+1000+1000+400+0 = 2400 ms
     $('#popupEndGrid')
-    .animate({
-      'zoom': 1
-    }, 0).fadeIn(1000).animate({
-      'zoom': calcZoomFactor()
-    }, 1000).fadeOut(400)
+    .stop(true, true).delay(delai)
+      .animate({
+        'zoom': 1
+      }, 0).fadeIn(1000).animate({
+        'zoom': calcZoomFactor()
+      }, 1000).fadeOut(400)
       .animate({
         'zoom': 1
       }, 0);
@@ -461,13 +464,16 @@ function restart(objScore) {
     displaypopupEndGrid()
     // on relance une nouvelle grille avec un délai compatible avec
     // la durée de l'animation du score
+    // Le temps restant est mis à jour en tenant compte de la durée de l'animation
+    // et du delai avant affichage du score de la grille (timeAdded)
+    let timeAdded = Math.round((3000 + delai) / 1000)
     setTimeout(() => {
       totalScore += score;
       if (totalScore >= scoreBonif) {
         scoreBonif += incScoreBonif
-        maxTime += timeBonif + 2
+        maxTime += timeBonif + timeAdded
       } else {
-        maxTime += 2
+        maxTime += timeAdded
       }
       document.getElementById('valScore').innerHTML = totalScore;
       genEnigme()
@@ -475,7 +481,7 @@ function restart(objScore) {
       modalEndGrid.style.display = "none"
 
       start(currentEnig, restart, setLang)
-    }, 2400)
+    }, 2400 + delai)
   }
   else {  // score nul => grille abandonnée
     if (maxTime > 0) {
@@ -597,7 +603,7 @@ let dico = {
      <span style="color: red">{scoreFinal} pts</span>
      </strong>`,
     headerEndGame_2: '<br><strong>C\'est votre meilleur score !</strong>',
-     headerEndGame_4: '<br>C\'est un des meilleurs scores !'
+    headerEndGame_4: '<br>C\'est un des meilleurs scores !'
   },
   "en": {
     btcancel: "Abort",

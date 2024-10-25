@@ -330,6 +330,8 @@ function cancelGrid() {
  * - relance l'interface de résolution sur une nouvelle grille
  */
 function restart(objScore) {
+  // délai avant l'animation du score
+  let delai = 1000
 
   function displaypopupEndGrid() {
     // calcul du facteur de zoom
@@ -350,16 +352,14 @@ function restart(objScore) {
     modalEndGrid.style.display = "block"
 
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
-    // l'animation suivante dure 2400 ms
+    // l'animation suivante dure 2400 + delai (en ms) 
     $('#popupEndGrid')
-      .animate({
+    .stop(true, true).delay(delai)
+    .animate({
         'zoom': 1
-      }, 0)
-      .fadeIn(1000)
-      .animate({
+      }, 0).fadeIn(1000).animate({
         'zoom': calcZoomFactor()
-      }, 1000)
-      .fadeOut(400)
+      }, 1000).fadeOut(400)
       .animate({
         'zoom': 1
       }, 0);
@@ -380,7 +380,7 @@ function restart(objScore) {
       modalEndGrid.style.display = "none"
 
       start(currentEnig, restart, setLang)
-    }, 2400)    // compatible (car >=) avec la durée de l'animation de popupEndGrid
+    }, 2400 + delai)    // compatible (car >=) avec la durée de l'animation de popupEndGrid
   }
   else {
     chronoarret()
