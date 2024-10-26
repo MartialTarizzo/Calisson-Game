@@ -421,7 +421,9 @@ function endGame() {
  */
 function restart(objScore) {
   // délai avant l'animation du score
-  let delai = 1000
+  let scoreDelayInStorage = localStorage.getItem('scoreDelay')
+  let scoreDelay = scoreDelayInStorage ? scoreDelayInStorage : 0
+  let delai = 1000 * scoreDelay
 
   function displaypopupEndGrid() {
     // calcul du facteur de zoom
