@@ -35,7 +35,11 @@
             localStorage.setItem('maxGridSize',
                 document.getElementById('selMaxGridSize').value)
         }
-        // window.addEventListener("unload", setMaxGridSize);
+        // idem pour le délai d'affichage du score
+        function setScoreDelay() {
+            localStorage.setItem('scoreDelay',
+                document.getElementById('selScoreDelay').value)
+        }
 
         // et on récupère cette taille max au chargement de la page
         function getMaxGridSize() {
@@ -43,8 +47,14 @@
             let maxGridSize = maxGridSizeInStorage ? maxGridSizeInStorage : "6"
             document.getElementById('selMaxGridSize').value = maxGridSize
         }
+        function getScoreDelay() {
+            let scoreDelayInStorage = localStorage.getItem('scoreDelay')
+            let scoreDelay = scoreDelayInStorage ? scoreDelayInStorage : "0"
+            document.getElementById('selScoreDelay').value = scoreDelay
+        }
 
         document.addEventListener("DOMContentLoaded", getMaxGridSize);
+        document.addEventListener("DOMContentLoaded", getScoreDelay);
     </script>
     <link rel="manifest" href="./manifest.json" />
     <style>
@@ -133,6 +143,7 @@
             <button id="btNewGame">Close</button>
         </div>
     </div>
+    <!-- script de gestion du dialogue Discord -->
     <script>
         let modalDiscord = document.getElementById("modalDiscord");
         modalDiscord.style.display = "none";
@@ -143,6 +154,57 @@
 
         function openPopupDiscord() {
             document.getElementById('modalDiscord').style.display = "block";
+            return false
+        }
+    </script>
+
+    <!-- le dialogue modal des options, avec le même style que pour Discord -->
+    <div id="modalOptions" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content" style="text-align: center;">
+            <div class="modal-header">
+                <h3 id="modalOptionsTitle">Options</h3>
+            </div>
+            <div class="modal-body">
+                <!-- taille maxi de grille -->
+                <p class="maxGridSize">
+                    <span id="etiqMaxGridSize">Maximum grid size (Speedy) : </span>
+                    <select name="simple" id="selMaxGridSize" class="maxGridSize" onchange="setMaxGridSize()">
+                        <option selected value="6">6</option>
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                    </select>
+                </p>
+                <!-- temporisation avant affichage du score pour une grille -->
+                <p class="maxGridSize">
+                    <span id="etiqScoreDelay">Delay for score display : </span>
+                    <select name="simple" id="selScoreDelay" class="maxGridSize" onchange="setScoreDelay()">
+                        <option selected value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <span>(s)</span>
+                </p>
+        
+            </div>
+            <hr>
+            <button id="btCloseOptions">Close</button>
+        </div>
+    </div>
+    <!-- script de gestion du dialogue des options -->
+    <script>
+        let modalOptions = document.getElementById("modalOptions");
+        modalOptions.style.display = "none";
+
+        document.getElementById('btCloseOptions').onclick = function (event) {
+            modalOptions.style.display = "none";
+        }
+
+        function openPopupOptions() {
+            document.getElementById('modalOptions').style.display = "block";
             return false
         }
     </script>
@@ -168,6 +230,7 @@
     <p style="text-align: center;">
         <img src="./pictures/calissons.png" alt="" width="300px">
     </p>
+
     <div style="border-style:double; border-width: 1;">
         <p style="text-align: center;">click/tap to play</p>
         <p style="text-align: center;">
@@ -176,6 +239,10 @@
             <a href="./speedy.html"><button class="modeButton">Speedy !</button></a>
             <br>
         </p>
+        <p style="text-align: center;">
+            <button class="optionButton" onclick="return openPopupOptions()">
+                Options...
+            </button>
         <!-- affichages des statistiques des parties déjà jouées -->
         <p style="text-align: center;">
             <button class="accordion">
@@ -262,14 +329,6 @@
             }
         </script>
 
-        <p class="maxGridSize">
-            <span id="etiqMaxGridSize">Maximum grid size (Speedy) : </span>
-            <select name="simple" id="selMaxGridSize" class="maxGridSize" onchange="setMaxGridSize()">
-                <option selected value="6">6</option>
-                <option value="5">5</option>
-                <option value="4">4</option>
-            </select>
-        </p>
         <p style="font-size: smaller; text-align: center; font-style: italic;"> (read on if you don't know how to play)
         </p>
     </div>
@@ -469,7 +528,7 @@
     <p>
         The source code of this program is available at the following GitHub address : <br>
         <a href="https://github.com/MartialTarizzo/Calisson-Game" target="_blank"
-        rel="noopener noreferrer">https://github.com/MartialTarizzo/Calisson-Game</a><br>
+            rel="noopener noreferrer">https://github.com/MartialTarizzo/Calisson-Game</a><br>
         (Unfortunally, most of the comments are in French ;-)
     </p>
 

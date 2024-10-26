@@ -51,9 +51,6 @@
                 document.getElementById('selScoreDelay').value)
         }
 
-        // unload non déclenché sur mon smartphone ...
-        // window.addEventListener("unload", setMaxGridSize);
-
         // et on récupère la taille max au chargement de la page
         function getMaxGridSize() {
             let maxGridSizeInStorage = localStorage.getItem('maxGridSize')
@@ -130,7 +127,6 @@
 </script>
 
 <body style=" font-size: 20px; margin: 50px; text-align: left; border-width: 1px;">
-
 
     <!-- le dialogue modal pour discord, avec le même style que pour les fins de partie -->
     <div id="modalDiscord" class="modal">
