@@ -108,11 +108,11 @@
 <body style=" font-size: 20px; margin: 50px; text-align: left; border-width: 1px;">
 
     <!-- le dialogue modal pour discord, avec le même style que pour les fins de partie -->
-    <div id="modalEndGame" class="modal">
+    <div id="modalDiscord" class="modal">
         <!-- Modal content -->
         <div class="modal-content" style="text-align: center;">
             <div class="modal-header">
-                <h3 id="modalEndGameTitle">Discord Server</h3>
+                <h3 id="modalDiscordTitle">Discord Server</h3>
             </div>
             <div class="modal-body">
                 <img src="pictures/DiscordCalisson_192x192.png" alt="">
@@ -134,15 +134,15 @@
         </div>
     </div>
     <script>
-        let modalEndGame = document.getElementById("modalEndGame");
-        modalEndGame.style.display = "none";
+        let modalDiscord = document.getElementById("modalDiscord");
+        modalDiscord.style.display = "none";
 
         document.getElementById('btNewGame').onclick = function (event) {
-            modalEndGame.style.display = "none";
+            modalDiscord.style.display = "none";
         }
 
         function openPopupDiscord() {
-            document.getElementById('modalEndGame').style.display = "block";
+            document.getElementById('modalDiscord').style.display = "block";
             return false
         }
     </script>

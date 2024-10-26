@@ -63,6 +63,7 @@ input[type=number] {
 }
 
 #btNewGame,
+#btCloseOptions,
 #btRazStats {
     font-size: 30px;
     font-weight: bold;
@@ -159,6 +160,17 @@ hr {
     border-radius: 5px;
     border: solid;
     border-color: cornflowerblue;
+}
+
+.optionButton {
+    padding: 5px;
+    font-size: 1.5em;
+    font-weight: bold;
+    border-width: 2px;
+    border-radius: 10px;
+    background-color: cornsilk;
+    color: black;
+    cursor: pointer;
 }
 
 .modeButton {
