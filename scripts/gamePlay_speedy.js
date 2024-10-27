@@ -421,7 +421,9 @@ function endGame() {
  */
 function restart(objScore) {
   // délai avant l'animation du score
-  let delai = 1000
+  let scoreDelayInStorage = localStorage.getItem('scoreDelay')
+  let scoreDelay = scoreDelayInStorage ? scoreDelayInStorage : 0
+  let delai = 1000 * scoreDelay
 
   function displaypopupEndGrid() {
     // calcul du facteur de zoom
@@ -443,6 +445,10 @@ function restart(objScore) {
     modalEndGrid.style.display = "block"
 
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
+    
+    // Arrêt du décompte de temps de la partie
+    clearInterval(gameTimer)
+
     // l'animation suivante dure 0+1000+1000+400+0 = 2400 ms
     $('#popupEndGrid')
     .stop(true, true).delay(delai)
@@ -464,21 +470,18 @@ function restart(objScore) {
     displaypopupEndGrid()
     // on relance une nouvelle grille avec un délai compatible avec
     // la durée de l'animation du score
-    // Le temps restant est mis à jour en tenant compte de la durée de l'animation
-    // et du delai avant affichage du score de la grille (timeAdded)
-    let timeAdded = Math.round((3000 + delai) / 1000)
     setTimeout(() => {
       totalScore += score;
       if (totalScore >= scoreBonif) {
         scoreBonif += incScoreBonif
-        maxTime += timeBonif + timeAdded
-      } else {
-        maxTime += timeAdded
+        maxTime += timeBonif 
       }
       document.getElementById('valScore').innerHTML = totalScore;
       genEnigme()
 
       modalEndGrid.style.display = "none"
+
+      gameTimer = setInterval(decompteTemps, 1000)
 
       start(currentEnig, restart, setLang)
     }, 2400 + delai)
