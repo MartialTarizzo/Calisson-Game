@@ -199,7 +199,7 @@
                     </select>
                     <span>(s)</span>
                 </p>
-        
+
             </div>
             <hr>
             <button id="btCloseOptions">Fermer</button>
@@ -347,46 +347,69 @@
             Nouvelles grilles (30/03/2024) !
         </p> -->
     </div>
-    <h1>But du jeu</h1>
-    <p>Dessiner entièrement les frontières des domaines remplissant entièrement un hexagone, chaque domaine étant rempli
-        avec des losanges (ou "calissons") de même orientation (même couleur). Un calisson est formé de l'assemblage de
-        deux triangles équilatéraux ayant un côté commun.<br><br>
-        Les calissons sont de trois types avec des orientations distinctes, représentés ici :<br>
-    <p align="center"> <img src="./pictures/3_calissons.png" alt="arêtes" width=400></p>
-    Les domaines sont séparés par des <strong>arêtes</strong> tracées en trait plein, les positions des arêtes à
-    déterminer sont tracées en pointillés, avec un petit cercle au milieu.
+    <h1>Présentation du jeu</h1>
+    <p>Le jeu du calisson est une forme de sudoku, pour lequel il faut ajouter des arêtes une par une dans une grille
+        hexagonale
+        pour passer d'une figure initiale à une figure finale&nbsp;:</p>
+    <p style="text-align: center;">
+        <img src="pictures/01.png" width="200" style="vertical-align:middle;">
+        &rArr;
+        <img src="pictures/11.png" width="200" style="vertical-align:middle;">
     </p>
-    <p></p>
-    <p> Deux règles sont à respecter :</p>
+    <p style="text-align: center;">
+        <img src="pictures/01-11.gif" width="200">
+    </p>
+    <p>
+        Les arêtes initiales ne sont pas modifiables, tandis que les positions des arêtes à déterminer sont tracées
+        en pointillés avec un petit cercle au milieu.
+    </p>
+    <p>
+        la figure finale est unique car elle doit être interprétable comme&nbsp;:
     <ul>
-        <li><strong>un calisson n'est jamais traversé par une arête</strong> </li>
-        <li><strong> il n'y a pas d'arête entre deux calissons de même orientation</strong></li>
+        <li>un empilement de petits cubes dans une grande pièce cubique</li>
+        <li>un pavage plan d'un hexagone avec des losanges, ou calissons</li>
     </ul>
-    <p> Pour rendre le pavage unique, certaines arêtes sont fixées au départ :</p>
-    <p align="center"> <img src="./pictures/C2-aretes.png" alt="arêtes" width=291 height=336></p>
-    <p> Pavage avec les calissons :</p>
-    <p align="center"> <img src="./pictures/C2-calissons.png" alt="calissons" width=291 height=336></p>
-    <p> Pour gagner, il faut dessiner les frontières des domaines, en s'aidant au besoin du coloriage des calissons
-        :</p>
-    <p align="center" style="font-size: smaller; text-align: center; font-style: italic;">
-        <img src="./pictures/C2-frontieres.png" alt="frontières" width=291 height=336>
-        <br>
-        position gagnante
+    Ces deux interprétations sont utilisables lors de la résolution.
     </p>
     <h2>Vision du jeu en 3 dimensions</h2>
-    <p>Le pavage de l'hexagone peut s'interpréter comme un empilement de petites caisses
-        cubiques dans une grande pièce elle-même cubique. Les caisses sont empilées en les poussant dans la pièce le
+    <p> Dans une grande pièce cubique, empilons de petites caisses cubiques en les poussant dans la pièce le
         plus loin possible, les piles étant de hauteurs croissantes vers les murs du fond.</p>
-    <p align="center">Exemple d'empilage de caisses dans une pièce :</p>
+    <p align="center">Exemple d'empilage de caisses dans une pièce de taille 4 :</p>
     <p align="center">
-        <video width="480px" height="'480px" controls loop="true">
+        <video width="480px" height="'480px" controls>
             <source src="./video/empilage_2.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </p>
-    <p>Cette vision du jeu permet souvent de se passer des calissons pour obtenir la solution !</p>
+    <p>
+        La figure finale est alors composée des bords de murs de la pièce et des arêtes visibles des petits cubes.
+    </p>
+    <p>
 
-    <h2>Dessin des arêtes</h2>
+    </p>
+    <h2>Pavage plan de l'hexagone avec des calissons</h2>
+    <p>Un calisson est formé de l'assemblage de deux triangles équilatéraux ayant un côté commun.<br><br>
+        Les calissons sont de trois types avec des orientations distinctes, représentés ici :<br>
+    <p align="center"> <img src="./pictures/3_calissons.png" alt="arêtes" width=400></p>
+    <p>
+        Les arêtes à tracer en trait plein délimitent des domaines
+        entièrement remplis de calissons de même couleur&nbsp;:
+    </p>
+    <p style="text-align: center;">
+        <img src="pictures/01.png" width="200" style="vertical-align:middle;">
+        &rArr;
+        <img src="pictures/11-color.png" width="200" style="vertical-align:middle;">
+    </p>
+
+    <p> Deux règles sont à respecter :</p>
+    <ul>
+        <li><strong>un calisson n'est jamais traversé par une arête</strong> </li>
+        <li><strong> il n'y a pas d'arête entre deux calissons de même orientation (ou couleur)</strong></li>
+    </ul>
+
+    <h1>Résolution</h1>
+
+    <h2>Dessin des arêtes et coloriage des calissons</h2>
     <p>
         Sur ordinateur, le dessin des arêtes manquantes s'effectue avec un clic-gauche sur le milieu de l'arête tandis
         que le coloriage d'un calisson est obtenu par un clic-droit sur le centre du losange.
@@ -395,6 +418,7 @@
         Sur tablette/téléphone/écran tactile, le toucher du milieu d'une arête provoque le dessin de l'arête ou le
         coloriage du losange en fonction de l'état des boutons à gauche et à droite de la zone de jeu.
     </p>
+
     <h2>Deux techniques facilitant la résolution</h2>
     <p>Les deux règles qui suivent permettent la résolution de toutes les grilles de niveau 1, quelle que soit leur
         taille.
@@ -404,10 +428,10 @@
     <ul style="font-style: italic; ">
         <li>Règle de l'angle aigu : <br>
             Deux arêtes connues (pleines ou pointillés) ayant un point commun et formant un angle aigu déterminent
-            entièrement l'orientation du calisson correspondant</li>
+            entièrement l'orientation du calisson correspondant (ou de la face du petit cube)</li>
         <li>Règle du pli : <br>
             une arête pleine sur la frontière d'un calisson connu détermine l'orientation du calisson ayant cette arête
-            en commun</li>
+            en commun (ou de la face du petit cube voisin ayant cette arête en commun)</li>
     </ul>
     </p>
 
@@ -422,11 +446,11 @@
             Your browser does not support the video tag.
         </video>
     </p>
-    Avec de l'entraînement, on peut souvent se passer des calissons !
+    Avec de l'entraînement, on peut souvent se passer du coloriage des calissons !
     <h1>Les deux modes de jeu</h1>
     <h2>Mode <strong>Entraînement</strong></h2>
     <p>Dans ce mode, la durée du jeu n'est pas limitée et il est possible de choisir la taille et le niveau des grilles
-        à résoudre dans une liste déroulante.
+        à résoudre dans une liste déroulante (de la forme <strong>taille.difficulté</strong>)
     </p>
     <p>
         Pour chaque grille résolue, le score obtenu est affiché, et une nouvelle grille est proposée.

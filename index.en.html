@@ -188,7 +188,7 @@
                     </select>
                     <span>(s)</span>
                 </p>
-        
+
             </div>
             <hr>
             <button id="btCloseOptions">Close</button>
@@ -243,7 +243,7 @@
             <button class="optionButton" onclick="return openPopupOptions()">
                 Options...
             </button>
-        <!-- affichages des statistiques des parties déjà jouées -->
+            <!-- affichages des statistiques des parties déjà jouées -->
         <p style="text-align: center;">
             <button class="accordion">
                 Statistics
@@ -332,85 +332,119 @@
         <p style="font-size: smaller; text-align: center; font-style: italic;"> (read on if you don't know how to play)
         </p>
     </div>
-    <h1>Aim of the game</h1>
-    <p>Draw the borders of domains that completely fill a hexagon, each domain being filled with diamonds (or
-        "calissons") of the same orientation (same color).
-        A calisson is formed by joining two equilateral triangles with a common side.
-        <br><br>
-        There are three types of calissons with different orientations, shown here :
-    <p align="center"> <img src="./pictures/3_calissons.png" alt="edges" width=400></p>
-    The domains are separated by <strong>edges</strong> drawn as solid lines; the positions of the edges to be
-    determined are drawn as dotted lines, with a small circle in the middle.
+
+
+    <h1>Introducing the game</h1>
+    <p>
+        The Calisson game is a form of Sudoku, in which you have to add edges one by one to a hexagonal grid
+        to go from an initial figure to a final figure:</p>
+    <p style="text-align: center;">
+        <img src="pictures/01.png" width="200" style="vertical-align:middle;">
+        &rArr;
+        <img src="pictures/11.png" width="200" style="vertical-align:middle;">
     </p>
-    <p></p>
-    <p> Two rules apply:</p>
+    <p style="text-align: center;">
+        <img src="pictures/01-11.gif" width="200">
+    </p>
+    <p>
+        The initial edges cannot be modified, while the positions of the edges to be determined are drawn
+        with a small circle in the middle.
+    </p>
+    <p>
+        the final figure is unique because it has to be interpretable as&nbsp;:
     <ul>
-        <li><strong>a calisson is never crossed by an edge</strong> </li>
-        <li><strong> there are no edges between two calissons of the same orientation.</strong></li>
+        <li>a stack of small cubes in a large cubic room</li>
+        <li>a planar hexagon paved with diamonds, or calissons</li>
     </ul>
-    <p> To make the tiling unique, some edges are fixed at the start:</p>
-    <p align="center"> <img src="./pictures/C2-aretes.png" alt=""></p>
-    <p> Paving with calissons :</p>
-    <p align="center"> <img src="./pictures/C2-calissons.png" alt=""></p>
-    <p> To win, all you have to do is draw the borders of the domains, with the help of the calissons coloring if
-        necessary:</p>
-    <p align="center" style="font-size: smaller; text-align: center; font-style: italic;">
-        <img src="./pictures/C2-frontieres.png" alt="">
-        <br>
-        winning position
+    These two interpretations can be used when solving.
     </p>
-    <h2>Viewing the game in 3 dimensions</h2>
-    <p>The hexagon's paving can be interpreted as a stack of small cubic boxes in a large
-        cubic room. The boxes are stacked by pushing them into the room as far as possible, the stacks increasing in
-        height towards the back walls.</p>
-    <p align="center">Video example of stacking boxes in a cubic room :</p>
+    <h2>3-D game vision</h2>
+    <p> In a large cubic room, we stack small cubic boxes, pushing them into the room as far as possible,
+        the stacks increasing in height towards the back walls.</p>
+    <p align="center">Example of cube stacking in a size 4 room :</p>
     <p align="center">
-        <video width="480px" height="'480px" controls loop="true">
+        <video width="480px" height="'480px" controls>
             <source src="./video/empilage_2.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </p>
-    <p>This vision of the game often means you don't need calissons to draw the solution!</p>
+    <p>
+        The final figure is then composed of the edges of the walls of the room and the visible edges of the small
+        cubes.
+    </p>
+    <p>
 
-    <h2>Drawing edges</h2>
-    <p>
-        On the computer, missing edges can be drawn by left-clicking on the center of the edge, while a calisson can be
-        colored by right-clicking on the center of the diamond.
     </p>
+    <h2>Flat hexagon paving with calissons</h2>
+    <p>A calisson is formed by joining two equilateral triangles having a common side.<br><br>
+        There are three types of calisson, with different orientations, shown here :<br>
+    <p align="center"> <img src="./pictures/3_calissons.png" alt="arêtes" width=400></p>
     <p>
-        On a tablet/telephone/touch screen, touching the middle of an edge causes the edge to be drawn or the diamond to
-        be colored, depending on the state of two buttons located on the sides of the hexagon.
+        The edges to be drawn in solid lines delimit areas
+        entirely filled with calissons of the same color&nbsp;:
     </p>
-    <h2>Two solving techniques</h2>
+    <p style="text-align: center;">
+        <img src="pictures/01.png" width="200" style="vertical-align:middle;">
+        &rArr;
+        <img src="pictures/11-color.png" width="200" style="vertical-align:middle;">
+    </p>
+
+    <p> Two rules must be observed :</p>
+    <ul>
+        <li><strong>a calisson is never crossed by an edge</strong> </li>
+        <li><strong> no edge between two calissons of the same orientation (or color)</strong></li>
+    </ul>
+
+    <h1>Resolution</h1>
+
+    <h2>Drawing edges and coloring calissons</h2>
     <p>
-        The following two rules allow the resolution of all Level 1 grids,
-        whatever their size.
+        On the computer, missing edges can be drawn by left-clicking on the center of the edge, while
+        coloring a calisson is obtained by right-clicking on the center of the rhombus.
+    </p <p>
+    On tablets/telephones/touch screens, touching the middle of an edge causes the edge to be drawn 
+    or the diamond to be colored, depending on the status of the buttons to the left and right of the play area.
+    </p>
+
+    <h2>Two techniques to facilitate resolution</h2>
+    <p>The following two rules allow the resolution of all Level 1 grids, whatever their size.
         <br>
-        However, they are insufficient for Level 3 grids,
-        all of which are impossible to solve using these two rules alone.
-    <ul style="font-size: smaller; font-style: italic; ">
-        <li>two known edges (solid or dotted) having a common point and forming an acute angle fully determine the
-            orientation of the corresponding calisson ("acute angle rule" ["angle aigu" in the video just below])</li>
-        <li>a solid edge on the boundary of a known calisson determines the orientation of the calisson having this edge
-            in common ("fold rule" ["règle du pli" in the video])</li>
+        They are, however, insufficient to solve Level 3 problems,
+        which are all impossible to solve using just these two rules.
+    <ul style="font-style: italic; ">
+        <li>Acute angle rule : <br>
+            Two known edges (solid or dotted) having a common point and forming an acute angle determine
+            the entire orientation of the corresponding calisson (or face of the small cube)</li>
+        <li>Fold rule : <br>
+            a solid edge on the boundary of a known cube determines the orientation of the cube with this edge in common
+            in common (or of the face of the neighbouring small cube having this edge in common)</li>
     </ul>
     </p>
 
 
-    <h2>Resolution example</h2>
-    <p>Solution of a size 3 grid using the acute angle and fold rules, with all calissons drawn.
-    </p>
+    <h2>Sample resolution</h2>
+    <p style="font-style: italic; ">
+        Solution of a grid of size 3 using the two previous rules, with all calissons drawn.<br><br>
+        Translation of french terms used in the video :  </p>
+        <ul style="font-style: italic;">
+            <li>"angle aigu"&rArr;"Acute angle"</li>
+            <li>"Règle du pli"&rArr;"Fold rule"</li>
+        </ul>
+  
     <p align="center">
         <video width="640px" height="'480px" controls>
             <source src="./video/calisson_screencast.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </p>
-    With practice, you can often do without calissons!
+    <p>
+        With practice, you can often do without coloring calissons!
+    </p>
+
     <h1>The two game modes</h1>
     <h2>Training mode</h2>
     <p>In this mode, there's no time limit on the game, and you can choose the size and level of the grids to be solved
-        from a drop-down list.
+        from a drop-down list (of the form "size.difficulty").
     </p>
     <p>
         For each grid solved, the score obtained is displayed, and a new grid is proposed.
