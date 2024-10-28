@@ -588,15 +588,17 @@ let dico = {
     btNewGame: "Nouvelle partie",
     bestScoresCaption: "Meilleurs scores",
     msgStats: `
-    Durée de la partie : <strong>{dureePartie} s</strong><br>
-    Dernier niveau résolu : <strong>{niveauMax}</strong><br>
-    <strong>{nbSolvedGrids}</strong> grilles trouvées en <strong>{totalCumulTime} s</strong><br>
-    Durée moyenne par grille : <strong>{durMoyenneGrille} s</strong><br>
+    <p style="font-size:1.5em; text-align:center;">
+    <strong>{nbSolvedGrids}</strong> grilles trouvées en <strong>{totalCumulTime}&nbsp;s</strong><br>
+    Derniere grille résolue (taille.niveau)&nbsp;:&nbsp;<strong>{niveauMax}</strong><br>
+    Durée moyenne par grille&nbsp;: <strong>{durMoyenneGrille}&nbsp;s</strong><br>
+    Durée de la partie : <strong>{dureePartie}&nbsp;s</strong><br>
+    </p>
     <hr>
-    Temps perdu (Reset, Abandon, dernière grille inachevée) : <strong> {tempsPerdu} s</strong><br>
-    Bonus de dernière tentative : <strong>{bonus} pts </strong><br>
+    Temps perdu (Reset, Abandon, dernière grille inachevée) : <strong> {tempsPerdu}&nbsp;s</strong><br>
+    Bonus de dernière tentative : <strong>{bonus}&nbsp;pts </strong><br>
     Nombre d'arêtes correctes placées : <strong>{totalAretes}</strong><br>
-    Durée moyenne par arête correcte : <strong>{durMoyenneArete} s</strong><br>
+    Durée moyenne par arête correcte : <strong>{durMoyenneArete}&nbsp;s</strong><br>
     Nombre total de losange utilisés : <strong>{totalLosanges}</strong><br>
     Nombre d'abandons : <strong>{nbAbandons}</strong>
     `,
@@ -623,10 +625,12 @@ let dico = {
     btNewGame: "Play again",
     bestScoresCaption: "Best scores",
     msgStats: `
-    Length of Game: <strong>{dureePartie} s</strong><br>
-    Last level solved: <strong>{niveauMax}</strong><br>
-    <strong>{nbSolvedGrids}</strong> grids found in <strong>{totalCumulTime} s</strong><br>
-    Average time per grid: <strong>{durMoyenneGrille} s</strong><br>
+    <p style="font-size:1.5em; text-align:center;">
+    <strong>{nbSolvedGrids}</strong> grids found in <strong>{totalCumulTime}&nbsp;s</strong><br>
+    Last grid solved (size.level): <strong>{niveauMax}</strong><br>
+    Average time per grid: <strong>{durMoyenneGrille}&nbsp;s</strong><br>
+    Length of Game: <strong>{dureePartie}&nbsp;s</strong><br>
+    </p>
     <hr>
     Lost time (Reset, Abort, last unfinished grid): <strong> {tempsPerdu} s</strong><br>
     Last attempt bonus: <strong>{bonus} pts </strong><br>
