@@ -296,8 +296,8 @@ function endGame() {
         totalAretes += os.nbAretesJoueur
         totalLosanges += os.nbLosanges
       }
-      let durMoyenneGrille = totalCumulTime / listObjScore.length
-      let durMoyenneArete = totalAretes / totalCumulTime
+      let durMoyenneGrille = totalResTime / listObjScore.length
+      let durMoyenneArete = totalAretes / totalResTime
 
       // temps perdu (Reset, Abandon, dernière grille inachevée)
       let tempsPerdu = (totalCumulTime - totalResTime) +
@@ -592,10 +592,9 @@ let dico = {
     <strong>{nbSolvedGrids}</strong> grilles trouvées en <strong>{totalCumulTime}&nbsp;s</strong><br>
     Derniere grille résolue (taille.niveau)&nbsp;:&nbsp;<strong>{niveauMax}</strong><br>
     Durée moyenne par grille&nbsp;: <strong>{durMoyenneGrille}&nbsp;s</strong><br>
-    Durée de la partie : <strong>{dureePartie}&nbsp;s</strong><br>
     </p>
     <hr>
-    Temps perdu (Reset, Abandon, dernière grille inachevée) : <strong> {tempsPerdu}&nbsp;s</strong><br>
+    Durée de la partie : <strong>{dureePartie}&nbsp;s</strong><br>
     Bonus de dernière tentative : <strong>{bonus}&nbsp;pts </strong><br>
     Nombre d'arêtes correctes placées : <strong>{totalAretes}</strong><br>
     Durée moyenne par arête correcte : <strong>{durMoyenneArete}&nbsp;s</strong><br>
@@ -629,10 +628,9 @@ let dico = {
     <strong>{nbSolvedGrids}</strong> grids found in <strong>{totalCumulTime}&nbsp;s</strong><br>
     Last grid solved (size.level): <strong>{niveauMax}</strong><br>
     Average time per grid: <strong>{durMoyenneGrille}&nbsp;s</strong><br>
-    Length of Game: <strong>{dureePartie}&nbsp;s</strong><br>
     </p>
     <hr>
-    Lost time (Reset, Abort, last unfinished grid): <strong> {tempsPerdu} s</strong><br>
+    Length of Game: <strong>{dureePartie}&nbsp;s</strong><br>
     Last attempt bonus: <strong>{bonus} pts </strong><br>
     Number of correct edges placed: <strong>{totalAretes}</strong><br>
     Average time per correct edge: <strong>{durMoyenneArete} s</strong><br>
