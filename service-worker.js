@@ -9,7 +9,7 @@
 
 // Le n° de version de l'appication PWA
 // Mettre à jour pour forcer l'actualisation du cache du navigateur
-const VERSION_SC = "2.10.6"
+const VERSION_SC = "2.10.7"
 
 // Based off of https://github.com/pwa-builder/PWABuilder/blob/main/docs/sw.js
 
@@ -126,6 +126,7 @@ const INITIAL_CACHED_RESOURCES = [
     './scripts/gamePlay_training.js',
     './scripts/jquery-3.7.1.js',
     './scripts/playCalisson.js',
+    './scripts/confettis.js',
 
     // images
     './pictures/240px-388-clapping-hands-2.svg.png',
@@ -137,6 +138,12 @@ const INITIAL_CACHED_RESOURCES = [
     './pictures/C2-calissons.png',
     './pictures/favicon.ico',
     './pictures/spinningWait.gif',
+    './pictures/01-11.gif',
+    './pictures/01.png',
+    './pictures/3_calissons.png',
+    './pictures/11-color.png',
+    './pictures/11.png',
+    './pictures/DiscordCalisson_192x192.png',
 
     // grilles
     './grids-training/enigmes_3_1.js',
