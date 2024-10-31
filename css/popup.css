@@ -84,3 +84,46 @@ style du popup de fin de partie
     font-family: "Open Sans", sans-serif;
     font-size: 24px;
 }
+
+/* Le bonus */
+.bonus {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 5;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bonus .trophy img {
+    display: block;
+    margin: auto;
+    max-width: 128px;
+    filter: drop-shadow(0 0 4px #000);
+    /* transition: 1s; */
+    animation: trophy_animate 2s linear 1;
+}
+
+@keyframes trophy_animate {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.bonus .text h1 {
+    font-weight: 900;
+    font-size: 5rem;
+    color: #222324;
+    text-shadow: 8px 0px 0px #FABE2C;
+}

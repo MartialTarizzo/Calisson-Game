@@ -425,6 +425,7 @@ function restart(objScore) {
   let scoreDelay = scoreDelayInStorage ? scoreDelayInStorage : 0
   let delai = 1000 * scoreDelay
 
+  // affichage du popup d'affichage du score à la fin de chaque grille
   function displaypopupEndGrid() {
     // calcul du facteur de zoom
     function calcZoomFactor() {
@@ -439,19 +440,18 @@ function restart(objScore) {
       return 0.8 * Math.min(screenW / popupW, screenH / popupH)
     }
 
-
     // pour empêcher des clicks parasite pendant l'affichage du score (ça perturbait tout ...)
     let modalEndGrid = document.getElementById("modalEndGrid");
     modalEndGrid.style.display = "block"
 
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
-    
+
     // Arrêt du décompte de temps de la partie
     clearInterval(gameTimer)
 
     // l'animation suivante dure 0+1000+1000+400+0 = 2400 ms
     $('#popupEndGrid')
-    .stop(true, true).delay(delai)
+      .stop(true, true).delay(delai)
       .animate({
         'zoom': 1
       }, 0).fadeIn(1000).animate({
@@ -462,20 +462,41 @@ function restart(objScore) {
       }, 0);
   }
 
+  // Affichage des confettis/bonus à chaque incrément de temps de jeu
+  function displayBonus() {
+    // animation du bonus, durée de 3s
+    $('#bonus')
+      .fadeIn(1000).delay(1000)
+      .fadeOut(1000);
+    confetti.start();
+    setTimeout(() => confetti.stop(), 2000);
+  }
+
+
   let score = objScore.score
   score = Math.ceil(score * coeffGridSize)  // on tient compte de la taille max des grilles
   if (score > 0) {  // score non nul => grille résolue
+    let popupDuration = 2400 // durée d'affichage du popup
+    let bonusDuration = 0   // durée d'affichage du bonus
+
     objScore['dateEndGrid'] = Date.now()
     listObjScore.push(objScore)
     displaypopupEndGrid()
+
+    totalScore += score;
+
+    if (totalScore >= scoreBonif) {
+      scoreBonif += incScoreBonif
+      maxTime += timeBonif
+
+      bonusDuration = 3000
+      setTimeout(displayBonus, popupDuration + delai - 400)
+    }
+
     // on relance une nouvelle grille avec un délai compatible avec
-    // la durée de l'animation du score
+    // la durée de l'animation du score (et du bonus éventuel)
     setTimeout(() => {
-      totalScore += score;
-      if (totalScore >= scoreBonif) {
-        scoreBonif += incScoreBonif
-        maxTime += timeBonif 
-      }
+
       document.getElementById('valScore').innerHTML = totalScore;
       genEnigme()
 
@@ -484,7 +505,7 @@ function restart(objScore) {
       gameTimer = setInterval(decompteTemps, 1000)
 
       start(currentEnig, restart, setLang)
-    }, 2400 + delai)
+    }, popupDuration + delai + bonusDuration  -400)
   }
   else {  // score nul => grille abandonnée
     if (maxTime > 0) {

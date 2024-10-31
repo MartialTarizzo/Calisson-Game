@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/popup.css">
     <script src="./scripts/jquery-3.7.1.js"></script>
-
+    <script src="./scripts/confettis.js"></script>
     <title>Speedy Calisson</title>
-    
+
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -58,8 +58,8 @@
         <button id="butEdge" class="butMode butMode-edge" style="display: none;">
             <img src="pictures/mode_arete.svg" alt="">
         </button>
-        <button id="butDiamond" class="butMode butMode-diamond"  style="display: none;"">
-            <img src="pictures/mode_losange.svg" alt="">
+        <button id="butDiamond" class="butMode butMode-diamond" style="display: none;"">
+            <img src=" pictures/mode_losange.svg" alt="">
         </button>
         <canvas id="canvas" width="425" height="490"></canvas>
 
@@ -98,6 +98,18 @@
                 <p id="pScoreFinal">100 pts</p>
             </div>
         </div>
+    </div>
+    <!-- l'affichage du bonus tous les 500 pts -->
+    <div class="bonus" id="bonus" style="display: none;">
+        <div class="trophy">
+            <p>
+                <img src="./pictures/trophy.png" alt="trophy">
+            </p>
+            <span class="text">
+                <h1>Bonus : 60 s</h1>
+            </span>
+        </div>
+        </p>
     </div>
 
     <!-- Le pied de page, avec barre de progression du temps restant -->
