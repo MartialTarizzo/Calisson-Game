@@ -52,8 +52,6 @@ let totalScore;
 // le nombre d'abandons
 let nbAbandons;
 
-// le score permettant une bonification en temps
-let scoreBonif;
 // l'incrément de score permettant une bonification en temps
 let incScoreBonif;
 
@@ -465,7 +463,7 @@ function restart(objScore) {
   // Affichage des confettis/bonus à chaque incrément de temps de jeu
   function displayBonus() {
     // animation du bonus, durée de 3s
-    $('#bonus')
+    $('#divBonus')
       .fadeIn(1000).delay(1000)
       .fadeOut(1000);
     confetti.start();
@@ -483,12 +481,15 @@ function restart(objScore) {
     listObjScore.push(objScore)
     displaypopupEndGrid()
 
+    let timeBonus = timeBonif *
+      (Math.floor((totalScore + score) / incScoreBonif) -
+        Math.floor(totalScore / incScoreBonif))
     totalScore += score;
 
-    if (totalScore >= scoreBonif) {
-      scoreBonif += incScoreBonif
-      maxTime += timeBonif
+    if (timeBonus > 0) {
+      maxTime += timeBonus
 
+      document.getElementById("spTimeBonif").innerText = timeBonus
       bonusDuration = 3000
       setTimeout(displayBonus, popupDuration + delai - 400)
     }
@@ -505,7 +506,7 @@ function restart(objScore) {
       gameTimer = setInterval(decompteTemps, 1000)
 
       start(currentEnig, restart, setLang)
-    }, popupDuration + delai + bonusDuration  -400)
+    }, popupDuration + delai + bonusDuration - 400)
   }
   else {  // score nul => grille abandonnée
     if (maxTime > 0) {
@@ -539,7 +540,6 @@ export function beginGame() {
   nbAbandons = 0
   totalScore = 0
   bonus = 0
-  scoreBonif = 500
   incScoreBonif = 500
   timeBonif = 60   // 1 minute de plus !
   timePenalite = 60
