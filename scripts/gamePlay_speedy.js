@@ -499,6 +499,13 @@ function restart(objScore) {
     setTimeout(() => {
 
       document.getElementById('valScore').innerHTML = totalScore;
+
+      // affichage du badge de nombre de bonus si nécessaire
+      if (totalScore > incScoreBonif) {
+        document.getElementById('badge').style.display = 'flex'
+        document.getElementById('badge-number').innerText = Math.floor(totalScore / incScoreBonif)
+      }
+  
       genEnigme()
 
       modalEndGrid.style.display = "none"
@@ -543,6 +550,7 @@ export function beginGame() {
   incScoreBonif = 500
   timeBonif = 60   // 1 minute de plus !
   timePenalite = 60
+  document.getElementById('badge').style.display = 'none'
   document.getElementById('valScore').innerHTML = '0'
   genEnigme = mkGenEnigme(maxGridSize - 3);
   genEnigme()

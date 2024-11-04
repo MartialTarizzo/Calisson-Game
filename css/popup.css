@@ -40,6 +40,7 @@ style du popup de fin de partie
     animation-duration: 0.4s;
     /* font-size: 30px; */
 }
+
 /* 
 @media screen and (min-width: 700px) {
     .modal-content {
@@ -126,4 +127,24 @@ style du popup de fin de partie
     font-size: 5rem;
     color: #222324;
     text-shadow: 8px 0px 0px #FABE2C;
+}
+
+/* Badge pour le nombre de bonus */
+.badge {
+    z-index: 1000;
+    position: fixed;
+    left: 40px;
+    top: calc(100% - 25px - 2rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.badge img {
+    position: absolute;
+}
+
+.badge p {
+    position: absolute;
+    font-size: 2rem;
 }

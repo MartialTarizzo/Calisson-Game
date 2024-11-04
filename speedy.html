@@ -27,10 +27,12 @@
 </script>
 
 <body>
+    <!-- retour accueil -->
     <div class="home">
         <img id="imgHome" src="./pictures/icons8-home-fixed.gif" alt="Retour">
     </div>
 
+    <!-- les 3 boutons de contrôle -->
     <div id="controle">
         <button id="btback">&nbsp; &lt; &nbsp;</button>
         <button id="btreset">Reset</button>
@@ -54,6 +56,7 @@
         </em>
     </div>
 
+    <!-- Les boutons arête/losange pour interface tactile -->
     <div>
         <button id="butEdge" class="butMode butMode-edge" style="display: none;">
             <img src="pictures/mode_arete.svg" alt="">
@@ -61,6 +64,7 @@
         <button id="butDiamond" class="butMode butMode-diamond" style="display: none;"">
             <img src=" pictures/mode_losange.svg" alt="">
         </button>
+
         <canvas id="canvas" width="425" height="490"></canvas>
 
     </div>
@@ -99,7 +103,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- l'affichage du bonus tous les 500 pts -->
     <div class="bonus" id="divBonus" style="display: none;">
         <div class="trophy">
@@ -111,6 +115,12 @@
             </span>
         </div>
         </p>
+    </div>
+
+    <!-- le badge comptabilisant le nombre de bonus -->
+    <div class="badge" id="badge" style="display: none;">
+        <img src="pictures/trophy.png" alt="" style="width: 60px;">
+        <p id="badge-number">5</p>
     </div>
 
     <!-- Le pied de page, avec barre de progression du temps restant -->
