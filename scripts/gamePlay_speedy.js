@@ -536,7 +536,7 @@ function restart(objScore) {
       gameTimer = setInterval(decompteTemps, 1000)
 
       start(currentEnig, restart, setLang)
-    }, popupDuration + delai + bonusDuration - 600) 
+    }, bonusDuration == 0 ? popupDuration + delai : popupDuration + delai + bonusDuration - 600)
   }
   else {  // score nul => grille abandonnée
     if (maxTime > 0) {
