@@ -336,7 +336,8 @@ function restart(objScore) {
   let delai = 1000 * scoreDelay
 
   function displaypopupEndGrid() {
-    // calcul du facteur de zoom
+    // calcul de la hauteur du popup et du facteur de zoom
+    // retourne une liste des deux valeurs correspondantes
     function calcZoomFactor() {
       let screenH = window.innerHeight
       let screenW = window.innerWidth
@@ -346,8 +347,9 @@ function restart(objScore) {
       let popupH = getComputedStyle(document.getElementById('popupEndGrid')).height
       popupH = Number(popupH.match(/[0-9]+/g)[0])
 
-      return 0.8 * Math.min(screenW / popupW, screenH / popupH)
+      return [popupH, 0.8 * Math.min(screenW / popupW, screenH / popupH)]
     }
+    let zf = calcZoomFactor()
 
     // pour empêcher des clicks parasite pendant l'affichage du score (ça perturbait tout ...)
     let modalEndGrid = document.getElementById("modalEndGrid");
@@ -356,15 +358,22 @@ function restart(objScore) {
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
     // l'animation suivante dure 2400 + delai (en ms) 
     $('#popupEndGrid')
-    .stop(true, true).delay(delai)
-    .animate({
-        'zoom': 1
-      }, 0).fadeIn(1000).animate({
-        'zoom': calcZoomFactor()
-      }, 1000).fadeOut(400)
-      .animate({
-        'zoom': 1
-      }, 0);
+      .stop(true, true)
+      .delay(delai)
+      .css('transform', 'translate(0px) scale(0)')
+      .fadeIn(400)
+      .animate({ transform: 1 },
+        {
+          duration: 1000,
+          easing: 'swing',
+          step: function (now, fx) {
+            $(this).css('transform',
+              "translate(0," + (window.innerHeight - zf[0]) / 2 * now +
+              "px) scale(" + zf[1] * now + ")")
+          }
+        })
+      .delay(400)
+      .fadeOut(600)
   }
 
   let score = objScore.score
