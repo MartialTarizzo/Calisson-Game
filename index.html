@@ -160,6 +160,19 @@
                 heightStyle: "content",
                 collapsible: true,
                 active: false
+            // ,
+            //     activate: function (event, ui) {
+            //         var self = this;
+            //         theOffset = $(self).offset();
+            //         $('body,html').animate({ scrollTop: theOffset.top - 10 });
+            //     }
+            });
+            $('#accordion h1').bind('click', function () {
+                var self = this;
+                setTimeout(function () {
+                    theOffset = $(self).offset();
+                    $('body,html').animate({ scrollTop: theOffset.top - 10 });
+                }, 500); // ensure the collapse animation is done
             });
         });
 
@@ -293,7 +306,7 @@
     </p>
 
     <div style="border-style:double; border-width: 1;">
-    <!-- <div> -->
+        <!-- <div> -->
         <p style="text-align: center;">cliquez/tapez pour choisir le mode de jeu</p>
         <p style="text-align: center;">
             <a href="./training.html"><button class="modeButton">Entraînement</button></a>
@@ -419,8 +432,8 @@
                 <li>un empilement de petits cubes dans une grande pièce cubique</li>
                 <li>un pavage plan d'un hexagone avec des losanges, ou calissons</li>
             </ul>
-            <p> Ces deux interprétations sont utilisables lors de la résolution.</p>
             </p>
+            <p> Ces deux interprétations sont utilisables lors de la résolution.</p>
             <h2>Empilement de cubes</h2>
             <p> Dans une grande pièce cubique, empilons de petites caisses cubiques en les poussant dans la pièce le
                 plus loin possible, les piles étant de hauteurs croissantes vers les murs du fond.</p>
@@ -435,12 +448,11 @@
                 La figure finale est alors composée des bords de murs de la pièce et des arêtes visibles des petits
                 cubes.
             </p>
-            <p>
-
-            </p>
             <h2>Pavage plan de l'hexagone avec des calissons</h2>
-            <p>Un calisson est formé de l'assemblage de deux triangles équilatéraux ayant un côté commun.<br><br>
-                Les calissons sont de trois types avec des orientations distinctes, représentés ici :<br>
+            <p>
+                Un calisson est formé de l'assemblage de deux triangles équilatéraux ayant un côté commun.
+                Il en existe trois types avec des orientations distinctes, représentés ici :
+            </p>
             <p align="center"> <img src="./pictures/3_calissons.png" alt="arêtes" width=400></p>
             <p>
                 Les arêtes à tracer en trait plein délimitent des domaines
@@ -475,7 +487,6 @@
                     de jeu.
                 </li>
             </ul>
-
             <h2>Deux techniques facilitant la résolution</h2>
             <p>Les deux règles qui suivent permettent la résolution de toutes les grilles de niveau 1, quelle que soit
                 leur
@@ -483,6 +494,7 @@
                 <br>
                 Elles sont cependant insuffisantes pour résoudre celles de niveau 3,
                 qui sont toutes impossibles à résoudre en n'utilisant que ces deux règles.
+            </p>
             <ul style="font-style: italic; ">
                 <li>Règle de l'angle aigu : <br>
                     Deux arêtes connues (pleines ou pointillés) ayant un point commun et formant un angle aigu
@@ -493,19 +505,18 @@
                     cette arête
                     en commun (ou de la face du petit cube voisin ayant cette arête en commun)</li>
             </ul>
-            </p>
-
-
             <h2>Exemple de résolution</h2>
-            <p>Solution d'une grille de taille 3 en utilisant les règles de <strong>l'angle aigu</strong> et du
-                <strong>pli</strong>, avec dessin de tous les calissons.
-            </p>
-            <p align="center">
-                <video width="640px" height="'480px" controls>
-                    <source src="./video/calisson_screencast.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </p>
+            <div>
+                <p> Solution d'une grille de taille 3 en utilisant les règles de <strong>l'angle aigu</strong> et du
+                    <strong>pli</strong>, avec dessin de tous les calissons&nbsp;:
+                </p>
+                <p align="center">
+                    <video width="640px" height="480px" controls>
+                        <source src="./video/calisson_screencast.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </p>
+            </div>
             <p>
                 Avec de l'entraînement, on peut souvent se passer du coloriage des calissons !
             </p>
