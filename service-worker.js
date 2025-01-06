@@ -9,7 +9,7 @@
 
 // Le n° de version de l'appication PWA
 // Mettre à jour pour forcer l'actualisation du cache du navigateur
-const VERSION_SC = "2.14.0"
+const VERSION_SC = "2.14.1"
 
 // Based off of https://github.com/pwa-builder/PWABuilder/blob/main/docs/sw.js
 
