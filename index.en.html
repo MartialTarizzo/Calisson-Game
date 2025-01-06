@@ -7,6 +7,7 @@
     <meta name="Content-Type" content="UTF-8">
     <meta name="Content-Language" content="en">
     <meta name="Keywords" content="game calisson paving perspective 3D sudoku">
+    <meta name="description" content="Calisson Game PWA Application">
     <meta name="Author" content="Martial Tarizzo">
     <meta name="Identifier-Url" content="https://martialtarizzo.github.io/Calisson-Game/">
     <meta name="Robots" content="all">
@@ -21,9 +22,12 @@
 
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/popup.css">
+    <link rel="stylesheet" href="./css/jquery-ui.css">
+
     <link rel="icon" type="image/x-icon" href="./pictures/favicon.ico">
 
     <script src="./scripts/jquery-3.7.1.js"></script>
+    <script src="./scripts/jquery-ui.js"></script>
 
     <title>Speedy Calisson</title>
 
@@ -58,6 +62,15 @@
     </script>
     <link rel="manifest" href="./manifest.json" />
     <style>
+        body {
+            font-size: 20px;
+            margin: auto;
+            padding: 0px;
+            max-width: 800px;
+            text-align: left;
+            border-width: 1px;
+        }
+
         table,
         th,
         td {
@@ -102,7 +115,72 @@
             background-color: #87cefa7f;
             overflow: hidden;
         }
+
+        #footer {
+            text-align: center;
+            font-size: smaller;
+        }
+
+        #accordeon-sections h1 {
+            text-align: center;
+            border-radius: 10px;
+            font-size: 1.3rem;
+        }
+
+        #accordeon-sections .panel {
+            border: 0;
+            color: #fff;
+            background: #000;
+            padding: 0 0 0 0;
+            border-top: 0;
+            max-height: fit-content;
+        }
+
+        #accordeon-sections .ui-accordion-header {
+            display: block;
+            cursor: pointer;
+            position: relative;
+            margin: 5px;
+            padding: .1em .1em .1em .2em;
+            font-weight: bold;
+        }
+
+        .ui-accordion-header-collapsed {
+            background-color: aliceblue;
+        }
+
+        .ui-accordion-header.ui-state-hover {
+            background-color: cornflowerblue;
+            color: white
+        }
+
+        .ui-accordion .ui-accordion-content {
+            padding: 1em;
+        }
     </style>
+    <script>
+        $(function () {
+            $("#accordeon-sections").accordion({
+                heightStyle: "content",
+                collapsible: true,
+                active: false,
+            });
+
+            // activation de l'accordéon des sections 
+            // (masqué par défaut pour éviter l'affichage au chargement de la page)
+            $('#accordeon-sections').css('display', 'block')
+
+            // Le dépliage des sections, avec le scoll auto en tête de section
+            $('#accordeon-sections h1').bind('click', function () {
+                var self = this;
+                setTimeout(function () {
+                    theOffset = $(self).offset();
+                    $('body,html').animate({ scrollTop: theOffset.top - 10 });
+                }, 500); // ensure the collapse animation is done
+            });
+        });
+
+    </script>
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -115,7 +193,7 @@
     gtag('config', 'G-09KM2N4X02');
 </script>
 
-<body style=" font-size: 20px; margin:auto; padding: 20px; max-width: 1200px; text-align: left; border-width: 1px;">
+<body>
 
     <!-- le dialogue modal pour discord, avec le même style que pour les fins de partie -->
     <div id="modalDiscord" class="modal">
@@ -333,281 +411,340 @@
         </p>
     </div>
 
+    <div>
+        <p></p>
+    </div>
+    <div id="accordeon-sections" style="display: none;">
+        <h1>Introducing the game</h1>
+        <div>
+            <p>
+                The Calisson game is a form of Sudoku, in which you have to add edges one by one to a hexagonal grid
+                to go from an initial figure to a final figure:</p>
+            <p style="text-align: center;">
+                <img src="pictures/01.png" width="200" style="vertical-align:middle;">
+                &rArr;
+                <img src="pictures/11.png" width="200" style="vertical-align:middle;">
+            </p>
+            <p style="text-align: center;">
+                <img src="pictures/01-11.gif" width="300">
+            </p>
+            <p>
+                the final figure is unique because it represents&nbsp;:
+            <ul>
+                <li>a stack of small cubes in a large cubic room</li>
+                <li>a planar hexagon paved with diamonds, or calissons</li>
+            </ul>
+            These two interpretations can be used when solving.
+            </p>
+            <h2>Stack of small cubes</h2>
+            <p> In a large cubic room, we stack small cubic boxes, pushing them into the room as far as possible,
+                the stacks increasing in height towards the back walls.</p>
+            <p align="center">Example of cube stacking in a size 4 room :</p>
+            <p align="center">
+                <video width="480px" height="'480px" controls>
+                    <source src="./video/empilage_2.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </p>
+            <p>
+                The final figure is then composed of the edges of the walls of the room and the visible edges of the
+                small
+                cubes.
+            </p>
+            <p>
 
-    <h1>Introducing the game</h1>
-    <p>
-        The Calisson game is a form of Sudoku, in which you have to add edges one by one to a hexagonal grid
-        to go from an initial figure to a final figure:</p>
-    <p style="text-align: center;">
-        <img src="pictures/01.png" width="200" style="vertical-align:middle;">
-        &rArr;
-        <img src="pictures/11.png" width="200" style="vertical-align:middle;">
-    </p>
-    <p style="text-align: center;">
-        <img src="pictures/01-11.gif" width="300">
-    </p>
-    <p>
-        the final figure is unique because it represents&nbsp;:
-    <ul>
-        <li>a stack of small cubes in a large cubic room</li>
-        <li>a planar hexagon paved with diamonds, or calissons</li>
-    </ul>
-    These two interpretations can be used when solving.
-    </p>
-    <h2>Stack of small cubes</h2>
-    <p> In a large cubic room, we stack small cubic boxes, pushing them into the room as far as possible,
-        the stacks increasing in height towards the back walls.</p>
-    <p align="center">Example of cube stacking in a size 4 room :</p>
-    <p align="center">
-        <video width="480px" height="'480px" controls>
-            <source src="./video/empilage_2.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </p>
-    <p>
-        The final figure is then composed of the edges of the walls of the room and the visible edges of the small
-        cubes.
-    </p>
-    <p>
+            </p>
+            <h2>Flat hexagon paving with calissons</h2>
+            <p>A calisson is formed by joining two equilateral triangles having a common side.<br><br>
+                There are three types of calisson, with different orientations, shown here :<br>
+            <p align="center"> <img src="./pictures/3_calissons.png" alt="arêtes" width=400></p>
+            <p>
+                The edges to be drawn in solid lines delimit areas
+                entirely filled with calissons of the same color&nbsp;:
+            </p>
+            <p style="text-align: center;">
+                <img src="pictures/01.png" width="200" style="vertical-align:middle;">
+                &rArr;
+                <img src="pictures/11-color.png" width="200" style="vertical-align:middle;">
+            </p>
 
-    </p>
-    <h2>Flat hexagon paving with calissons</h2>
-    <p>A calisson is formed by joining two equilateral triangles having a common side.<br><br>
-        There are three types of calisson, with different orientations, shown here :<br>
-    <p align="center"> <img src="./pictures/3_calissons.png" alt="arêtes" width=400></p>
-    <p>
-        The edges to be drawn in solid lines delimit areas
-        entirely filled with calissons of the same color&nbsp;:
-    </p>
-    <p style="text-align: center;">
-        <img src="pictures/01.png" width="200" style="vertical-align:middle;">
-        &rArr;
-        <img src="pictures/11-color.png" width="200" style="vertical-align:middle;">
-    </p>
+            <p> Two rules must be observed :</p>
+            <ul>
+                <li><strong>a calisson is never crossed by an edge</strong> </li>
+                <li><strong> no edge between two calissons of the same orientation (or color)</strong></li>
+            </ul>
+        </div>
+        <h1>Resolution</h1>
+        <div>
+            <h2>Drawing edges and coloring calissons</h2>
+            <p>
+                The initial edges cannot be modified, while the positions of the edges to be determined are drawn
+                with a small circle in the middle.
+            </p>
+            <p>
+                On the computer, missing edges can be drawn by left-clicking on the center of the edge, while
+                coloring a calisson is obtained by right-clicking on the center of the rhombus.
+            </p <p>
+            On tablets/telephones/touch screens, touching the middle of an edge causes the edge to be drawn
+            or the diamond to be colored, depending on the status of the buttons to the left and right of the play area.
+            </p>
 
-    <p> Two rules must be observed :</p>
-    <ul>
-        <li><strong>a calisson is never crossed by an edge</strong> </li>
-        <li><strong> no edge between two calissons of the same orientation (or color)</strong></li>
-    </ul>
-
-    <h1>Resolution</h1>
-
-    <h2>Drawing edges and coloring calissons</h2>
-    <p>
-        The initial edges cannot be modified, while the positions of the edges to be determined are drawn
-        with a small circle in the middle.
-    </p>
-    <p>
-        On the computer, missing edges can be drawn by left-clicking on the center of the edge, while
-        coloring a calisson is obtained by right-clicking on the center of the rhombus.
-    </p <p>
-    On tablets/telephones/touch screens, touching the middle of an edge causes the edge to be drawn
-    or the diamond to be colored, depending on the status of the buttons to the left and right of the play area.
-    </p>
-
-    <h2>Two techniques to facilitate resolution</h2>
-    <p>The following two rules allow the resolution of all Level 1 grids, whatever their size.
-        <br>
-        They are, however, insufficient to solve Level 3 problems,
-        which are all impossible to solve using just these two rules.
-    <ul style="font-style: italic; ">
-        <li>Acute angle rule : <br>
-            Two known edges (solid or dotted) having a common point and forming an acute angle determine
-            the entire orientation of the corresponding calisson (or face of the small cube)</li>
-        <li>Fold rule : <br>
-            a solid edge on the boundary of a known calisson determines the orientation of the calisson with this edge
-            in common
-            (or of the face of the neighbouring small cube having this edge in common)</li>
-    </ul>
-    </p>
+            <h2>Two techniques to facilitate resolution</h2>
+            <p>The following two rules allow the resolution of all Level 1 grids, whatever their size.
+                <br>
+                They are, however, insufficient to solve Level 3 problems,
+                which are all impossible to solve using just these two rules.
+            <ul style="font-style: italic; ">
+                <li>Acute angle rule : <br>
+                    Two known edges (solid or dotted) having a common point and forming an acute angle determine
+                    the entire orientation of the corresponding calisson (or face of the small cube)</li>
+                <li>Fold rule : <br>
+                    a solid edge on the boundary of a known calisson determines the orientation of the calisson with
+                    this edge
+                    in common
+                    (or of the face of the neighbouring small cube having this edge in common)</li>
+            </ul>
+            </p>
 
 
-    <h2>Sample resolution</h2>
-    <p style="font-style: italic; ">
-        Solution of a grid of size 3 using the two previous rules, with all calissons drawn.<br><br>
-        Translation of french terms used in the video : </p>
-    <ul style="font-style: italic;">
-        <li>"angle aigu"&rArr;"Acute angle"</li>
-        <li>"Règle du pli"&rArr;"Fold rule"</li>
-    </ul>
+            <h2>Sample resolution</h2>
+            <p style="font-style: italic; ">
+                Solution of a grid of size 3 using the two previous rules, with all calissons drawn.<br><br>
+                Translation of french terms used in the video : </p>
+            <ul style="font-style: italic;">
+                <li>"angle aigu"&rArr;"Acute angle"</li>
+                <li>"Règle du pli"&rArr;"Fold rule"</li>
+            </ul>
 
-    <p align="center">
-        <video width="640px" height="'480px" controls>
-            <source src="./video/calisson_screencast.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </p>
-    <p>
-        With practice, you can often do without coloring calissons!
-    </p>
+            <p align="center">
+                <video width="640px" height="'480px" controls>
+                    <source src="./video/calisson_screencast.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </p>
+            <p>
+                With practice, you can often do without coloring calissons!
+            </p>
+        </div>
+        <h1>The two game modes</h1>
+        <div>
+            <h2>Training mode</h2>
+            <p>In this mode, there's no time limit on the game, and you can choose the size and level of the grids to be
+                solved
+                from a drop-down list (of the form "size.level").
+            </p>
+            <p>
+                For each grid solved, the score obtained is displayed, and a new grid is proposed.
+            </p>
+            <p>
+                In the event of a level change, the current grid is abandoned.
+            </p>
+            <p>
+                When returning to the home page, statistics for the current training session
+                as well as the previous ones are displayed.
+            </p>
 
-    <h1>The two game modes</h1>
-    <h2>Training mode</h2>
-    <p>In this mode, there's no time limit on the game, and you can choose the size and level of the grids to be solved
-        from a drop-down list (of the form "size.level").
-    </p>
-    <p>
-        For each grid solved, the score obtained is displayed, and a new grid is proposed.
-    </p>
-    <p>
-        In the event of a level change, the current grid is abandoned.
-    </p>
-    <p>
-        When returning to the home page, statistics for the current training session
-        as well as the previous ones are displayed.
-    </p>
-
-    <h2>Challenge mode (Speedy!)</h2>
-    <p>This mode lets you put your game skills to the test!</p>
-    <p>The aim is to achieve the highest possible total score in the shortest possible time, by solving grids of
-        increasing size and difficulty similar to those on the training page (but with different grids!).
-    </p>
-    <ul>
-        <li>initial time credit: <strong>300 s</strong> </li>
-        <li>every <strong>500</strong> pts, <strong>bonus of 60 s</strong></li>
-        <li>The game is over when the time credit is used up.</li>
-    </ul>
-    <h2>Options</h2>
-    <p>
-        The limited screen size of a smartphone can make it difficult to play with large grids. To make it easier to
-        play under these conditions, you can set the maximum size of grids to be offered using the drop-down list below
-        the game launch buttons. <br>
-        The score obtained for each grid increases with this maximum size, so that the duration of the game remains more
-        or less constant.
-    </p>
-    <p>
-        You can also set the length of time the grid remains displayed (from 0 to 5 seconds) at the end of a resolution,
-        so you can admire your work!
-    </p>
-    <h2>Controls</h2>
-    <p>In both modes, three buttons can be used to change the flow of the game:
-    <ul>
-        <li>
-            <span style="border:2px solid black; padding: 0px;"><strong>&nbsp; &lt; &nbsp;</strong></span> allows you to
-            go back.
-            <br>&nbsp;
-        </li>
-        <li>
-            <span style="border:2px solid black;"><strong>&nbsp; Reset &nbsp;</strong></span> resets the grid to its
-            original state.
-            <br>
-            Useful when you want to start from scratch if you get stuck. This has no effect on the score, but you'll
-            certainly have lost time in "Challenge" mode...
-            <br> &nbsp;
-        </li>
-        <li>
-            <span style="border:2px solid black;"><strong>&nbsp; Abort &nbsp;</strong></span> is more radical:
+            <h2>Challenge mode (Speedy!)</h2>
+            <p>This mode lets you put your game skills to the test!</p>
+            <p>The aim is to achieve the highest possible total score in the shortest possible time, by solving grids of
+                increasing size and difficulty similar to those on the training page (but with different grids!).
+            </p>
+            <ul>
+                <li>initial time credit: <strong>300 s</strong> </li>
+                <li>every <strong>500</strong> pts, <strong>bonus of 60 s</strong></li>
+                <li>The game is over when the time credit is used up.</li>
+            </ul>
+        </div>
+        <h1>Controls</h1>
+        <div>
+            <p>In both modes, three buttons can be used to change the flow of the game:
             <ul>
                 <li>
-                    the current grid is abandoned,
+                    <span style="border:2px solid black; padding: 0px;"><strong>&nbsp; &lt; &nbsp;</strong></span>
+                    allows
+                    you to
+                    go back.
+                    <br>&nbsp;
                 </li>
                 <li>
-                    the solution is displayed for a brief moment,
+                    <span style="border:2px solid black;"><strong>&nbsp; Reset &nbsp;</strong></span> resets the grid to
+                    its
+                    original state.
+                    <br>
+                    Useful when you want to start from scratch if you get stuck. This has no effect on the score, but
+                    you'll
+                    certainly have lost time in "Challenge" mode...
+                    <br> &nbsp;
                 </li>
                 <li>
-                    In Challenge mode, a penalty is applied to the time credit ( <strong>- 60
-                        s</strong> ),
-                </li>
-                <li>
-                    the current grid is proposed again for solving.
+                    <span style="border:2px solid black;"><strong>&nbsp; Abort &nbsp;</strong></span> is more radical:
+                    <ul>
+                        <li>
+                            the current grid is abandoned,
+                        </li>
+                        <li>
+                            the solution is displayed for a brief moment,
+                        </li>
+                        <li>
+                            In Challenge mode, a penalty is applied to the time credit ( <strong>- 60
+                                s</strong> ),
+                        </li>
+                        <li>
+                            the current grid is proposed again for solving.
+                        </li>
+                    </ul>
+                    This is useful when you find yourself completely stuck, or when you want to make it easier to start
+                    solving
+                    grids with no obvious starting point.
                 </li>
             </ul>
-            This is useful when you find yourself completely stuck, or when you want to make it easier to start solving
-            grids with no obvious starting point.
-        </li>
-    </ul>
-    </p>
+            </p>
 
-    <p>To return to the home screen from the game pages, click on the home button in the top left-hand corner
-        <img src="./pictures/icons8-home.gif" height="30px">
-    </p>
+            <p>To return to the home screen from the game pages, click on the home button in the top left-hand corner
+                <img src="./pictures/icons8-home.gif" height="30px">
+            </p>
 
-    <h2>Calisson coloring on computer or tablet/phone</h2>
-    <p>When playing on a computer, you can draw calissons (or diamonds) by right-clicking on the middle of an edge.</p>
-    <p>
-        On touch-screen devices where right-clicking is not possible, the game pages display
-        two buttons beside the hexagon, indicating whether pressing on the middle of an
-        edge will draw an edge (<strong>left button</strong>) or a rhombus (<strong>right button</strong>). Simply tap
-        one of the buttons to change mode.
+            <h2>Calisson coloring on computer or tablet/phone</h2>
+            <p>When playing on a computer, you can draw calissons (or diamonds) by right-clicking on the middle of an
+                edge.
+            </p>
+            <p>
+                On touch-screen devices where right-clicking is not possible, the game pages display
+                two buttons beside the hexagon, indicating whether pressing on the middle of an
+                edge will draw an edge (<strong>left button</strong>) or a rhombus (<strong>right button</strong>).
+                Simply
+                tap
+                one of the buttons to change mode.
 
-    </p>
-    <h2>Tips</h2>
-    <p>To obtain a high score, you must:</p>
-    <ul>
-        <li>find the solution to each grid as quickly as possible,</li>
-        <li>a bonus is awarded for attempting to solve the last grid (don't give up, even if time is running out!)</li>
-        <li>use a minimum number of calissons/diamonds, as the score decreases with the number used, and this takes
-            time: the ideal is to use none at all!
-        </li>
-    </ul>
-    <p>The score for each grid increases with its size and difficulty:
-    <ul>
-        <li>
-            The easiest grids contain many more edges than necessary. They can usually be solved without using a single
-            calisson.
-        </li>
-        <li>
-            The most difficult grids contain a minimum number of edges, so solving them without a calisson is generally
-            difficult.
-        </li>
-    </ul>
-    </p>
-    <h1>Credits</h1>
-    <p>"Speedy Calisson" is inspired by the Calisson game invented by Olivier LONGUET. For a presentation, to learn more
-        about solving techniques and to test yourself against the grids proposed by the author, please visit the <a
-            href="https://mathix.org/calisson/blog/" target="_blank" rel="noopener noreferrer">original website</a> (in
-        French).</p>
+            </p>
+            <h2>Tips</h2>
+            <p>To obtain a high score, you must:</p>
+            <ul>
+                <li>find the solution to each grid as quickly as possible,</li>
+                <li>a bonus is awarded for attempting to solve the last grid (don't give up, even if time is running
+                    out!)
+                </li>
+                <li>use a minimum number of calissons/diamonds, as the score decreases with the number used, and this
+                    takes
+                    time: the ideal is to use none at all!
+                </li>
+            </ul>
+            <p>The score for each grid increases with its size and difficulty:
+            <ul>
+                <li>
+                    The easiest grids contain many more edges than necessary. They can usually be solved without using a
+                    single
+                    calisson.
+                </li>
+                <li>
+                    The most difficult grids contain a minimum number of edges, so solving them without a calisson is
+                    generally
+                    difficult.
+                </li>
+            </ul>
+            </p>
+        </div>
+        <h1>Options</h1>
+        <div>
+            <p>
+                The limited screen size of a smartphone can make it difficult to play with large grids. To make it
+                easier to
+                play under these conditions, you can set the maximum size of grids to be offered using the drop-down
+                list
+                below
+                the game launch buttons. <br>
+                The score obtained for each grid increases with this maximum size, so that the duration of the game
+                remains
+                more
+                or less constant.
+            </p>
+            <p>
+                You can also set the length of time the grid remains displayed (from 0 to 5 seconds) at the end of a
+                resolution,
+                so you can admire your work!
+            </p>
+        </div>
+        <h1>Credits</h1>
+        <div>
+            <p>"Speedy Calisson" is inspired by the Calisson game invented by Olivier LONGUET. For a presentation, to
+                learn
+                more
+                about solving techniques and to test yourself against the grids proposed by the author, please visit the
+                <a href="https://mathix.org/calisson/blog/" target="_blank" rel="noopener noreferrer">original
+                    website</a>
+                (in
+                French).
+            </p>
 
-    <p>The game zone code has been modified from Arnaud DURAND's original code. <br>
-        All content is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"
-            target="_blank" rel="noopener noreferrer">Creative Commons CC-BY-SA-NC</a> license.</p>
-    <br>
-    <h1>Technical information</h1>
-    <h2>"Speedy Calisson" source code</h2>
-    <p>
-        The source code of this program is available at the following GitHub address : <br>
-        <a href="https://github.com/MartialTarizzo/Calisson-Game" target="_blank"
-            rel="noopener noreferrer">https://github.com/MartialTarizzo/Calisson-Game</a><br>
-        (Unfortunally, most of the comments are in French ;-)
-    </p>
+            <p>The game zone code has been modified from Arnaud DURAND's original code. <br>
+                All content is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"
+                    target="_blank" rel="noopener noreferrer">Creative Commons CC-BY-SA-NC</a> license.</p>
+            <br>
+        </div>
+        <h1>Technical information</h1>
+        <div>
+            <h2>"Speedy Calisson" source code</h2>
+            <p>
+                The source code of this program is available at the following GitHub address : <br>
+                <a href="https://github.com/MartialTarizzo/Calisson-Game" target="_blank"
+                    rel="noopener noreferrer">https://github.com/MartialTarizzo/Calisson-Game</a><br>
+                (Unfortunally, most of the comments are in French ;-)
+            </p>
 
-    <h2>Origin of the grids</h2>
-    <p>
-        The grids proposed in this game are created automatically using a Python program whose code is available in a
-        GitHub repository
-        (<a href="https://github.com/MartialTarizzo/calisson"
-            target="_blank">https://github.com/MartialTarizzo/calisson</a>)<br>
-        All the puzzles have a single solution (if not, it's an error: don't hesitate to send me an e-mail to let me
-        know).
-    <h2>Speedy Calisson is a "Progressive Web Application"</h2>
-    <p>
-        Speedy Calisson HTML pages can be installed as an application on a computer,
-        tablet or phone.<br><br>
+            <h2>Origin of the grids</h2>
+            <p>
+                The grids proposed in this game are created automatically using a Python program whose code is available
+                in
+                a
+                GitHub repository
+                (<a href="https://github.com/MartialTarizzo/calisson"
+                    target="_blank">https://github.com/MartialTarizzo/calisson</a>)<br>
+                All the puzzles have a single solution (if not, it's an error: don't hesitate to send me an e-mail to
+                let me
+                know).
+            <h2>Speedy Calisson is a "Progressive Web Application"</h2>
+            <p>
+                Speedy Calisson HTML pages can be installed as an application on a computer,
+                tablet or phone.<br><br>
 
-        All you need is a browser that supports this type of installation (Chrome, Edge, Safari, ...), whatever your
-        operating system (Windows, MacOS, Linux, Android, iOS).
-        <br><br>
+                All you need is a browser that supports this type of installation (Chrome, Edge, Safari, ...), whatever
+                your
+                operating system (Windows, MacOS, Linux, Android, iOS).
+                <br><br>
 
-        By navigating to the Speedy Calisson home page (the one you're reading right now!), the browser allows/proposes
-        you to install the application. The Speedy Calisson pages will then open in a stand-alone window managed by the
-        browser (or full-screen on a tablet/phone), behaving like a native application.
-        <br><br>
+                By navigating to the Speedy Calisson home page (the one you're reading right now!), the browser
+                allows/proposes
+                you to install the application. The Speedy Calisson pages will then open in a stand-alone window managed
+                by
+                the
+                browser (or full-screen on a tablet/phone), behaving like a native application.
+                <br><br>
 
-        If the browser you're using doesn't allow you to install an application (for example, Firefox doesn't allow you
-        to do so without adding an extension), you can always create a shortcut to include it in your favorites or place
-        it on your desktop.<br><br>
-        Regardless of the method used, when browsing the home page, all the data required for the game to function is
-        cached by the browser to enable the application to be used, even in the event of loss of
-        internet connection<br><br>
-        Once installed, the application is automatically updated from the network when an Internet connection is active.
-    </p>
+                If the browser you're using doesn't allow you to install an application (for example, Firefox doesn't
+                allow
+                you
+                to do so without adding an extension), you can always create a shortcut to include it in your favorites
+                or
+                place
+                it on your desktop.<br><br>
+                Regardless of the method used, when browsing the home page, all the data required for the game to
+                function
+                is
+                cached by the browser to enable the application to be used, even in the event of loss of
+                internet connection<br><br>
+                Once installed, the application is automatically updated from the network when an Internet connection is
+                active.
+            </p>
+        </div>
+    </div>
+    <div id="footer">
+        <p>
+            <em> contact : martial.tarizzo (at) gmail . com</em>
+            <br>
+            (Version 2.13.1)
+        </p>
+    </div>
 
-    <hr>
-    Martial Tarizzo - 28/12/2024 (Version 2.13.1)
-    <p>
-        <em> contact : martial.tarizzo (at) gmail . com</em>
-    </p>
 </body>
 
 </html>

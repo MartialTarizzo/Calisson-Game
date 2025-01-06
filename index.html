@@ -23,11 +23,11 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/popup.css">
     <link rel="stylesheet" href="./css/jquery-ui.css">
+    
     <link rel="icon" type="image/x-icon" href="./pictures/favicon.ico">
 
     <script src="./scripts/jquery-3.7.1.js"></script>
     <script src="./scripts/jquery-ui.js"></script>
-
 
     <title>Speedy Calisson</title>
 
@@ -72,6 +72,15 @@
     <link rel="manifest" href="./manifest.json" />
 
     <style>
+        body {
+            font-size: 20px;
+            margin: auto;
+            padding: 0px;
+            max-width: 800px;
+            text-align: left;
+            border-width: 1px;
+        }
+
         table,
         th,
         td {
@@ -119,13 +128,16 @@
 
         #footer {
             text-align: center;
+            font-size: smaller;
         }
 
-        h1 {
+        #accordeon-sections h1 {
             text-align: center;
+            border-radius: 10px;
+            font-size: 1.3rem;
         }
 
-        #accordion .panel {
+        #accordeon-sections .panel {
             border: 0;
             color: #fff;
             background: #000;
@@ -134,40 +146,42 @@
             max-height: fit-content;
         }
 
-        #accordion .ui-accordion-header {
+        #accordeon-sections .ui-accordion-header {
             display: block;
             cursor: pointer;
             position: relative;
-            margin: 2px 0 0 0;
-            margin: 0px 0 0 0;
+            margin: 5px;
             padding: .1em .1em .1em .2em;
-            /* font-size: 150%; */
             font-weight: bold;
         }
 
         .ui-accordion-header-collapsed {
-            background-color: lavender;
+            background-color: aliceblue;
         }
 
         .ui-accordion-header.ui-state-hover {
             background-color: cornflowerblue;
             color: white
         }
+
+        .ui-accordion .ui-accordion-content {
+            padding: 1em;
+        }
     </style>
     <script>
         $(function () {
-            $("#accordion").accordion({
+            $("#accordeon-sections").accordion({
                 heightStyle: "content",
                 collapsible: true,
-                active: false
-            // ,
-            //     activate: function (event, ui) {
-            //         var self = this;
-            //         theOffset = $(self).offset();
-            //         $('body,html').animate({ scrollTop: theOffset.top - 10 });
-            //     }
+                active: false,
             });
-            $('#accordion h1').bind('click', function () {
+
+            // activation de l'accordéon des sections 
+            // (masqué par défaut pour éviter l'affichage au chargement de la page)
+            $('#accordeon-sections').css('display', 'block')
+
+            // Le dépliage des sections, avec le scoll auto en tête de section
+            $('#accordeon-sections h1').bind('click', function () {
                 var self = this;
                 setTimeout(function () {
                     theOffset = $(self).offset();
@@ -189,7 +203,7 @@
     gtag('config', 'G-09KM2N4X02');
 </script>
 
-<body style=" font-size: 20px; margin:auto; padding: 20px; max-width: 1200px; text-align:left; border-width: 1px;">
+<body>
 
     <!-- le dialogue modal pour discord, avec le même style que pour les fins de partie -->
     <div id="modalDiscord" class="modal">
@@ -411,7 +425,7 @@
     <div>
         <p></p>
     </div>
-    <div id="accordion">
+    <div id="accordeon-sections" style="display: none;">
         <h1>Présentation du jeu</h1>
         <div>
             <p>Le jeu du calisson est une forme de sudoku, pour lequel il faut ajouter des arêtes une par une dans une
@@ -688,7 +702,7 @@
         <div>
             <h2>Code source de "Speedy Calisson"</h2>
             <p>
-                Le code source de ce programme est disponible sur github à l'adresse suivante : <br>
+                Le code source de ce programme est disponible sur github à l'adresse suivante&nbsp;: <br>
                 <a href="https://github.com/MartialTarizzo/Calisson-Game" target="_blank"
                     rel="noopener noreferrer">https://github.com/MartialTarizzo/Calisson-Game</a>
             </p>
@@ -744,9 +758,9 @@
     </div>
     <div id="footer">
         <p>
-            Martial Tarizzo - 28/12/2024 (Version 2.13.1)
-            <br>
             <em> contact : martial.tarizzo (at) gmail . com</em>
+            <br>
+            (Version 2.13.1)
         </p>
     </div>
 </body>
