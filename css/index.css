@@ -81,15 +81,15 @@ td {
     font-weight: bold;
 }
 
-.ui-accordion-header-collapsed {
+#accordeon-sections .ui-accordion-header-collapsed {
     background-color: aliceblue;
 }
 
-.ui-accordion-header.ui-state-hover {
+#accordeon-sections .ui-accordion-header.ui-state-hover {
     background-color: cornflowerblue;
     color: white
 }
 
-.ui-accordion .ui-accordion-content {
+#accordeon-sections .ui-accordion-content {
     padding: 1em;
 }
