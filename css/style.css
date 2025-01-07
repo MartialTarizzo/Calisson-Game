@@ -222,7 +222,7 @@ hr {
     border-width: 4px;
     border-color: white;
     border-style: solid;
-    padding: 10px;
+    padding: 5px;
     position: absolute;
     z-index: 5;
 }
@@ -237,7 +237,7 @@ hr {
 }
 
 .butMode-diamond {
-    left: calc(100% - 100px);
+    left: calc(100% - 90px);
 }
 
 .butMode img {
