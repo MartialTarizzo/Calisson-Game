@@ -35,6 +35,18 @@ let dashLineWidth = 1
 let gridLineWidth = 3
 let borderLineWidth = 4
 
+// les couleurs
+let borderColor = "black"
+let enigmaEdgeColor = "black"
+let userEdgeColor = "blue"
+let leftDiamodColor = "#ffe32e40"
+let horizDiamodColor = "#2eb3ff40"
+let rightDiamondColor = "#ff2e2e40"
+let dotEdgeColor = "black"
+let dotFillColor = "white"
+let dotHoverColor = "black"
+let undoDotColor = "red"
+
 // réglage de l'interface sur un écran tactile 
 try {
     document.createEvent("TouchEvent");
@@ -551,7 +563,7 @@ function back() {
     context.beginPath();
     context.lineWidth = 1;
     context.arc(tabmilieu[v.indx][0], tabmilieu[v.indx][1], taillePoint + 2, 0, 2 * Math.PI);
-    context.fillStyle = "red";
+    context.fillStyle = undoDotColor;
     context.fill();
     context.closePath();
 }
@@ -590,14 +602,15 @@ function dessinerlafigure() {
         {
             if ((tabmilieu[i][2] == true) || (tabmilieu[i][2] == 'bloquee') || (tabmilieu[i][2] == 'solution')) { //on trace le segment si vrai
                 context.beginPath();
-                context.lineWidth = gridLineWidth;
                 context.setLineDash([]);
                 context.moveTo(tabsegment[i][0][0], tabsegment[i][0][1])
                 context.lineTo(tabsegment[i][1][0], tabsegment[i][1][1])
-                if ((tabmilieu[i][2] == 'solution')) {
-                    context.strokeStyle = "red";
+                if ((tabmilieu[i][2] == 'bloquee')) {
+                    context.strokeStyle = enigmaEdgeColor;
+                    context.lineWidth = gridLineWidth;
                 } else {
-                    context.strokeStyle = "black";
+                    context.strokeStyle = userEdgeColor;
+                    context.lineWidth = 1.2 * gridLineWidth;
                 }
                 context.stroke();
                 context.closePath();
@@ -607,8 +620,8 @@ function dessinerlafigure() {
                 context.lineWidth = 1;
                 context.setLineDash([]);
                 context.arc(tabmilieu[i][0], tabmilieu[i][1], taillePoint, 0, 2 * Math.PI);
-                context.fillStyle = "white";
-                context.strokeStyle = "black";
+                context.fillStyle = dotFillColor;
+                context.strokeStyle = dotEdgeColor;
                 context.fill();
                 context.stroke();
                 context.closePath();
@@ -628,7 +641,7 @@ function dessinerlafigure() {
                         y4 = y - 0.5 * v3y + 0.5 * v2y;
                         x3 = x + 0.5 * v3x + 0.5 * v2x;
                         y3 = y + 0.5 * v3y + 0.5 * v2y;
-                        couleur = "#ffe32e40";
+                        couleur = leftDiamodColor;
                         break;
                     case "droite":
                         x1 = x + 0.5 * v2x - 0.5 * v1x;
@@ -639,7 +652,7 @@ function dessinerlafigure() {
                         y2 = y - 0.5 * v2y - 0.5 * v1y;
                         x4 = x + 0.5 * v2x + 0.5 * v1x;
                         y4 = y + 0.5 * v2y + 0.5 * v1y;
-                        couleur = "#ff2e2e40";
+                        couleur = rightDiamondColor;
                         break;
                     case "hori":
                         x2 = x - 0.5 * v1x - 0.5 * v3x
@@ -650,7 +663,7 @@ function dessinerlafigure() {
                         y3 = y - 0.5 * v1y + 0.5 * v3y
                         x4 = x + 0.5 * v1x + 0.5 * v3x
                         y4 = y + 0.5 * v1y + 0.5 * v3y
-                        couleur = "#2eb3ff40";
+                        couleur = horizDiamodColor;
                         break;
 
                 }
@@ -671,7 +684,7 @@ function dessinerlafigure() {
     for (let i = 0; i < taille; i++) {
         context.beginPath();
         context.lineWidth = borderLineWidth;
-        context.strokeStyle = "black";
+        context.strokeStyle = borderColor;
         context.setLineDash([]);
         context.moveTo(centrex + i * v1x, centrey + i * v1y)
         context.lineTo(centrex + (i + 1) * v1x, centrey + (i + 1) * v1y)
@@ -716,16 +729,12 @@ document.getElementById("butDiamond").addEventListener(
 
 function drawModeButtonsBorders() {
     if (mode == "mode_arete") {
-        // drawcolor = "red"
         document.getElementById("butEdge").style.borderColor = "navy"
         document.getElementById("butDiamond").style.borderColor = "white"
-        // draw()
     }
     else {
-        // drawcolor = "blue"
         document.getElementById("butEdge").style.borderColor = "white"
         document.getElementById("butDiamond").style.borderColor = "navy"
-        // draw()
     }
 }
 
@@ -762,7 +771,7 @@ function dessinerSolution() {
         switch (solution[i]) {
             case true: tabmilieu[i][2] = 'solution'; break;
             case false: tabmilieu[i][2] = false; break;
-            case 'bloquee': tabmilieu[i][2] = true;
+            case 'bloquee': tabmilieu[i][2] = 'bloquee';
         }
     }
     remplirLosanges()
@@ -930,7 +939,7 @@ function remplirLosanges() {
                             // un angle aigu : le losange doit être peint
                             nbLosPeints++
                             // peinture du losange
-                            p[4] = true 
+                            p[4] = true
                             // ajout des segments "virtuels"
                             for (let pp of [p1, p2, p3, p4]) {
                                 if (!pp[2]) {
@@ -1015,7 +1024,7 @@ function ajouterenleversegment(evt) {
                     context.beginPath();
                     context.lineWidth = gridLineWidth;
                     context.arc(tabmilieu[i][0], tabmilieu[i][1], taillePoint, 0, 2 * Math.PI);
-                    context.fillStyle = "black";
+                    context.fillStyle = dotHoverColor;
                     context.fill();
                     context.closePath();
                 }
@@ -1149,7 +1158,7 @@ function curseur(evt) {
                     context.beginPath();
                     context.lineWidth = 1;
                     context.arc(tabmilieu[i][0], tabmilieu[i][1], taillePoint, 0, 2 * Math.PI);
-                    context.fillStyle = "black";
+                    context.fillStyle = dotHoverColor;
                     context.fill();
                     context.closePath();
                 }
