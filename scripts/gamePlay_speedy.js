@@ -507,7 +507,10 @@ function restart(objScore) {
     totalScore += score;
 
     if (timeBonus > 0) {
-      maxTime += timeBonus
+      // + 1 à la fin pour être certain de ne pas pénaliser le joueur
+      // De plus, quand la dernière grille était validée dans la dernière seconde
+      // ça provoquait un comportement incorrect (fin de partie alors que ce n'éest pas le cas)
+      maxTime += timeBonus + 1  
 
       document.getElementById("spTimeBonif").innerText = timeBonus
       bonusDuration = 3000
