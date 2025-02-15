@@ -445,6 +445,8 @@ function restart(objScore) {
     let modalEndGrid = document.getElementById("modalEndGrid");
     modalEndGrid.style.display = "block"
 
+    // Nettoyage de toute sélection parasite dans la popup
+    document.getSelection().empty()
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
 
     // l'animation suivante dure 2400 + delai (en ms)
