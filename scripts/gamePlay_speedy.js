@@ -447,9 +447,6 @@ function restart(objScore) {
 
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
 
-    // Arrêt du décompte de temps de la partie
-    clearInterval(gameTimer)
-
     // l'animation suivante dure 2400 + delai (en ms)
     $('#popupEndGrid')
       .stop(true, true)
@@ -487,6 +484,9 @@ function restart(objScore) {
     let popupDuration = 2400 // durée d'affichage du popup
     let bonusDuration = 0   // durée d'affichage du bonus éventuel
 
+    // Arrêt du décompte de temps de la partie
+    clearInterval(gameTimer)
+
     // on tient compte de la taille max des grilles pour ajuster le score
     score = Math.ceil(score * coeffGridSize)
     // on réduit le score si le total est déjà très important
@@ -510,7 +510,7 @@ function restart(objScore) {
       // + 1 à la fin pour être certain de ne pas pénaliser le joueur
       // De plus, quand la dernière grille était validée dans la dernière seconde
       // ça provoquait un comportement incorrect (fin de partie alors que ce n'éest pas le cas)
-      maxTime += timeBonus + 1  
+      maxTime += timeBonus + 1
 
       document.getElementById("spTimeBonif").innerText = timeBonus
       bonusDuration = 3000
@@ -519,25 +519,28 @@ function restart(objScore) {
       setTimeout(displayBonus, popupDuration + delai - 600)
     }
 
-    // on relance une nouvelle grille avec un délai compatible avec
-    // la durée de l'animation du score (et du bonus éventuel)
-    // L'affichage de la nouvelle grille se fait 600 ms (cf infra) avant la fin des confettis
+    // MAJ des éléments d'information dans l'interface du joueur
+    // se fait pendant l'affichage du popup de fin de grille
     setTimeout(() => {
-
+      // le score total
       document.getElementById('valScore').innerHTML = totalScore;
-
       // affichage du badge de nombre de bonus si nécessaire
       if (totalScore > incScoreBonif) {
         document.getElementById('badge').style.display = 'flex'
         document.getElementById('badge-number').innerText = Math.floor(totalScore / incScoreBonif)
       }
+      // affichage temps restant
+      document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
+    },
+      delai + 1200) // 1200 = moitié du temps d'affichage du popup de fin de grille
 
+    // on relance une nouvelle grille avec un délai compatible avec
+    // la durée de l'animation du score (et du bonus éventuel)
+    // L'affichage de la nouvelle grille se fait 600 ms (cf infra) avant la fin des confettis
+    setTimeout(() => {
       genEnigme()
-
       modalEndGrid.style.display = "none"
-
       gameTimer = setInterval(decompteTemps, 1000)
-
       start(currentEnig, restart, setLang)
     }, bonusDuration == 0 ? popupDuration + delai : popupDuration + delai + bonusDuration - 600)
   }
