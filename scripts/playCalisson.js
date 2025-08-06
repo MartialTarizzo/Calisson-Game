@@ -11,6 +11,7 @@ playCalisson.js pour la page HTML permettant de jouer au jeu de Calisson
 let taille, longueur, marge, mode, v1x, v1y, v2x, v2y, v3x, v3y, centrex, centrey;
 let jeuPossible;
 let tabsegment, tabmilieu, solution;
+let tablosanges;
 let historique;
 let modejeu;
 let solutionpresente;
@@ -128,6 +129,10 @@ function init() {
     //  true -> arête de la solution, non affichée pendant le jeu (ça serait trop facile !)
     // false -> arête ne faisant pas partie de la solution
     solution = [];
+
+    // tablosanges est le tableau (calculé à partir des arêtes par la fonction losanges_a_remplir)
+    // indiquant quels sont les losanges à colorier
+    tablosanges = [];
 
     // la pile de gestion de l'historique, permettant le retour en arrière
     // lors de la résolution
@@ -522,6 +527,9 @@ function commencergrille() {
     centrey = marge;
 
     miseajourpoint(tab)
+
+    tablosanges = losanges_a_remplir();
+
     dessinerlafigure()
 }
 
@@ -778,6 +786,7 @@ function dessinerSolution() {
     dessinerlafigure()
 }
 
+
 /*
 Comment dans le code javascript du jeu du calisson dessiner les losanges de couleur ?
 On ne peut pas faire comme en Python, car on ne travaille pas à partir de la modélisation 3D.
@@ -796,11 +805,15 @@ Idée :
     (ceci est nécessaire pour le repérage des points voisins)
   - de plus, on ajoute les segments du bord de l'hexagone à ce tableau
 
-le but final est de mettre à jour le champ (4) de chaque élément de tabmilieu
-pour un dessin correct des losanges à colorier : ceci est fait en appelant 
-la fonction remplirLosanges
+Les points milieux des losanges candidats à être coloriés sont extraits de
+tabmilbor : ce sont ceux pour lesquels le champ 2 est ni "true", ni "bloquee" 
+donc "false".
+
+Parmi ces points, seuls ceux vérifiant la règle de l'angle aigu 
+(deux de ses côtés formés par une arête tracée ou le bord d'un losange
+colorié forment un angle aigu) sont à colorier
 */
-function remplirLosanges() {
+function losanges_a_remplir() {
     // Les coordonnées des points dans tabmilieu sont des nombres flottants.
     // pour éviter les erreurs de comparaison entre nombres flottants, 
     // on convertit dans les tableaux les coordonnées (avec n décimales) 
@@ -817,145 +830,141 @@ function remplirLosanges() {
         }
     }
 
-    /*
-    Les points milieux des losanges candidats à être coloriés sont extraits de
-    tabmilbor : ce sont ceux pour lesquels le champ 2 est ni "true", ni "bloquee" 
-    donc "false".
+    // mise à false du tracé du losange, et ajout de l'index
+    function addLast(arrMilieu, index) {
+        arrMilieu[4] = false
+        arrMilieu.push(index)
+        return arrMilieu
+    }
+    // la fonction ptsVoisins(a) retourne une liste de la forme [[p1, p2], [p3, p4]],
+    // chaque p_ retourné donne le point dans tabmilbor du milieu d'un segment entourant
+    //  le losange défini par le point milieu a.
+    // a est un élément de tabmilbor
+    // Les points sont regroupés par couples, chaque couple représentant deux arêtes formant
+    // un angle aigu du losange de centre a.
 
-    Parmi ces points, seuls ceux vérifiant la règle de l'angle aigu 
-    (deux de ses côtés formés par une arête tracée ou le bord d'un losange
-    colorié forment un angle aigu) sont à colorier
-    */
-    function losanges_a_remplir() {
-        // mise à false du tracé du losange, et ajout de l'index
-        function addLast(arrMilieu, index) {
-            arrMilieu[4] = false
-            arrMilieu.push(index)
-            return arrMilieu
-        }
-        // la fonction ptsVoisins(a) retourne une liste de la forme [[p1, p2], [p3, p4]],
-        // chaque p_ retourné donne le point dans tabmilbor du milieu d'un segment entourant
-        //  le losange défini par le point milieu a.
-        // a est un élément de tabmilbor
-        // Les points sont regroupés par couples, chaque couple représentant deux arêtes formant
-        // un angle aigu du losange de centre a.
-
-        // les calculs internes sont effectués sur les coordonnées réelles des points contenues
-        //  dans tabmilieu pour éviter les erreurs liées à la manipulation des flottants
-        function ptsVoisins(a) {
-            function samecoord(p, c) {
-                let [x, y] = c
-                return (p[0] == x) && (p[1] == y)
-            }
-
-            let pt1, pt2, pt3, pt4
-            let index = a.at(-1)
-            let ptX = tabmilieu[index][0]
-            let ptY = tabmilieu[index][1]
-            let orient = tabmilieu[index][3]
-
-            switch (orient) {
-                case 'hori':
-                    pt1 = ar([ptX + v1x / 2, ptY - v1y / 2])
-                    pt2 = ar([ptX + v1x / 2, ptY + v1y / 2])
-                    pt3 = ar([ptX + v3x / 2, ptY - v3y / 2])
-                    pt4 = ar([ptX + v3x / 2, ptY + v3y / 2])
-                    break
-                case 'gauche':
-                    pt1 = ar([ptX + v1x / 2, ptY - v1y / 2])
-                    pt2 = ar([ptX, ptY - v1y])
-                    pt3 = ar([ptX + v3x / 2, ptY + v3y / 2])
-                    pt4 = ar([ptX, ptY + v3y])
-                    break
-                case 'droite':
-                    pt1 = ar([ptX + v3x / 2, ptY - v3y / 2])
-                    pt2 = ar([ptX, ptY - v3y])
-                    pt3 = ar([ptX + v1x / 2, ptY + v3y / 2])
-                    pt4 = ar([ptX, ptY + v3y])
-                    break
-            }
-            // Comme pt_i ne donne que les coordonnées, il faut retrouver les pts en parcourant tabmilbor
-
-            let p1 = tabmilbor.find((p) => samecoord(p, pt1))
-            let p2 = tabmilbor.find((p) => samecoord(p, pt2))
-            let p3 = tabmilbor.find((p) => samecoord(p, pt3))
-            let p4 = tabmilbor.find((p) => samecoord(p, pt4))
-            return [[p1, p2], [p3, p4]]
+    // les calculs internes sont effectués sur les coordonnées réelles des points contenues
+    //  dans tabmilieu pour éviter les erreurs liées à la manipulation des flottants
+    function ptsVoisins(a) {
+        function samecoord(p, c) {
+            let [x, y] = c
+            return (p[0] == x) && (p[1] == y)
         }
 
-        // fabrication du tableau des bords de l'hexagone
-        let bords = []
-        for (let i = 0; i < taille; i++) {
-            bords.push([centrex + (i + 1 / 2) * v1x, centrey + (i + 1 / 2) * v1y, "bloquee", "gauche", false])
-            bords.push([centrex + (i + 1 / 2) * v3x, centrey + (i + 1 / 2) * v3y, "bloquee", "droite", false])
+        let pt1, pt2, pt3, pt4
+        let index = a.at(-1)
+        let ptX = tabmilieu[index][0]
+        let ptY = tabmilieu[index][1]
+        let orient = tabmilieu[index][3]
 
-            bords.push([centrex + taille * v1x, centrey + taille * v1y + longueur * (i + 1 / 2), "bloquee", "hori", false])
-            bords.push([centrex + taille * v3x, centrey + taille * v3y + longueur * (i + 1 / 2), "bloquee", "hori", false])
-
-            bords.push([centrex + (i + 1 / 2) * v1x, 2 * taille * longueur + centrey - (i + 1 / 2) * v1y, "bloquee", "droite", false])
-            bords.push([centrex + (i + 1 / 2) * v3x, 2 * taille * longueur + centrey - (i + 1 / 2) * v3y, "bloquee", "gauche", false])
+        switch (orient) {
+            case 'hori':
+                pt1 = ar([ptX + v1x / 2, ptY - v1y / 2])
+                pt2 = ar([ptX + v1x / 2, ptY + v1y / 2])
+                pt3 = ar([ptX + v3x / 2, ptY - v3y / 2])
+                pt4 = ar([ptX + v3x / 2, ptY + v3y / 2])
+                break
+            case 'gauche':
+                pt1 = ar([ptX + v1x / 2, ptY - v1y / 2])
+                pt2 = ar([ptX, ptY - v1y])
+                pt3 = ar([ptX + v3x / 2, ptY + v3y / 2])
+                pt4 = ar([ptX, ptY + v3y])
+                break
+            case 'droite':
+                pt1 = ar([ptX + v3x / 2, ptY - v3y / 2])
+                pt2 = ar([ptX, ptY - v3y])
+                pt3 = ar([ptX + v1x / 2, ptY + v3y / 2])
+                pt4 = ar([ptX, ptY + v3y])
+                break
         }
+        // Comme pt_i ne donne que les coordonnées, il faut retrouver les pts en parcourant tabmilbor
 
-        // le tableau de travail principal tabmilbor
-        // contient les points milieux de tous les segments en coordonnées entières
-        // avec ajout des index, complété par les points milieux des segments
-        // définissant l'hexagone
-        let tabmilbor = ar(tabmilieu.concat(bords)).map(addLast)
+        let p1 = tabmilbor.find((p) => samecoord(p, pt1))
+        let p2 = tabmilbor.find((p) => samecoord(p, pt2))
+        let p3 = tabmilbor.find((p) => samecoord(p, pt3))
+        let p4 = tabmilbor.find((p) => samecoord(p, pt4))
+        return [[p1, p2], [p3, p4]]
+    }
 
-        // dans tabmilbor, mise à jour du tracé du segment à partir du tableau solution
-        for (let i = 0; i < tabmilieu.length; i++) {
-            tabmilbor[i][2] = !!solution[i]
-        }
+    // fabrication du tableau des bords de l'hexagone
+    let bords = []
+    for (let i = 0; i < taille; i++) {
+        bords.push([centrex + (i + 1 / 2) * v1x, centrey + (i + 1 / 2) * v1y, "bloquee", "gauche", false])
+        bords.push([centrex + (i + 1 / 2) * v3x, centrey + (i + 1 / 2) * v3y, "bloquee", "droite", false])
 
-        // le nombre de losanges peints. À la fin du travail, sera égal à 3*taille**2
-        let nbLosPeints = 0
+        bords.push([centrex + taille * v1x, centrey + taille * v1y + longueur * (i + 1 / 2), "bloquee", "hori", false])
+        bords.push([centrex + taille * v3x, centrey + taille * v3y + longueur * (i + 1 / 2), "bloquee", "hori", false])
 
-        // L'idée est de balayer tabmilbor pour tous les points p. 
-        // Si p[2]=false, on n'a pas de segment => on doit peut être colorier le losange centré sur p.
-        // Pour le savoir, on récupère les points voisins (ptsVoisins(p)->[[p1, p2], [p3, p4]]). 
-        // On doit colorier le losange si les points [p1, p2] ou [p3, p4] forment un
-        // couple dont les deux segments sont différents de false : on remplit le losange si
-        // (p1[2] != false) && (p2[2] != false) ou la même chose pour p3,p4
-        // Si on remplit le losange, tous les segments l'entourant qui étaient à false passent 
-        // à "virtuel" permettant ainsi l'application de la règle de l'angle aigu.
+        bords.push([centrex + (i + 1 / 2) * v1x, 2 * taille * longueur + centrey - (i + 1 / 2) * v1y, "bloquee", "droite", false])
+        bords.push([centrex + (i + 1 / 2) * v3x, 2 * taille * longueur + centrey - (i + 1 / 2) * v3y, "bloquee", "gauche", false])
+    }
 
-        // Il y a plusieurs passes (boucle while) du balayage (boucle for), car la détermination
-        // du coloriage d'un losange dépend du coloriage préalable des losanges voisins (pour
-        // lesquels des arêtes vont passer à "virtuel")
-        // Les passes sont terminées quand le nombre de losanges coloriés est égal au nombre
-        // total de losanges à colorier  (3 * taille ** 2)
-        while (nbLosPeints < 3 * taille ** 2) {
-            // il reste des losanges non coloriés
-            for (let p of tabmilbor) {
-                // seuls les points internes sont à examiner (pas les bords)
-                // et ces points ne doivent pas déjà être coloriés 
-                if ((p.at(-1) < tabmilieu.length) && !p[4]) {
-                    // seuls les points sans arête (réelle ou virtuelle) sont intéressants
-                    if (!p[2]) {
-                        // recherche des pts voisins
-                        let [[p1, p2], [p3, p4]] = ptsVoisins(p)
-                        if ((p1[2] && p2[2]) || (p3[2] && p4[2])) {
-                            // au moins un des deux couples des points voisins forme
-                            // un angle aigu : le losange doit être peint
-                            nbLosPeints++
-                            // peinture du losange
-                            p[4] = true
-                            // ajout des segments "virtuels"
-                            for (let pp of [p1, p2, p3, p4]) {
-                                if (!pp[2]) {
-                                    pp[2] = "virtuel"
-                                }
+    // le tableau de travail principal tabmilbor
+    // contient les points milieux de tous les segments en coordonnées entières
+    // avec ajout des index, complété par les points milieux des segments
+    // définissant l'hexagone
+    let tabmilbor = ar(tabmilieu.concat(bords)).map(addLast)
+
+    // dans tabmilbor, mise à jour du tracé du segment à partir du tableau solution
+    for (let i = 0; i < tabmilieu.length; i++) {
+        tabmilbor[i][2] = !!solution[i]
+    }
+
+    // le nombre de losanges peints. À la fin du travail, sera égal à 3*taille**2
+    let nbLosPeints = 0
+
+    // L'idée est de balayer tabmilbor pour tous les points p. 
+    // Si p[2]=false, on n'a pas de segment => on doit peut être colorier le losange centré sur p.
+    // Pour le savoir, on récupère les points voisins (ptsVoisins(p)->[[p1, p2], [p3, p4]]). 
+    // On doit colorier le losange si les points [p1, p2] ou [p3, p4] forment un
+    // couple dont les deux segments sont différents de false : on remplit le losange si
+    // (p1[2] != false) && (p2[2] != false) ou la même chose pour p3,p4
+    // Si on remplit le losange, tous les segments l'entourant qui étaient à false passent 
+    // à "virtuel" permettant ainsi l'application de la règle de l'angle aigu.
+
+    // Il y a plusieurs passes (boucle while) du balayage (boucle for), car la détermination
+    // du coloriage d'un losange dépend du coloriage préalable des losanges voisins (pour
+    // lesquels des arêtes vont passer à "virtuel")
+    // Les passes sont terminées quand le nombre de losanges coloriés est égal au nombre
+    // total de losanges à colorier  (3 * taille ** 2)
+    while (nbLosPeints < 3 * taille ** 2) {
+        // il reste des losanges non coloriés
+        for (let p of tabmilbor) {
+            // seuls les points internes sont à examiner (pas les bords)
+            // et ces points ne doivent pas déjà être coloriés 
+            if ((p.at(-1) < tabmilieu.length) && !p[4]) {
+                // seuls les points sans arête (réelle ou virtuelle) sont intéressants
+                if (!p[2]) {
+                    // recherche des pts voisins
+                    let [[p1, p2], [p3, p4]] = ptsVoisins(p)
+                    if ((p1[2] && p2[2]) || (p3[2] && p4[2])) {
+                        // au moins un des deux couples des points voisins forme
+                        // un angle aigu : le losange doit être peint
+                        nbLosPeints++
+                        // peinture du losange
+                        p[4] = true
+                        // ajout des segments "virtuels"
+                        for (let pp of [p1, p2, p3, p4]) {
+                            if (!pp[2]) {
+                                pp[2] = "virtuel"
                             }
                         }
                     }
                 }
             }
         }
-        // C'est fini : on retourne le tableau de même taille que tabmilieu
-        // contenant toutes les valeurs indiquant si le losange doit être colorié
-        return tabmilbor.slice(0, tabmilieu.length).map((e) => e[4])
     }
+    // C'est fini : on retourne le tableau de même taille que tabmilieu
+    // contenant toutes les valeurs indiquant si le losange doit être colorié
+    return tabmilbor.slice(0, tabmilieu.length).map((e) => e[4])
+}
 
+/*
+le but final est de mettre à jour le champ (4) de chaque élément de tabmilieu
+pour un dessin correct des losanges à colorier : ceci est fait en appelant 
+la fonction remplirLosanges
+*/
+function remplirLosanges() {
     // calcul du tableau indiquant si le losange doit être rempli
     let tablos = losanges_a_remplir()
 
@@ -1069,7 +1078,7 @@ function calcScore() {
     // calcul de la valeur de référence pour la grille en cours
     let scoreRef = 1 * taille ** 2 * 1.1
     // et de la valeur obtenue par le joueur
-    let scorePlayer = 1 * taille ** 2 * (1.1 - propLos) * (durPlacAr / durPlacArUser) * (1 + perfAr / 2)
+    let scorePlayer = 1 * taille ** 2 * (1.1 - propLos / 10) * (durPlacAr / durPlacArUser) * (1 + perfAr / 2)
     // Calcul du score qui dépend de la taille de la grille et des variables précédentes
     let scoreFinal = Math.max(
         taille * 5,
@@ -1136,7 +1145,7 @@ function calcBonus() {
 }
 
 function returnToGamePlay() {
-    remplirLosanges()
+    dessinerSolution()
     funCallBack(calcScore())
 }
 
@@ -1182,15 +1191,36 @@ function chronoarret() {
 
 
 function testesolution() {
-    var bool = true;
+    /** La solution sera valide si :
+     * - toutes les arêtes sont correctement placées 
+     *  OU
+     * - une partie des arêtes placées est correcte (voire aucune)
+     *   et tous les calissons corrects sont coloriés
+     */
+
+    // les arêtes placées sont-elles toutes correctes ?
+    var correctEdges = true;
+    // Existe-t-il des arêtes correctes non placées ?
+    var missingEdges = false;
+    // Tous les calissons sont-ils bien placés ?
+    var allDiamondsCorrect = true;
+
     var i = 0;
-    // console.log(solution);
-    // console.log(solution[i] + "==" + tabmilieu[i][2])
-    while ((i < tabmilieu.length) && (bool)) {
-        bool = (solution[i] == tabmilieu[i][2])
+
+    while (i < tabmilieu.length) {
+        switch (tabmilieu[i][2]) {
+            case true:
+                correctEdges = (solution[i] == tabmilieu[i][2]) && correctEdges;
+                break;
+            case false:
+                missingEdges = (solution[i] != tabmilieu[i][2]) || missingEdges;
+                break;
+        }
+        allDiamondsCorrect = (tablosanges[i] == tabmilieu[i][4]) && allDiamondsCorrect;
         i++;
     }
-    return ((i == solution.length) && (bool))
+
+    return correctEdges && (!missingEdges || allDiamondsCorrect)
 }
 
 /////////////////////////////////////////////
