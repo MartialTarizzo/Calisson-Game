@@ -332,23 +332,39 @@
     <div id="accordeon-sections" style="display: none;">
         <h1>Présentation du jeu</h1>
         <div>
-            <p>Le jeu du calisson est une forme de sudoku, pour lequel il faut ajouter des arêtes une par une dans une
-                grille
-                hexagonale
-                pour passer d'une figure initiale à une figure finale&nbsp;:</p>
-            <p style="text-align: center;">
-                <img src="pictures/01.png" width="200" style="vertical-align:middle;">
-                &rArr;
-                <img src="pictures/11.png" width="200" style="vertical-align:middle;">
-            </p>
-            <p style="text-align: center;">
-                <img src="pictures/01-11.gif" width="300">
+            <p>Le jeu du calisson est une forme de sudoku, pour lequel il faut :
+            <ul>
+                <li>
+                    ajouter des arêtes une par une dans une grille hexagonale
+                    pour passer d'une figure initiale à une figure finale
+                    <p style="text-align: center;">
+                        <img src="pictures/01.png" width="200" style="vertical-align:middle;">
+                        &rArr;
+                        <img src="pictures/11.png" width="200" style="vertical-align:middle;">
+                    </p>
+                    <p style="text-align: center;">
+                        <img src="pictures/01-11.gif" width="300">
+                    </p>
+                </li>
+            </ul>
+            ou
+            <ul>
+                <li>
+                    colorier des losanges (ou <em>calissons</em>) pour remplir entièrement
+                    la grille hexagonale
+                    <p style="text-align: center;">
+                        <img src="pictures/01.png" width="200" style="vertical-align:middle;">
+                        &rArr;
+                        <img src="pictures/11-color.png" width="200" style="vertical-align:middle;">
+                    </p>
+                </li>
+            </ul>
             </p>
             <p>
                 la figure finale est unique car elle doit représenter&nbsp;:
             <ul>
-                <li>un empilement de petits cubes dans une grande pièce cubique</li>
-                <li>un pavage plan d'un hexagone avec des losanges, ou calissons</li>
+                <li>un <strong>empilement de petits cubes</strong> dans une grande pièce cubique</li>
+                <li>le <strong>pavage plan d'un hexagone</strong> avec des calissons</li>
             </ul>
             </p>
             <p> Ces deux interprétations sont utilisables lors de la résolution.</p>
@@ -390,6 +406,15 @@
         </div>
         <h1>Résolution</h1>
         <div>
+            <h2>Objectif de la résolution</h2>
+            <p>
+                Pour résoudre une grille, il faut :
+                <ul>
+                    <li>dessiner toutes les arêtes manquantes (dans ce cas, le coloriage des calissons est ignoré)</li>
+                    ou
+                    <li>colorier correctement tous les calissons (dans ce cas, les éventuelles arêtes dessinées doivent toutes être correctes) </li>
+                </ul>
+            </p>
             <h2>Dessin des arêtes et coloriage des calissons</h2>
             <p>
                 Les arêtes initiales ne sont pas modifiables, tandis que les positions des arêtes à déterminer sont
