@@ -976,7 +976,7 @@ function ajouteunlosange(x, y) {
             }
 
             return ((checkEdgePresent(rel[0]) || checkDiamondColored(rel[1]) || checkDiamondColored(rel[2]))
-                && !checkDiamondColored(rel[3]))
+                && (rel[3] < tabmilieu.length) && (tabmilieu[rel[3]][2] != 'bloquee') && !checkDiamondColored(rel[3]))
         }
         var relatives = calc_r(refDiamondsToFill);
 
@@ -1005,13 +1005,15 @@ function ajouteunlosange(x, y) {
                 }
                 tabmilieu[i][4] = !tabmilieu[i][4]
                 // orientation = tabmilieu[i][3]
+                historique.push({ 'indx': i, 'type': 4, 'prec': etat });
+
                 if (tabmilieu[i][4]) {
                     for (let idx of calcDiamondsToFill(i)) {
                         tabmilieu[idx][4] = true;
+                        historique.push({ 'indx': idx, 'type': 4, 'prec': false });
                         nblosangeutilise++;
                     }
                 }
-                historique.push({ 'indx': i, 'type': 4, 'prec': etat });
             }
 
         }
