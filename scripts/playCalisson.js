@@ -311,63 +311,67 @@ function recalcGeoData() {
 // Remet les trois tableaux de travail dans l'état de départ
 function miseajourpoint(chaine) {
     if (chaine == undefined) {
-        tabsegment = [];
-        tabmilieu = [];
-        //côté gauche avec diagonale verticale
-        for (let j = 0; j < 2 * taille; j++) {
-            for (let i = 0; i < Math.min(taille + 1, 2 * taille - j); i++) {
-                let k = 0;
-                if ((j > 0) && (i < taille)) {
-                    tabsegment.push([
-                        [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-                        [centrex + (i + 1) * v1x + j * v2x + k * v3x, centrey + (i + 1) * v1y + j * v2y + k * v3y]
-                    ])
-                    tabmilieu.push([centrex + (i + 0.5) * v1x + j * v2x + k * v3x, centrey + (i + 0.5) * v1y + j * v2y + k * v3y, false, "gauche", false])
+        return;
+        //  le code qui suit ne sert à rien ici !
+        // vestige de la version d'origine mathix
 
-                }
-                if (i < taille) {
-                    tabsegment.push([
-                        [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-                        [centrex + i * v1x + (j + 1) * v2x + k * v3x, centrey + i * v1y + (j + 1) * v2y + k * v3y]
-                    ])
-                    tabmilieu.push([centrex + i * v1x + (j + 0.5) * v2x + k * v3x, centrey + i * v1y + (j + 0.5) * v2y + k * v3y, false, "hori", false])
-                }
-                if (i > 0) {
-                    tabsegment.push([
-                        [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-                        [centrex + i * v1x + j * v2x + (k + 1) * v3x, centrey + i * v1y + j * v2y + (k + 1) * v3y]
-                    ])
-                    tabmilieu.push([centrex + i * v1x + j * v2x + (k + 0.5) * v3x, centrey + i * v1y + j * v2y + (k + 0.5) * v3y, false, "droite", false])
-                }
-            }
-        }
-        //côté droit sans diagonale verticale
-        for (let j = 0; j < 2 * taille; j++) {
-            for (let k = 0; k < Math.min(taille + 1, 2 * taille - j); k++) {
-                let i = 0;
-                if ((j > 0) && (k < taille)) {
-                    tabsegment.push([
-                        [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-                        [centrex + i * v1x + j * v2x + (k + 1) * v3x, centrey + i * v1y + j * v2y + (k + 1) * v3y]
-                    ])
-                    tabmilieu.push([centrex + i * v1x + j * v2x + (k + 0.5) * v3x, centrey + i * v1y + j * v2y + (k + 0.5) * v3y, false, "droite", false])
-                }
-                if ((k < taille) && (k > 0)) {
-                    tabsegment.push([
-                        [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-                        [centrex + i * v1x + (j + 1) * v2x + k * v3x, centrey + i * v1y + (j + 1) * v2y + k * v3y]
-                    ])
-                    tabmilieu.push([centrex + i * v1x + (j + 0.5) * v2x + k * v3x, centrey + i * v1y + (j + 0.5) * v2y + k * v3y, false, "hori", false])
-                }
-                if (k > 0) {
-                    tabsegment.push([
-                        [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-                        [centrex + (i + 1) * v1x + j * v2x + k * v3x, centrey + (i + 1) * v1y + j * v2y + k * v3y]
-                    ])
-                    tabmilieu.push([centrex + (i + 0.5) * v1x + j * v2x + k * v3x, centrey + (i + 0.5) * v1y + j * v2y + k * v3y, false, "gauche", false])
-                }
-            }
-        }
+        // tabsegment = [];
+        // tabmilieu = [];
+        // //côté gauche avec diagonale verticale
+        // for (let j = 0; j < 2 * taille; j++) {
+        //     for (let i = 0; i < Math.min(taille + 1, 2 * taille - j); i++) {
+        //         let k = 0;
+        //         if ((j > 0) && (i < taille)) {
+        //             tabsegment.push([
+        //                 [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
+        //                 [centrex + (i + 1) * v1x + j * v2x + k * v3x, centrey + (i + 1) * v1y + j * v2y + k * v3y]
+        //             ])
+        //             tabmilieu.push([centrex + (i + 0.5) * v1x + j * v2x + k * v3x, centrey + (i + 0.5) * v1y + j * v2y + k * v3y, false, "gauche", false])
+
+        //         }
+        //         if (i < taille) {
+        //             tabsegment.push([
+        //                 [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
+        //                 [centrex + i * v1x + (j + 1) * v2x + k * v3x, centrey + i * v1y + (j + 1) * v2y + k * v3y]
+        //             ])
+        //             tabmilieu.push([centrex + i * v1x + (j + 0.5) * v2x + k * v3x, centrey + i * v1y + (j + 0.5) * v2y + k * v3y, false, "hori", false])
+        //         }
+        //         if (i > 0) {
+        //             tabsegment.push([
+        //                 [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
+        //                 [centrex + i * v1x + j * v2x + (k + 1) * v3x, centrey + i * v1y + j * v2y + (k + 1) * v3y]
+        //             ])
+        //             tabmilieu.push([centrex + i * v1x + j * v2x + (k + 0.5) * v3x, centrey + i * v1y + j * v2y + (k + 0.5) * v3y, false, "droite", false])
+        //         }
+        //     }
+        // }
+        // //côté droit sans diagonale verticale
+        // for (let j = 0; j < 2 * taille; j++) {
+        //     for (let k = 0; k < Math.min(taille + 1, 2 * taille - j); k++) {
+        //         let i = 0;
+        //         if ((j > 0) && (k < taille)) {
+        //             tabsegment.push([
+        //                 [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
+        //                 [centrex + i * v1x + j * v2x + (k + 1) * v3x, centrey + i * v1y + j * v2y + (k + 1) * v3y]
+        //             ])
+        //             tabmilieu.push([centrex + i * v1x + j * v2x + (k + 0.5) * v3x, centrey + i * v1y + j * v2y + (k + 0.5) * v3y, false, "droite", false])
+        //         }
+        //         if ((k < taille) && (k > 0)) {
+        //             tabsegment.push([
+        //                 [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
+        //                 [centrex + i * v1x + (j + 1) * v2x + k * v3x, centrey + i * v1y + (j + 1) * v2y + k * v3y]
+        //             ])
+        //             tabmilieu.push([centrex + i * v1x + (j + 0.5) * v2x + k * v3x, centrey + i * v1y + (j + 0.5) * v2y + k * v3y, false, "hori", false])
+        //         }
+        //         if (k > 0) {
+        //             tabsegment.push([
+        //                 [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
+        //                 [centrex + (i + 1) * v1x + j * v2x + k * v3x, centrey + (i + 1) * v1y + j * v2y + k * v3y]
+        //             ])
+        //             tabmilieu.push([centrex + (i + 0.5) * v1x + j * v2x + k * v3x, centrey + (i + 0.5) * v1y + j * v2y + k * v3y, false, "gauche", false])
+        //         }
+        //     }
+        // }
     } else {
         var p = 0;
         tabsegment = [];
@@ -383,11 +387,17 @@ function miseajourpoint(chaine) {
                         [centrex + (i + 1) * v1x + j * v2x + k * v3x, centrey + (i + 1) * v1y + j * v2y + k * v3y]
                     ])
                     if (chaine[p] == 't') {
-                        tabmilieu.push([centrex + (i + 0.5) * v1x + j * v2x + k * v3x, centrey + (i + 0.5) * v1y + j * v2y + k * v3y, "bloquee", "gauche", false])
+                        tabmilieu.push([
+                            centrex + (i + 0.5) * v1x + j * v2x + k * v3x,
+                            centrey + (i + 0.5) * v1y + j * v2y + k * v3y,
+                            "bloquee", "gauche", false])
                         solution.push('bloquee')
                     } else {
 
-                        tabmilieu.push([centrex + (i + 0.5) * v1x + j * v2x + k * v3x, centrey + (i + 0.5) * v1y + j * v2y + k * v3y, false, "gauche", false])
+                        tabmilieu.push([
+                            centrex + (i + 0.5) * v1x + j * v2x + k * v3x,
+                            centrey + (i + 0.5) * v1y + j * v2y + k * v3y,
+                            false, "gauche", false])
                         if (chaine[p] == 's') {
                             solution.push(true)
                         } else {
@@ -402,10 +412,16 @@ function miseajourpoint(chaine) {
                         [centrex + i * v1x + (j + 1) * v2x + k * v3x, centrey + i * v1y + (j + 1) * v2y + k * v3y]
                     ])
                     if (chaine[p] == 't') {
-                        tabmilieu.push([centrex + i * v1x + (j + 0.5) * v2x + k * v3x, centrey + i * v1y + (j + 0.5) * v2y + k * v3y, 'bloquee', "hori", false])
+                        tabmilieu.push([
+                            centrex + i * v1x + (j + 0.5) * v2x + k * v3x,
+                            centrey + i * v1y + (j + 0.5) * v2y + k * v3y,
+                            'bloquee', "hori", false])
                         solution.push('bloquee')
                     } else {
-                        tabmilieu.push([centrex + i * v1x + (j + 0.5) * v2x + k * v3x, centrey + i * v1y + (j + 0.5) * v2y + k * v3y, false, "hori", false])
+                        tabmilieu.push([
+                            centrex + i * v1x + (j + 0.5) * v2x + k * v3x,
+                            centrey + i * v1y + (j + 0.5) * v2y + k * v3y,
+                            false, "hori", false])
                         if (chaine[p] == 's') {
                             solution.push(true)
                         } else {
@@ -420,10 +436,16 @@ function miseajourpoint(chaine) {
                         [centrex + i * v1x + j * v2x + (k + 1) * v3x, centrey + i * v1y + j * v2y + (k + 1) * v3y]
                     ])
                     if (chaine[p] == 't') {
-                        tabmilieu.push([centrex + i * v1x + j * v2x + (k + 0.5) * v3x, centrey + i * v1y + j * v2y + (k + 0.5) * v3y, 'bloquee', "droite", false])
+                        tabmilieu.push([
+                            centrex + i * v1x + j * v2x + (k + 0.5) * v3x,
+                            centrey + i * v1y + j * v2y + (k + 0.5) * v3y,
+                            'bloquee', "droite", false])
                         solution.push('bloquee')
                     } else {
-                        tabmilieu.push([centrex + i * v1x + j * v2x + (k + 0.5) * v3x, centrey + i * v1y + j * v2y + (k + 0.5) * v3y, false, "droite", false])
+                        tabmilieu.push([
+                            centrex + i * v1x + j * v2x + (k + 0.5) * v3x,
+                            centrey + i * v1y + j * v2y + (k + 0.5) * v3y,
+                            false, "droite", false])
                         if (chaine[p] == 's') {
                             solution.push(true)
                         } else {
@@ -444,10 +466,16 @@ function miseajourpoint(chaine) {
                         [centrex + i * v1x + j * v2x + (k + 1) * v3x, centrey + i * v1y + j * v2y + (k + 1) * v3y]
                     ])
                     if (chaine[p] == 't') {
-                        tabmilieu.push([centrex + i * v1x + j * v2x + (k + 0.5) * v3x, centrey + i * v1y + j * v2y + (k + 0.5) * v3y, 'bloquee', "droite", false])
+                        tabmilieu.push([
+                            centrex + i * v1x + j * v2x + (k + 0.5) * v3x,
+                            centrey + i * v1y + j * v2y + (k + 0.5) * v3y,
+                            'bloquee', "droite", false])
                         solution.push('bloquee')
                     } else {
-                        tabmilieu.push([centrex + i * v1x + j * v2x + (k + 0.5) * v3x, centrey + i * v1y + j * v2y + (k + 0.5) * v3y, false, "droite", false])
+                        tabmilieu.push([
+                            centrex + i * v1x + j * v2x + (k + 0.5) * v3x,
+                            centrey + i * v1y + j * v2y + (k + 0.5) * v3y,
+                            false, "droite", false])
                         if (chaine[p] == 's') {
                             solution.push(true)
                         } else {
@@ -462,10 +490,16 @@ function miseajourpoint(chaine) {
                         [centrex + i * v1x + (j + 1) * v2x + k * v3x, centrey + i * v1y + (j + 1) * v2y + k * v3y]
                     ])
                     if (chaine[p] == 't') {
-                        tabmilieu.push([centrex + i * v1x + (j + 0.5) * v2x + k * v3x, centrey + i * v1y + (j + 0.5) * v2y + k * v3y, 'bloquee', "hori", false])
+                        tabmilieu.push([
+                            centrex + i * v1x + (j + 0.5) * v2x + k * v3x,
+                            centrey + i * v1y + (j + 0.5) * v2y + k * v3y,
+                            'bloquee', "hori", false])
                         solution.push('bloquee')
                     } else {
-                        tabmilieu.push([centrex + i * v1x + (j + 0.5) * v2x + k * v3x, centrey + i * v1y + (j + 0.5) * v2y + k * v3y, false, "hori", false])
+                        tabmilieu.push([
+                            centrex + i * v1x + (j + 0.5) * v2x + k * v3x,
+                            centrey + i * v1y + (j + 0.5) * v2y + k * v3y,
+                            false, "hori", false])
                         if (chaine[p] == 's') {
                             solution.push(true)
                         } else {
@@ -480,10 +514,16 @@ function miseajourpoint(chaine) {
                         [centrex + (i + 1) * v1x + j * v2x + k * v3x, centrey + (i + 1) * v1y + j * v2y + k * v3y]
                     ])
                     if (chaine[p] == 't') {
-                        tabmilieu.push([centrex + (i + 0.5) * v1x + j * v2x + k * v3x, centrey + (i + 0.5) * v1y + j * v2y + k * v3y, 'bloquee', "gauche", false])
+                        tabmilieu.push([
+                            centrex + (i + 0.5) * v1x + j * v2x + k * v3x,
+                            centrey + (i + 0.5) * v1y + j * v2y + k * v3y,
+                            'bloquee', "gauche", false])
                         solution.push('bloquee')
                     } else {
-                        tabmilieu.push([centrex + (i + 0.5) * v1x + j * v2x + k * v3x, centrey + (i + 0.5) * v1y + j * v2y + k * v3y, false, "gauche", false])
+                        tabmilieu.push([
+                            centrex + (i + 0.5) * v1x + j * v2x + k * v3x,
+                            centrey + (i + 0.5) * v1y + j * v2y + k * v3y,
+                            false, "gauche", false])
                         if (chaine[p] == 's') {
                             solution.push(true)
                         } else {
@@ -746,10 +786,214 @@ function drawModeButtonsBorders() {
     }
 }
 
+// fonction utilitaire, utilisée dans ajouteunlosange() et losanges_a_remplir.
+// 
+// Les coordonnées des points dans tabmilieu sont des nombres flottants.
+// pour éviter les erreurs de comparaison entre nombres flottants, 
+// on convertit dans les tableaux les coordonnées (avec n décimales) 
+// en entiers (x -> round(10**n * x))
+// La fonction suivante effectue cette transformation pour tous les 
+// nombres contenus dans l'argument x (ou sur x lui même si c'est un nombre)
+function ar(x, n = 3) {
+    if (Array.isArray(x)) {
+        return x.map((e) => ar(e, n))
+    } else if (typeof x === "number") {
+        return Math.round(10 ** n * x)
+    } else {
+        return x
+    }
+}
+
+
 function ajouteunlosange(x, y) {
-    var orientation;
+
+    //  ajout de l'index
+    function addIndex(arrMilieu, index) {
+        // arrMilieu[4] = false
+        arrMilieu.push(index)
+        return arrMilieu
+    }
+
+    // fabrication du tableau des bords de l'hexagone
+    let bords = []
+    for (let i = 0; i < taille; i++) {
+        bords.push([centrex + (i + 1 / 2) * v1x, centrey + (i + 1 / 2) * v1y, "bloquee", "gauche", false])
+        bords.push([centrex + (i + 1 / 2) * v3x, centrey + (i + 1 / 2) * v3y, "bloquee", "droite", false])
+
+        bords.push([centrex + taille * v1x, centrey + taille * v1y + longueur * (i + 1 / 2), "bloquee", "hori", false])
+        bords.push([centrex + taille * v3x, centrey + taille * v3y + longueur * (i + 1 / 2), "bloquee", "hori", false])
+
+        bords.push([centrex + (i + 1 / 2) * v1x, 2 * taille * longueur + centrey - (i + 1 / 2) * v1y, "bloquee", "droite", false])
+        bords.push([centrex + (i + 1 / 2) * v3x, 2 * taille * longueur + centrey - (i + 1 / 2) * v3y, "bloquee", "gauche", false])
+    }
+
+    // le tableau de travail principal tabmilbor
+    // contient les points milieux de tous les segments en coordonnées entières
+    // avec ajout des index, complété par les points milieux des segments
+    // définissant l'hexagone
+    let tabmilbor = ar(tabmilieu.concat(bords)).map(addIndex)
+
+    // le dictionnaire permettant d'accéder aux points en O(1), sans avoir à parcourir tous les points
+    // la clé d'accès est une chaîne de la forme "xxxx:yyyy" ou xxxx et yyyy sont les coordonnées rendues entières (cf fonction ar ci-dessus)
+    // la valeur associée ext l'index du point dans tabmilbor (ou tabmilieu)
+    let mapPts = new Map;
+    for (let p of tabmilbor) {
+        mapPts.set(p[0] + ':' + p[1], p.at(-1))
+    }
+
+    let dx = v3x / 2;
+    let dy = v1y / 2;
+
+    /* les multiplieurs de dx et dy permettant de calculer la positions des points
+    pertinents entourant le point courant où est dessiné le losange.
+
+    *********************
+    si losange horizontal
+    *********************
+    * trait sup gauche (prototype)
+    - trait en (-2 dx, -2 dy)   -> los en (-dx, -3 dy)
+    - los en (-3 dx, -3 dy)     -> los en (-dx, -3 dy)
+    - los en (-3 dx, -dy)       -> los en (-dx, -3 dy)
+    en abrégé :
+    [[-2,-2],[-3,-3],[-3, -1]]->[-1,-3]
+    de même pour l'autre bout du trait
+    [[-1,-3], [-1,-5],[0,-4]] -> [-2,-2]
+    
+    * trait sup droit -> inversion des coord x / proto
+    [[2,-2],[3,-3],[3, -1]]->[1,-3]
+    [[1,-3], [1,-5],[0,-4]] -> [2,-2]
+    
+    * trait inf gauche -> inversion des coord y / proto
+    [[-2,2],[-3,3],[-3, 1]]->[-1,3]
+    [[-1,3], [-1,5],[0,4]] -> [-2,2]
+    
+    * trait inf droit -> inversion des coord x et y / proto
+    [[2,2],[3,3],[3, 1]] - >[1,3]
+    [[1,3], [1,5],[0,4]] -> [2,2]
+    
+    *********************
+    si losange gauche
+    *********************
+    trait vertical gauche (proto) ; [[trait][los1][los2]]->[los]
+    [[-2,-2], [-2,-4], [-3,-3]] -> [-2,0]
+    [[-2,0], [-3,1], [-2,2]] -> [-2,-2]
+    
+    trait vertical droit : inversion des x et translation de 2 dy 
+    [[2,0], [2,-2], [3,1]] -> [2,2]
+    [[2,2], [3,3], [2,4]] -> [2,0]
+    
+    trait haut
+    [[0,-4],[0,-6], [-1,-5]] -> [1, -3]
+    [[1, -3],[2,-2],[2,-4]] -> [0,-4]
+    
+    trait bas
+    [[0,4],[0,1], [1,5]] -> [-1, 3]
+    [[-1, 3],[-2,2],[-2,4]] -> [0,4]
+    
+    *********************
+    si losange droit
+    *********************
+    idem losange gauche en inversant toutes les coord. en x
+    [ [ 2, -2 ], [ 2, -4 ], [ 3, -3 ] -> [ 2, 0 ] ]
+    [ [ 2, 0 ], [ 3, 1 ], [ 2, 2 ] -> [ 2, -2 ] ]
+    [ [ -2, 0 ], [ -2, -2 ], [ -3, 1 ] -> [ -2, 2 ] ]
+    [ [ -2, 2 ], [ -3, 3 ], [ -2, 4 ] -> [ -2, 0 ] ]
+    [ [ 0, -4 ], [ 0, -6 ], [ 1, -5 ] -> [ -1, -3 ] ]
+    [ [ -1, -3 ], [ -2, -2 ], [ -2, -4 ] -> [ -0, -4 ] ]
+    [ [ 0, 4 ], [ 0, 1 ], [ -1, 5 ] -> [ -1, 3 ] ]
+    [ [ 1, 3 ], [ 2, 2 ], [ 2, 4 ] -> [ 0, 4 ] ]
+    */
+    let relativeMultipliers = {
+        hori:
+            [
+                [[-2, -2], [-3, -3], [-3, -1], [-1, -3]],
+                [[-1, -3], [-1, -5], [0, -4], [-2, -2]],
+                [[2, -2], [3, -3], [3, -1], [1, -3]],
+                [[1, -3], [1, -5], [0, -4], [2, -2]],
+                [[-2, 2], [-3, 3], [-3, 1], [-1, 3]],
+                [[-1, 3], [-1, 5], [0, 4], [-2, 2]],
+                [[2, 2], [3, 3], [3, 1], [1, 3]],
+                [[1, 3], [1, 5], [0, 4], [2, 2]]
+            ],
+        gauche:
+            [
+                [[-2, -2], [-2, -4], [-3, -3], [-2, 0]],
+                [[-2, 0], [-3, 1], [-2, 2], [-2, -2]],
+                [[2, 0], [2, -2], [3, -1], [2, 2]],
+                [[2, 2], [3, 3], [2, 4], [2, 0]],
+                [[0, -4], [0, -6], [-1, -5], [1, -3]],
+                [[1, -3], [2, -2], [2, -4], [0, -4]],
+                [[0, 4], [0, 6], [1, 5], [-1, 3]],
+                [[-1, 3], [-2, 2], [-2, 4], [0, 4]]
+            ],
+        droite:
+            [
+                [[2, -2], [2, -4], [3, -3], [2, 0]],
+                [[2, 0], [3, 1], [2, 2], [2, -2]],
+                [[-2, 0], [-2, -2], [-3, -1], [-2, 2]],
+                [[-2, 2], [-3, 3], [-2, 4], [-2, 0]],
+                [[0, -4], [0, -6], [1, -5], [-1, -3]],
+                [[-1, -3], [-2, -2], [-2, -4], [-0, -4]],
+                [[0, 4], [0, 6], [-1, 5], [1, 3]],
+                [[1, 3], [2, 2], [2, 4], [0, 4]]
+            ]
+    }
+
+
+    function calcDiamondsToFill(i) {
+        var orientation = tabmilieu[i][3];
+        var refDiamondsToFill = relativeMultipliers[orientation];
+        var x0 = tabmilieu[i][0];
+        var y0 = tabmilieu[i][1];
+
+        function calc_r(t) {
+            function k(mx, my) {
+                return ar(x0 + mx * dx) + ":" + ar(y0 + my * dy)
+            }
+            let r = [];
+            let m1x, m1y, m2x, m2y, m3x, m3y, m4x, m4y;
+
+            for (let a of t) {
+                [[m1x, m1y], [m2x, m2y], [m3x, m3y], [m4x, m4y]] = a;
+                let edge = mapPts.get(k(m1x, m1y));
+                let los1 = mapPts.get(k(m2x, m2y));
+                let los2 = mapPts.get(k(m3x, m3y));
+                let los2paint = mapPts.get(k(m4x, m4y));
+
+                r.push([edge, los1, los2, los2paint])
+            }
+            return r;
+        }
+
+        function checkRelatives(rel) {
+
+            function checkEdgePresent(idxe) {
+                return (tabmilbor[idxe] != undefined) && (tabmilbor[idxe][2] != false)
+            }
+
+            function checkDiamondColored(idxd) {
+                return (tabmilieu[idxd] != undefined) && (tabmilieu[idxd][4] == true)
+            }
+
+            return ((checkEdgePresent(rel[0]) || checkDiamondColored(rel[1]) || checkDiamondColored(rel[2]))
+                && !checkDiamondColored(rel[3]))
+        }
+        var relatives = calc_r(refDiamondsToFill);
+
+        var r = [];
+        for (let rel of relatives) {
+            if (checkRelatives(rel)) {r.push(rel.at(-1))}
+        }
+        return r
+    }
+
+
+
+    // var orientation;
     var booldejadessine;
     var s1, s2, s3, s4;
+
+
     booldejadessine = true;
     for (var i = 0; i < tabmilieu.length; i++) {
         if (curseurProcheMilieu(x, y, i)) {
@@ -760,8 +1004,13 @@ function ajouteunlosange(x, y) {
                     nblosangeutilise++;
                 }
                 tabmilieu[i][4] = !tabmilieu[i][4]
-                orientation = tabmilieu[i][3]
-
+                // orientation = tabmilieu[i][3]
+                if (tabmilieu[i][4]) {
+                    for (let idx of calcDiamondsToFill(i)) {
+                        tabmilieu[idx][4] = true;
+                        nblosangeutilise++;
+                    }
+                }
                 historique.push({ 'indx': i, 'type': 4, 'prec': etat });
             }
 
@@ -814,22 +1063,6 @@ Parmi ces points, seuls ceux vérifiant la règle de l'angle aigu
 colorié forment un angle aigu) sont à colorier
 */
 function losanges_a_remplir() {
-    // Les coordonnées des points dans tabmilieu sont des nombres flottants.
-    // pour éviter les erreurs de comparaison entre nombres flottants, 
-    // on convertit dans les tableaux les coordonnées (avec n décimales) 
-    // en entiers (x -> round(10**n * x))
-    // La fonction suivante effectue cette transformation pour tous les 
-    // nombres contenus dans l'argument x (ou sur x lui même si c'est un nombre)
-    function ar(x, n = 2) {
-        if (Array.isArray(x)) {
-            return x.map((e) => ar(e, n))
-        } else if (typeof x === "number") {
-            return Math.round(10 ** n * x)
-        } else {
-            return x
-        }
-    }
-
     // mise à false du tracé du losange, et ajout de l'index
     function addLast(arrMilieu, index) {
         arrMilieu[4] = false
@@ -1240,7 +1473,7 @@ function start(enigme, callback, funSetLang) {
     modejeu = true;
     document.getElementById('btreset').style.display = "";
 
-    rafraichit()
+    // rafraichit()
     commencergrille()
 
 }
