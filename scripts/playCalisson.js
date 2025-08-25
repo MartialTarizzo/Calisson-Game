@@ -596,11 +596,19 @@ function setZoomFactor() {
     dashLineWidth = Math.max(1, Math.floor(gridLineWidth / 2))
 }
 
-// retour arrière danss l'historique
+// retour arrière dans l'historique
 function back() {
     if (historique.length < 1) return;
 
     let v = historique.pop();
+    if (v.type == -1) {
+        let n = v.indx;
+        for (let i = 0; i < n; i++) {
+            let vv = historique.pop();
+            tabmilieu[vv.indx][vv.type] = vv.prec;
+        }
+        v = historique.pop();
+    }
     tabmilieu[v.indx][v.type] = v.prec;
 
     // dessin du point médian pour indiquer où s'est produite l'annulation
@@ -939,7 +947,6 @@ function ajouteunlosange(x, y) {
             ]
     }
 
-
     function calcDiamondsToFill(i) {
         var orientation = tabmilieu[i][3];
         var refDiamondsToFill = relativeMultipliers[orientation];
@@ -982,18 +989,12 @@ function ajouteunlosange(x, y) {
 
         var r = [];
         for (let rel of relatives) {
-            if (checkRelatives(rel)) {r.push(rel.at(-1))}
+            if (checkRelatives(rel)) { r.push(rel.at(-1)) }
         }
         return r
     }
 
-
-
-    // var orientation;
     var booldejadessine;
-    var s1, s2, s3, s4;
-
-
     booldejadessine = true;
     for (var i = 0; i < tabmilieu.length; i++) {
         if (curseurProcheMilieu(x, y, i)) {
@@ -1008,10 +1009,14 @@ function ajouteunlosange(x, y) {
                 historique.push({ 'indx': i, 'type': 4, 'prec': etat });
 
                 if (tabmilieu[i][4]) {
-                    for (let idx of calcDiamondsToFill(i)) {
+                    var cdtf = calcDiamondsToFill(i);
+                    for (let idx of cdtf) {
                         tabmilieu[idx][4] = true;
                         historique.push({ 'indx': idx, 'type': 4, 'prec': false });
                         nblosangeutilise++;
+                    }
+                    if (cdtf.length > 0) {
+                        historique.push({ 'indx': cdtf.length, 'type': -1, 'prec': false });
                     }
                 }
             }
