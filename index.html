@@ -409,27 +409,13 @@
             <h2>Objectif de la résolution</h2>
             <p>
                 Pour résoudre une grille, il faut :
-                <ul>
-                    <li>dessiner toutes les arêtes manquantes (dans ce cas, le coloriage des calissons est ignoré)</li>
-                    ou
-                    <li>colorier correctement tous les calissons (dans ce cas, les éventuelles arêtes dessinées doivent toutes être correctes) </li>
-                </ul>
-            </p>
-            <h2>Dessin des arêtes et coloriage des calissons</h2>
-            <p>
-                Les arêtes initiales ne sont pas modifiables, tandis que les positions des arêtes à déterminer sont
-                tracées
-                en pointillés avec un petit cercle au milieu.
-            </p>
             <ul>
-                <li> Sur ordinateur, le dessin des arêtes manquantes s'effectue avec un clic-gauche sur le milieu de
-                    l'arête tandis que le coloriage d'un calisson est obtenu par un clic-droit sur le centre du losange.
-                </li>
-                <li> Sur tablette/téléphone/écran tactile, le toucher du milieu d'une arête provoque le dessin de
-                    l'arête ou le coloriage du losange en fonction de l'état des boutons à gauche et à droite de la zone
-                    de jeu.
-                </li>
+                <li>dessiner toutes les arêtes manquantes (dans ce cas, le coloriage des calissons est ignoré)</li>
+                ou
+                <li>colorier correctement tous les calissons (dans ce cas, les éventuelles arêtes dessinées doivent
+                    toutes être correctes) </li>
             </ul>
+            </p>
             <h2>Deux techniques facilitant la résolution</h2>
             <p>Les deux règles qui suivent permettent la résolution de toutes les grilles de niveau 1, quelle que soit
                 leur
@@ -448,6 +434,30 @@
                     cette arête
                     en commun (ou de la face du petit cube voisin ayant cette arête en commun)</li>
             </ul>
+            <h2>Dessin des arêtes et coloriage des calissons</h2>
+            <p>
+                Les arêtes initiales ne sont pas modifiables, tandis que les positions des arêtes à déterminer sont
+                tracées en pointillés avec un petit cercle au milieu.
+            </p>
+            <ul>
+                <li> Sur ordinateur, le dessin des arêtes manquantes s'effectue avec un clic-gauche sur le milieu de
+                    l'arête tandis que le coloriage des calissons est obtenu par un clic-droit sur le centre d'un
+                    losange.
+                </li>
+                <li> Sur tablette/téléphone/écran tactile, le toucher du milieu d'une arête provoque le dessin de
+                    l'arête ou le coloriage des losanges en fonction de l'état des boutons à gauche et à droite de la
+                    zone
+                    de jeu.
+                </li>
+            </ul>
+            <p>
+                En général, il y a beaucoup moins d'arêtes à tracer que de calissons à colorier.<br>
+                Afin de faciliter la résolution, le coloriage d'un calisson provoque automatiquement le coloriage des
+                calissons adjacents qui vérifient la règle de l'angle aigu.
+            </p>
+            <p>
+                Avec de l'entraînement, on peut souvent se passer du coloriage des calissons !
+            </p>
             <h2>Exemple de résolution</h2>
             <div>
                 <p> Solution d'une grille de taille 3 en utilisant les règles de <strong>l'angle aigu</strong> et du
@@ -460,9 +470,6 @@
                     </video>
                 </p>
             </div>
-            <p>
-                Avec de l'entraînement, on peut souvent se passer du coloriage des calissons !
-            </p>
         </div>
         <h1>Les deux modes de jeu</h1>
         <div>
@@ -485,9 +492,8 @@
             <h2>Mode Challenge (Speedy !)</h2>
             <p>Ce mode vous permet de mettre à l'épreuve votre maîtrise du jeu !</p>
             <p>Le but est d'obtenir en un temps limité le score total le plus grand possible, en résolvant des grilles
-                de taille
-                et difficulté croissantes analogues à celle de la page d'entraînement (mais les grilles sont différentes
-                !).
+                de taille et difficulté croissantes analogues à celle de la page d'entraînement 
+                (mais les grilles sont différentes !).
             </p>
             <ul>
                 <li>crédit de temps initial : <strong>300 s</strong> </li>
@@ -498,29 +504,22 @@
             <p>Pour obtenir un score important, il faut :</p>
             <ul>
                 <li>trouver la solution de chaque grille le plus rapidement possible,</li>
-                <li>un bonus est accordé pour la tentative de résolution de la dernière grille (ne pas abandonner
-                    même
-                    si le
-                    temps est compté !)</li>
-                <li>employer un minimum de calissons/losanges car le score diminue en fonction du nombre utilisé et
-                    cela
-                    prend
-                    du temps : L'idéal est de n'en employer aucun !
+                <li>
+                    un bonus est accordé pour la tentative de résolution de la dernière grille (ne pas abandonner
+                    même si le temps est compté !)
+                </li>
+                <li>tracer les arêtes plutôt que colorier les calissons (c'est en général plus rapide)
                 </li>
             </ul>
             <p>Le score pour chaque grille augmente avec sa taille et sa difficulté :
             <ul>
                 <li>
                     Les grilles les plus faciles contiennent beaucoup plus d'arêtes que nécessaire. Leur résolution
-                    est
-                    généralement
-                    possible sans utiliser le moindre calisson.
+                    est généralement possible sans utiliser le moindre calisson.
                 </li>
                 <li>
                     Les grilles les plus difficiles contiennent un nombre d'arêtes minimal, les résoudre sans
-                    calisson
-                    est en
-                    général difficile.
+                    calisson est en général difficile.
                 </li>
             </ul>
             </p>
@@ -532,20 +531,14 @@
             <ul>
                 <li>
                     <span style="border:2px solid black; padding: 0px;"><strong>&nbsp; &lt; &nbsp;</strong></span>
-                    permet de
-                    revenir en arrière.
-                    <br>&nbsp;
+                    permet de revenir en arrière. <br>&nbsp;
                 </li>
                 <li>
                     <span style="border:2px solid black;"><strong>&nbsp; Reset &nbsp;</strong></span> remet la
-                    grille
-                    dans son
-                    état d'origine.
+                    grille dans son état d'origine.
                     <br>
                     Utile quand on veut repartir de zéro en cas de blocage. Ceci n'a pas d'incidence sur le score,
-                    mais
-                    vous
-                    aurez certainement perdu du temps en mode "Challenge" ...
+                    mais vous aurez certainement perdu du temps en mode "Challenge" ...
                     <br>&nbsp;
                 </li>
                 <li>
@@ -569,8 +562,7 @@
                         </li>
                     </ul>
                     Ceci est utile quand on se trouve complètement bloqué, où quand on veut faciliter le démarrage
-                    de la
-                    résolution sur des grilles sans point de départ évident.
+                    de la résolution sur des grilles sans point de départ évident.
                 </li>
             </ul>
             </p>
@@ -581,17 +573,17 @@
 
             <h2>Dessin des calissons sur Tablette/téléphone</h2>
             <p>Quand on joue sur ordinateur, il est possible de dessiner des calissons (ou losanges) en effectuant
-                un
-                clic-droit
-                avec la souris sur le milieu d'une arête.</p>
+                un clic-droit avec la souris sur le milieu d'une arête.</p>
             <p>
                 Sur un dispositif à interface tactile où le clic-droit est impossible, les pages de jeu affichent à
-                gauche et à
-                droite
-                de l'hexagone deux boutons définissant le mode d'action d'une pression sur le
+                gauche et à droite de l'hexagone deux boutons définissant le mode d'action d'une pression sur le
                 mileu d'une arête : tracé d'une arête (<strong>à gauche</strong>) ou d'un losange (<strong>à
                     droite</strong>).
                 Il suffit de taper sur un bouton pour définir le mode.
+            </p>
+            <p>
+                Afin de faciliter la résolution, le coloriage d'un calisson provoque automatiquement le coloriage des
+                calissons adjacents qui vérifient la règle de l'angle aigu.
             </p>
         </div>
         <h1>Options</h1>
@@ -691,7 +683,7 @@
         <p>
             <em> contact : martial.tarizzo (at) gmail . com</em>
             <br>
-            (Version 2.15.1)
+            (Version 2.15.2)
         </p>
     </div>
 </body>

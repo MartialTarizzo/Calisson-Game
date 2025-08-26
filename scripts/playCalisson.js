@@ -602,6 +602,8 @@ function back() {
 
     let v = historique.pop();
     if (v.type == -1) {
+        // annulation d'une série de coloriages automatiques (cf fonction ajouteunlosange )
+        // l'index contient le nombre de losanges coloriés automatiquement
         let n = v.indx;
         for (let i = 0; i < n; i++) {
             let vv = historique.pop();
@@ -812,15 +814,7 @@ function ar(x, n = 3) {
     }
 }
 
-
 function ajouteunlosange(x, y) {
-
-    //  ajout de l'index
-    function addIndex(arrMilieu, index) {
-        // arrMilieu[4] = false
-        arrMilieu.push(index)
-        return arrMilieu
-    }
 
     // fabrication du tableau des bords de l'hexagone
     let bords = []
@@ -839,7 +833,9 @@ function ajouteunlosange(x, y) {
     // contient les points milieux de tous les segments en coordonnées entières
     // avec ajout des index, complété par les points milieux des segments
     // définissant l'hexagone
-    let tabmilbor = ar(tabmilieu.concat(bords)).map(addIndex)
+    let tabmilbor = ar(tabmilieu.concat(bords)).map(
+        (arrMilieu, index) => { arrMilieu.push(index); return arrMilieu; }
+    )
 
     // le dictionnaire permettant d'accéder aux points en O(1), sans avoir à parcourir tous les points
     // la clé d'accès est une chaîne de la forme "xxxx:yyyy" ou xxxx et yyyy sont les coordonnées rendues entières (cf fonction ar ci-dessus)
@@ -858,31 +854,31 @@ function ajouteunlosange(x, y) {
     *********************
     si losange horizontal
     *********************
-    * trait sup gauche (prototype)
-    - trait en (-2 dx, -2 dy)   -> los en (-dx, -3 dy)
-    - los en (-3 dx, -3 dy)     -> los en (-dx, -3 dy)
-    - los en (-3 dx, -dy)       -> los en (-dx, -3 dy)
+    * trait sup gauche (prototype), noté ; [[trait][los1][los2]]->[los_à_colorier]
+    - trait en (-2 dx, -2 dy)   ->  los_à_colorier en (-dx, -3 dy)
+    - los1 en (-3 dx, -3 dy)     -> los_à_colorier en (-dx, -3 dy)
+    - los2 en (-3 dx, -dy)       -> los_à_colorier en (-dx, -3 dy)
     en abrégé :
-    [[-2,-2],[-3,-3],[-3, -1]]->[-1,-3]
+    [[-2,-2],[-3,-3],[-3, -1]] -> [-1,-3]
     de même pour l'autre bout du trait
     [[-1,-3], [-1,-5],[0,-4]] -> [-2,-2]
     
     * trait sup droit -> inversion des coord x / proto
-    [[2,-2],[3,-3],[3, -1]]->[1,-3]
+    [[2,-2],[3,-3],[3, -1]] -> [1,-3]
     [[1,-3], [1,-5],[0,-4]] -> [2,-2]
     
     * trait inf gauche -> inversion des coord y / proto
-    [[-2,2],[-3,3],[-3, 1]]->[-1,3]
+    [[-2,2],[-3,3],[-3, 1]] -> [-1,3]
     [[-1,3], [-1,5],[0,4]] -> [-2,2]
     
     * trait inf droit -> inversion des coord x et y / proto
-    [[2,2],[3,3],[3, 1]] - >[1,3]
+    [[2,2],[3,3],[3, 1]] -> [1,3]
     [[1,3], [1,5],[0,4]] -> [2,2]
     
     *********************
     si losange gauche
     *********************
-    trait vertical gauche (proto) ; [[trait][los1][los2]]->[los]
+    trait vertical gauche (proto) 
     [[-2,-2], [-2,-4], [-3,-3]] -> [-2,0]
     [[-2,0], [-3,1], [-2,2]] -> [-2,-2]
     
@@ -910,6 +906,8 @@ function ajouteunlosange(x, y) {
     [ [ -1, -3 ], [ -2, -2 ], [ -2, -4 ] -> [ -0, -4 ] ]
     [ [ 0, 4 ], [ 0, 1 ], [ -1, 5 ] -> [ -1, 3 ] ]
     [ [ 1, 3 ], [ 2, 2 ], [ 2, 4 ] -> [ 0, 4 ] ]
+
+    On stocke toutes ces données dans l'objet relativeMultipliers
     */
     let relativeMultipliers = {
         hori:
@@ -947,12 +945,18 @@ function ajouteunlosange(x, y) {
             ]
     }
 
+    // retourne la liste des index des losanges qui doivent être peints automatiquement
     function calcDiamondsToFill(i) {
+        // la liste résultat 
+        var r = [];
+
         var orientation = tabmilieu[i][3];
         var refDiamondsToFill = relativeMultipliers[orientation];
         var x0 = tabmilieu[i][0];
         var y0 = tabmilieu[i][1];
 
+        // récupération dans le dictionnaire mapPts des données pour le losange 
+        // peint par l'utilisateur
         function calc_r(t) {
             function k(mx, my) {
                 return ar(x0 + mx * dx) + ":" + ar(y0 + my * dy)
@@ -972,6 +976,7 @@ function ajouteunlosange(x, y) {
             return r;
         }
 
+        // le losange à peindre doit-il être peint ?
         function checkRelatives(rel) {
 
             function checkEdgePresent(idxe) {
@@ -985,9 +990,9 @@ function ajouteunlosange(x, y) {
             return ((checkEdgePresent(rel[0]) || checkDiamondColored(rel[1]) || checkDiamondColored(rel[2]))
                 && (rel[3] < tabmilieu.length) && (tabmilieu[rel[3]][2] != 'bloquee') && !checkDiamondColored(rel[3]))
         }
+
         var relatives = calc_r(refDiamondsToFill);
 
-        var r = [];
         for (let rel of relatives) {
             if (checkRelatives(rel)) { r.push(rel.at(-1)) }
         }
