@@ -13,21 +13,18 @@ let jeuPossible;
 let tabsegment, tabmilieu, solution;
 let tablosanges;
 let historique;
-let nblosangeutilise;
+let nblosangeutilises;
 let chrono;
 let dateDebutResolution;
 let chronointerval;
 let is_touch_device;
 let canvas, context;
-
-
 let currentEnigme;
 
 // l'index du dernier segment survolé par le curseur (pointeur souris)
 // Pour ne dessiner la grille que si nécessaire lors du déplacement
 // du curseur
 let lastCursorIndex = -1
-
 
 // les largeurs des tracés
 let dashLineWidth = 1
@@ -53,7 +50,6 @@ try {
 } catch (e) {
     is_touch_device = false;
 }
-
 
 // pour empêcher le clignotement du canvas lors d'un toucher sur le canvas (interface tactile)
 document.body.addEventListener("touchstart", function (e) {
@@ -138,7 +134,7 @@ function init() {
 
 
     // différents compteurs
-    nblosangeutilise = 0;
+    nblosangeutilises = 0;
     chrono = 0;
     dateDebutResolution = Date.now()
     chronointerval;
@@ -306,66 +302,6 @@ function recalcGeoData() {
 function miseajourpoint(chaine) {
     if (chaine == undefined) {
         return;
-        //  le code qui suit ne sert à rien ici !
-        // vestige de la version d'origine mathix
-
-        // tabsegment = [];
-        // tabmilieu = [];
-        // //côté gauche avec diagonale verticale
-        // for (let j = 0; j < 2 * taille; j++) {
-        //     for (let i = 0; i < Math.min(taille + 1, 2 * taille - j); i++) {
-        //         let k = 0;
-        //         if ((j > 0) && (i < taille)) {
-        //             tabsegment.push([
-        //                 [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-        //                 [centrex + (i + 1) * v1x + j * v2x + k * v3x, centrey + (i + 1) * v1y + j * v2y + k * v3y]
-        //             ])
-        //             tabmilieu.push([centrex + (i + 0.5) * v1x + j * v2x + k * v3x, centrey + (i + 0.5) * v1y + j * v2y + k * v3y, false, "gauche", false])
-
-        //         }
-        //         if (i < taille) {
-        //             tabsegment.push([
-        //                 [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-        //                 [centrex + i * v1x + (j + 1) * v2x + k * v3x, centrey + i * v1y + (j + 1) * v2y + k * v3y]
-        //             ])
-        //             tabmilieu.push([centrex + i * v1x + (j + 0.5) * v2x + k * v3x, centrey + i * v1y + (j + 0.5) * v2y + k * v3y, false, "hori", false])
-        //         }
-        //         if (i > 0) {
-        //             tabsegment.push([
-        //                 [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-        //                 [centrex + i * v1x + j * v2x + (k + 1) * v3x, centrey + i * v1y + j * v2y + (k + 1) * v3y]
-        //             ])
-        //             tabmilieu.push([centrex + i * v1x + j * v2x + (k + 0.5) * v3x, centrey + i * v1y + j * v2y + (k + 0.5) * v3y, false, "droite", false])
-        //         }
-        //     }
-        // }
-        // //côté droit sans diagonale verticale
-        // for (let j = 0; j < 2 * taille; j++) {
-        //     for (let k = 0; k < Math.min(taille + 1, 2 * taille - j); k++) {
-        //         let i = 0;
-        //         if ((j > 0) && (k < taille)) {
-        //             tabsegment.push([
-        //                 [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-        //                 [centrex + i * v1x + j * v2x + (k + 1) * v3x, centrey + i * v1y + j * v2y + (k + 1) * v3y]
-        //             ])
-        //             tabmilieu.push([centrex + i * v1x + j * v2x + (k + 0.5) * v3x, centrey + i * v1y + j * v2y + (k + 0.5) * v3y, false, "droite", false])
-        //         }
-        //         if ((k < taille) && (k > 0)) {
-        //             tabsegment.push([
-        //                 [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-        //                 [centrex + i * v1x + (j + 1) * v2x + k * v3x, centrey + i * v1y + (j + 1) * v2y + k * v3y]
-        //             ])
-        //             tabmilieu.push([centrex + i * v1x + (j + 0.5) * v2x + k * v3x, centrey + i * v1y + (j + 0.5) * v2y + k * v3y, false, "hori", false])
-        //         }
-        //         if (k > 0) {
-        //             tabsegment.push([
-        //                 [centrex + i * v1x + j * v2x + k * v3x, centrey + i * v1y + j * v2y + k * v3y],
-        //                 [centrex + (i + 1) * v1x + j * v2x + k * v3x, centrey + (i + 1) * v1y + j * v2y + k * v3y]
-        //             ])
-        //             tabmilieu.push([centrex + (i + 0.5) * v1x + j * v2x + k * v3x, centrey + (i + 0.5) * v1y + j * v2y + k * v3y, false, "gauche", false])
-        //         }
-        //     }
-        // }
     } else {
         var p = 0;
         tabsegment = [];
@@ -535,7 +471,7 @@ function commencergrille() {
 
     chrono = 0;
     dateDebutResolution = Date.now()
-    nblosangeutilise = 0;
+    nblosangeutilises = 0;
     chronomarche();
     var tab = currentEnigme.tab;
 
@@ -795,9 +731,9 @@ function drawModeButtonsBorders() {
 // en entiers (x -> round(10**n * x))
 // La fonction suivante effectue cette transformation pour tous les 
 // nombres contenus dans l'argument x (ou sur x lui même si c'est un nombre)
-function ar(x, n = 3) {
+function arrondi(x, n = 3) {
     if (Array.isArray(x)) {
-        return x.map((e) => ar(e, n))
+        return x.map((e) => arrondi(e, n))
     } else if (typeof x === "number") {
         return Math.round(10 ** n * x)
     } else {
@@ -824,7 +760,7 @@ function ajouteunlosange(x, y) {
     // contient les points milieux de tous les segments en coordonnées entières
     // avec ajout des index, complété par les points milieux des segments
     // définissant l'hexagone
-    let tabmilbor = ar(tabmilieu.concat(bords)).map(
+    let tabmilbor = arrondi(tabmilieu.concat(bords)).map(
         (arrMilieu, index) => { arrMilieu.push(index); return arrMilieu; }
     )
 
@@ -950,7 +886,7 @@ function ajouteunlosange(x, y) {
         // peint par l'utilisateur
         function calc_r(t) {
             function k(mx, my) {
-                return ar(x0 + mx * dx) + ":" + ar(y0 + my * dy)
+                return arrondi(x0 + mx * dx) + ":" + arrondi(y0 + my * dy)
             }
             let r = [];
             let m1x, m1y, m2x, m2y, m3x, m3y, m4x, m4y;
@@ -998,7 +934,7 @@ function ajouteunlosange(x, y) {
                 let etat = tabmilieu[i][4];
 
                 if (!etat) {
-                    nblosangeutilise++;
+                    nblosangeutilises++;
                 }
                 tabmilieu[i][4] = !tabmilieu[i][4]
                 // orientation = tabmilieu[i][3]
@@ -1036,7 +972,6 @@ function dessinerSolution() {
     remplirLosanges()
     dessinerlafigure()
 }
-
 
 /*
 Comment dans le code javascript du jeu du calisson dessiner les losanges de couleur ?
@@ -1094,22 +1029,22 @@ function losanges_a_remplir() {
 
         switch (orient) {
             case 'hori':
-                pt1 = ar([ptX + v1x / 2, ptY - v1y / 2])
-                pt2 = ar([ptX + v1x / 2, ptY + v1y / 2])
-                pt3 = ar([ptX + v3x / 2, ptY - v3y / 2])
-                pt4 = ar([ptX + v3x / 2, ptY + v3y / 2])
+                pt1 = arrondi([ptX + v1x / 2, ptY - v1y / 2])
+                pt2 = arrondi([ptX + v1x / 2, ptY + v1y / 2])
+                pt3 = arrondi([ptX + v3x / 2, ptY - v3y / 2])
+                pt4 = arrondi([ptX + v3x / 2, ptY + v3y / 2])
                 break
             case 'gauche':
-                pt1 = ar([ptX + v1x / 2, ptY - v1y / 2])
-                pt2 = ar([ptX, ptY - v1y])
-                pt3 = ar([ptX + v3x / 2, ptY + v3y / 2])
-                pt4 = ar([ptX, ptY + v3y])
+                pt1 = arrondi([ptX + v1x / 2, ptY - v1y / 2])
+                pt2 = arrondi([ptX, ptY - v1y])
+                pt3 = arrondi([ptX + v3x / 2, ptY + v3y / 2])
+                pt4 = arrondi([ptX, ptY + v3y])
                 break
             case 'droite':
-                pt1 = ar([ptX + v3x / 2, ptY - v3y / 2])
-                pt2 = ar([ptX, ptY - v3y])
-                pt3 = ar([ptX + v1x / 2, ptY + v3y / 2])
-                pt4 = ar([ptX, ptY + v3y])
+                pt1 = arrondi([ptX + v3x / 2, ptY - v3y / 2])
+                pt2 = arrondi([ptX, ptY - v3y])
+                pt3 = arrondi([ptX + v1x / 2, ptY + v3y / 2])
+                pt4 = arrondi([ptX, ptY + v3y])
                 break
         }
         // Comme pt_i ne donne que les coordonnées, il faut retrouver les pts en parcourant tabmilbor
@@ -1138,7 +1073,7 @@ function losanges_a_remplir() {
     // contient les points milieux de tous les segments en coordonnées entières
     // avec ajout des index, complété par les points milieux des segments
     // définissant l'hexagone
-    let tabmilbor = ar(tabmilieu.concat(bords)).map(addLast)
+    let tabmilbor = arrondi(tabmilieu.concat(bords)).map(addLast)
 
     // dans tabmilbor, mise à jour du tracé du segment à partir du tableau solution
     for (let i = 0; i < tabmilieu.length; i++) {
@@ -1208,7 +1143,6 @@ function remplirLosanges() {
         tabmilieu[i][4] = tablos[i]
     }
 }
-
 
 function abandonGrille() {
 
@@ -1300,7 +1234,7 @@ function calcScore() {
     }
     nbAretes += nbArUser;
     // proportion de losanges utilisée. meilleure si faible, entre 0 et 1
-    let propLos = Math.min(nblosangeutilise / nbTotLos, 1);
+    let propLos = Math.min(nblosangeutilises / nbTotLos, 1);
     // durée moyenne de placement d'une arête, > à 1 s 
     let dureeResolution = Math.floor((Date.now() - dateDebutResolution) / 1000)
     let durPlacArUser = Math.max(dureeResolution, 1) / nbArUser;
@@ -1321,7 +1255,7 @@ function calcScore() {
         taille: currentEnigme.taille,
         niveau: currentEnigme.niveau,
         nbAretesJoueur: nbArUser,
-        nbLosanges: nblosangeutilise,
+        nbLosanges: nblosangeutilises,
         chronofin: dureeResolution,
         score: scoreFinal
     }
@@ -1421,7 +1355,6 @@ function chronomarche() {
 function chronoarret() {
     clearInterval(chronointerval);
 }
-
 
 function testesolution() {
     /** La solution sera valide si :
