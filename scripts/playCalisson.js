@@ -13,8 +13,6 @@ let jeuPossible;
 let tabsegment, tabmilieu, solution;
 let tablosanges;
 let historique;
-let modejeu;
-let solutionpresente;
 let nblosangeutilise;
 let chrono;
 let dateDebutResolution;
@@ -138,10 +136,6 @@ function init() {
     // lors de la résolution
     historique = []
 
-    // modejeu est un drapeau permettant de savoir si on est mode jeu ou design
-    modejeu = false;
-    // la chaine contenue dans l'url contient-elle la solution ?
-    solutionpresente = false;
 
     // différents compteurs
     nblosangeutilise = 0;
@@ -539,8 +533,6 @@ function miseajourpoint(chaine) {
 
 function commencergrille() {
 
-    // document.getElementById('messagediv').style.display = "none";
-    modejeu = true;
     chrono = 0;
     dateDebutResolution = Date.now()
     nblosangeutilise = 0;
@@ -552,7 +544,6 @@ function commencergrille() {
     // MT - zoom automatique à la bonne valeur
     setZoomFactor();
     rafraichit()
-    solutionpresente = true;
 
     // document.getElementById("chronospan").style.display = '';
     document.getElementById("chrono").innerHTML = chrono + ' s'
@@ -1006,7 +997,7 @@ function ajouteunlosange(x, y) {
             if (tabmilieu[i][2] != 'bloquee') {
                 let etat = tabmilieu[i][4];
 
-                if ((!etat) && (solutionpresente)) {
+                if ((!etat)) {
                     nblosangeutilise++;
                 }
                 tabmilieu[i][4] = !tabmilieu[i][4]
@@ -1290,12 +1281,10 @@ function ajouterenleversegment(evt) {
         }
 
     }
-    if (modejeu && solutionpresente) {
-        if (testesolution()) {
-            chronoarret()
-            termine();
-            setTimeout(() => { returnToGamePlay() }, 0)
-        }
+    if (testesolution()) {
+        chronoarret()
+        termine();
+        setTimeout(() => { returnToGamePlay() }, 0)
     }
 }
 
@@ -1482,7 +1471,6 @@ function start(enigme, callback, funSetLang) {
     setZoomFactor();
     funSetLang();
     init();
-    modejeu = true;
     document.getElementById('btreset').style.display = "";
 
     // rafraichit()
