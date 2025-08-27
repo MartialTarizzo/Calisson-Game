@@ -997,7 +997,7 @@ function ajouteunlosange(x, y) {
             if (tabmilieu[i][2] != 'bloquee') {
                 let etat = tabmilieu[i][4];
 
-                if ((!etat)) {
+                if (!etat) {
                     nblosangeutilise++;
                 }
                 tabmilieu[i][4] = !tabmilieu[i][4]
@@ -1009,7 +1009,6 @@ function ajouteunlosange(x, y) {
                     for (let idx of cdtf) {
                         tabmilieu[idx][4] = true;
                         historique.push({ 'indx': idx, 'type': 4, 'prec': false });
-                        nblosangeutilise++;
                     }
                     if (cdtf.length > 0) {
                         historique.push({ 'indx': cdtf.length, 'type': -1, 'prec': false });
@@ -1291,7 +1290,7 @@ function ajouterenleversegment(evt) {
 function calcScore() {
     let nbTotLos = 3 * taille ** 2; // nbre max de losanges dans la grille
     let tab = currentEnigme.tab
-    let nbArUser = 0;   // nb arêtes ajoutées par le joueur
+    let nbArUser = 0;   // nb arêtes à ajouter par le joueur
     for (let s of tab) {
         if (s == 's') { nbArUser++ }
     }
