@@ -55,6 +55,11 @@
                 document.getElementById('selScoreDelay').value)
         }
 
+        function setAutoColor() {
+            localStorage.setItem('autoColor',
+            document.getElementById("autoCalisson").checked)
+        }
+
         // et on récupère la taille max au chargement de la page
         function getMaxGridSize() {
             let maxGridSizeInStorage = localStorage.getItem('maxGridSize')
@@ -66,9 +71,16 @@
             let scoreDelay = scoreDelayInStorage ? scoreDelayInStorage : "0"
             document.getElementById('selScoreDelay').value = scoreDelay
         }
+        function getAutoColor() {
+            let autoColorInStorage = localStorage.getItem('autoColor')
+            let autoColor = autoColorInStorage ? autoColorInStorage : false
+            document.getElementById('autoCalisson').checked = autoColor == "true"
+        }
+        
 
         document.addEventListener("DOMContentLoaded", getMaxGridSize);
         document.addEventListener("DOMContentLoaded", getScoreDelay);
+        document.addEventListener("DOMContentLoaded", getAutoColor);
     </script>
     <link rel="manifest" href="./manifest.json" />
 
@@ -179,6 +191,10 @@
                         <option value="5">5</option>
                     </select>
                     <span>(s)</span>
+                </p>
+                <p class="maxGridSize">
+                    <span id="etiqScoreDelay">coloration auto des calissons voisins : </span>
+                    <input type="checkbox" id="autoCalisson" name="autoCalisson" style="zoom:2;" onchange="setAutoColor()">
                 </p>
 
             </div>

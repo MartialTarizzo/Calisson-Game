@@ -21,6 +21,10 @@ let is_touch_device;
 let canvas, context;
 let currentEnigme;
 
+let autoColorDiamonds = false;
+
+autoColorDiamonds = localStorage.getItem('autoColor') == "true";
+
 // l'index du dernier segment survolé par le curseur (pointeur souris)
 // Pour ne dessiner la grille que si nécessaire lors du déplacement
 // du curseur
@@ -940,7 +944,7 @@ function ajouteunlosange(x, y) {
                 // orientation = tabmilieu[i][3]
                 historique.push({ 'indx': i, 'type': 4, 'prec': etat });
 
-                if (tabmilieu[i][4]) {
+                if (autoColorDiamonds && tabmilieu[i][4]) {
                     var cdtf = calcDiamondsToFill(i);
                     for (let idx of cdtf) {
                         tabmilieu[idx][4] = true;
