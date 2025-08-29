@@ -46,6 +46,11 @@
                 document.getElementById('selScoreDelay').value)
         }
 
+        function setAutoColor() {
+            localStorage.setItem('autoColor',
+                document.getElementById("autoCalisson").checked)
+        }
+
         // et on récupère cette taille max au chargement de la page
         function getMaxGridSize() {
             let maxGridSizeInStorage = localStorage.getItem('maxGridSize')
@@ -58,8 +63,15 @@
             document.getElementById('selScoreDelay').value = scoreDelay
         }
 
+        function getAutoColor() {
+            let autoColorInStorage = localStorage.getItem('autoColor')
+            let autoColor = autoColorInStorage ? autoColorInStorage : false
+            document.getElementById('autoCalisson').checked = autoColor == "true"
+        }
+
         document.addEventListener("DOMContentLoaded", getMaxGridSize);
         document.addEventListener("DOMContentLoaded", getScoreDelay);
+        document.addEventListener("DOMContentLoaded", getAutoColor);
     </script>
     <link rel="manifest" href="./manifest.json" />
 
@@ -151,7 +163,7 @@
             <div class="modal-body">
                 <!-- taille maxi de grille -->
                 <p class="maxGridSize">
-                    <span id="etiqMaxGridSize">Maximum grid size (Speedy) : </span>
+                    <span id="etiqMaxGridSize" style="margin-right: 10px;">Maximum grid size (Speedy) : </span>
                     <select name="simple" id="selMaxGridSize" class="maxGridSize" onchange="setMaxGridSize()">
                         <option selected value="6">6</option>
                         <option value="5">5</option>
@@ -160,7 +172,7 @@
                 </p>
                 <!-- temporisation avant affichage du score pour une grille -->
                 <p class="maxGridSize">
-                    <span id="etiqScoreDelay">Delay for score display : </span>
+                    <span id="etiqScoreDelay" style="margin-right: 10px;">Delay for score display : </span>
                     <select name="simple" id="selScoreDelay" class="maxGridSize" onchange="setScoreDelay()">
                         <option selected value="0">0</option>
                         <option value="1">1</option>
@@ -170,6 +182,11 @@
                         <option value="5">5</option>
                     </select>
                     <span>(s)</span>
+                </p>
+                <p class="maxGridSize">
+                    <span id="etiqScoreDelay" style="margin-right: 10px;">coloration of neighboring calissons: </span>
+                    <input type="checkbox" id="autoCalisson" name="autoCalisson" style="transform: scale(2);"
+                        onchange="setAutoColor()">
                 </p>
 
             </div>
@@ -443,8 +460,8 @@
             </p>
             <p>
                 In general, there are far fewer edges to trace than there are calissons to color.<br>
-                To make solving easier, coloring a calisson automatically colors the
-                adjacent calissons that satisfy the acute angle rule.
+                To make solving easier, coloring a calisson can automatically colors the
+                adjacent calissons that satisfy the acute angle rule (see options).
             </p>
             <p>
                 With practice, you can often do without coloring calissons!
@@ -584,29 +601,49 @@
 
             </p>
             <p>
-                To facilitate solving, coloring a calisson automatically causes the coloring of
-                adjacent calissons that satisfy the acute angle rule.
+                To facilitate solving, coloring a calisson can automatically causes the coloring of
+                adjacent calissons that satisfy the acute angle rule (see options).
             </p>
         </div>
         <h1>Options</h1>
         <div>
-            <p>
-                The limited screen size of a smartphone can make it difficult to play with large grids. To make it
-                easier to
-                play under these conditions, you can set the maximum size of grids to be offered using the drop-down
-                list
-                below
-                the game launch buttons. <br>
-                The score obtained for each grid increases with this maximum size, so that the duration of the game
-                remains
-                more
-                or less constant.
-            </p>
-            <p>
-                You can also set the length of time the grid remains displayed (from 0 to 5 seconds) at the end of a
-                resolution,
-                so you can admire your work!
-            </p>
+            <ul>
+                <li>
+                    <p>
+                        The limited screen size of a smartphone can make it difficult to play with large grids. To make
+                        it
+                        easier to
+                        play under these conditions, you can set the maximum size of grids to be offered using the
+                        drop-down
+                        list
+                        below
+                        the game launch buttons. <br>
+                        The score obtained for each grid increases with this maximum size, so that the duration of the
+                        game
+                        remains
+                        more
+                        or less constant.
+                    </p>
+
+                </li>
+                <li>
+                    <p>
+                        You can also set the length of time the grid remains displayed (from 0 to 5 seconds) at the end
+                        of a
+                        resolution,
+                        so you can admire your work!
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        There is a checkbox to enable/disable automatic coloring of neighboring calissons
+                        according to the acute angle rule when solving grids by coloring.
+                    </p>
+                </li>
+            </ul>
+
+
+
         </div>
         <h1>Credits</h1>
         <div>
@@ -685,7 +722,7 @@
         <p>
             <em> contact : martial.tarizzo (at) gmail . com</em>
             <br>
-            (Version 2.15.3)
+            (Version 2.15.4)
         </p>
     </div>
 
