@@ -57,7 +57,7 @@
 
         function setAutoColor() {
             localStorage.setItem('autoColor',
-            document.getElementById("autoCalisson").checked)
+                document.getElementById("autoCalisson").checked)
         }
 
         // et on récupère la taille max au chargement de la page
@@ -76,7 +76,7 @@
             let autoColor = autoColorInStorage ? autoColorInStorage : false
             document.getElementById('autoCalisson').checked = autoColor == "true"
         }
-        
+
 
         document.addEventListener("DOMContentLoaded", getMaxGridSize);
         document.addEventListener("DOMContentLoaded", getScoreDelay);
@@ -172,7 +172,7 @@
             <div class="modal-body">
                 <!-- taille maxi de grille -->
                 <p class="maxGridSize">
-                    <span id="etiqMaxGridSize">Taille maximale de grille (Speedy) : </span>
+                    <span id="etiqMaxGridSize" style="margin-right: 10px;">Taille maximale de grille (Speedy) : </span>
                     <select name="simple" id="selMaxGridSize" class="maxGridSize" onchange="setMaxGridSize()">
                         <option selected value="6">6</option>
                         <option value="5">5</option>
@@ -181,7 +181,7 @@
                 </p>
                 <!-- temporisation avant affichage du score pour une grille -->
                 <p class="maxGridSize">
-                    <span id="etiqScoreDelay">Délai d'affichage du score : </span>
+                    <span id="etiqScoreDelay" style="margin-right: 10px;">Délai d'affichage du score : </span>
                     <select name="simple" id="selScoreDelay" class="maxGridSize" onchange="setScoreDelay()">
                         <option selected value="0">0</option>
                         <option value="1">1</option>
@@ -193,8 +193,9 @@
                     <span>(s)</span>
                 </p>
                 <p class="maxGridSize">
-                    <span id="etiqScoreDelay">coloration auto des calissons voisins : </span>
-                    <input type="checkbox" id="autoCalisson" name="autoCalisson" style="zoom:2;" onchange="setAutoColor()">
+                    <span id="etiqScoreDelay" style="margin-right: 10px;">coloration des calissons voisins : </span>
+                    <input type="checkbox" id="autoCalisson" name="autoCalisson" style="transform: scale(2);"
+                        onchange="setAutoColor()">
                 </p>
 
             </div>
@@ -508,7 +509,7 @@
             <h2>Mode Challenge (Speedy !)</h2>
             <p>Ce mode vous permet de mettre à l'épreuve votre maîtrise du jeu !</p>
             <p>Le but est d'obtenir en un temps limité le score total le plus grand possible, en résolvant des grilles
-                de taille et difficulté croissantes analogues à celle de la page d'entraînement 
+                de taille et difficulté croissantes analogues à celle de la page d'entraînement
                 (mais les grilles sont différentes !).
             </p>
             <ul>

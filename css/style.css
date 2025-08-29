@@ -213,7 +213,10 @@ hr {
 .maxGridSize {
     font-weight: bold;
     font-size: 2rem;
-    text-align: center;
+    display: flex;         /* Active le mode Flexbox */
+    align-items: center;   /* Centre les éléments verticalement */
+    justify-content: center; /* Centre les éléments horizontalement */
+    
 }
 
 .butMode {
