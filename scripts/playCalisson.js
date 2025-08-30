@@ -780,7 +780,7 @@ function ajouteunlosange(x, y) {
     let dy = v1y / 2;
 
     /* les multiplieurs de dx et dy permettant de calculer la positions des points
-    pertinents entourant le point courant où est dessiné le losange.
+    des losanges coloriables entourant le point courant où est dessiné le losange.
 
     *********************
     si losange horizontal
@@ -876,6 +876,12 @@ function ajouteunlosange(x, y) {
             ]
     }
 
+    let relativeMultOverlap = {
+        hori: [[-1, -1], [-1, 1], [1, -1], [1, 1]],
+        gauche: [[-1, -1], [0, -2], [1, 1], [0, 2]],
+        droite: [[1, -1], [0, -2], [-1, 1], [0, 2]]
+    }
+
     // retourne la liste des index des losanges qui doivent être peints automatiquement
     function calcDiamondsToFill(i) {
         // la liste résultat 
@@ -883,19 +889,39 @@ function ajouteunlosange(x, y) {
 
         var orientation = tabmilieu[i][3];
         var refDiamondsToFill = relativeMultipliers[orientation];
+        var refDiamondOverlap = relativeMultOverlap[orientation];
+
         var x0 = tabmilieu[i][0];
         var y0 = tabmilieu[i][1];
 
-        // récupération dans le dictionnaire mapPts des données pour le losange 
-        // peint par l'utilisateur
-        function calc_r(t) {
+        // récupération dans le dictionnaire mapPts des données des losanges voisins 
+        // à colorier pour le losange peint par l'utilisateur
+        function calc_r(refFill, refOver) {
+            // variables de travail
+            let m1x, m1y, m2x, m2y, m3x, m3y, m4x, m4y;
+
             function k(mx, my) {
                 return arrondi(x0 + mx * dx) + ":" + arrondi(y0 + my * dy)
             }
+            // la valeur retournée par la fonction
             let r = [];
-            let m1x, m1y, m2x, m2y, m3x, m3y, m4x, m4y;
 
-            for (let a of t) {
+            // pour savoir si le losange visé par le joueur se superpose à des
+            // losanges déjà peints, on contruit la liste des losanges pouvant 
+            // se superposer au losange courant
+            let losOverlap = [];
+
+            for (let a of refDiamondOverlap) {
+                [m1x, m1y] = a;
+                let los = mapPts.get(k(m1x, m1y));
+                losOverlap.push(los)
+            }
+            // si superposition avec un losange déjà peint, on ne colorie aucun losange supplémentaire
+            if (losOverlap.map(x => tabmilbor[x][4]).reduce((res, current) => res || current, false)) {
+                return r
+            }
+
+            for (let a of refFill) {
                 [[m1x, m1y], [m2x, m2y], [m3x, m3y], [m4x, m4y]] = a;
                 let edge = mapPts.get(k(m1x, m1y));
                 let los1 = mapPts.get(k(m2x, m2y));
@@ -922,7 +948,7 @@ function ajouteunlosange(x, y) {
                 && (rel[3] < tabmilieu.length) && (tabmilieu[rel[3]][2] != 'bloquee') && !checkDiamondColored(rel[3]))
         }
 
-        var relatives = calc_r(refDiamondsToFill);
+        var relatives = calc_r(refDiamondsToFill, refDiamondOverlap);
 
         for (let rel of relatives) {
             if (checkRelatives(rel)) { r.push(rel.at(-1)) }
@@ -941,7 +967,6 @@ function ajouteunlosange(x, y) {
                     nblosangeutilises++;
                 }
                 tabmilieu[i][4] = !tabmilieu[i][4]
-                // orientation = tabmilieu[i][3]
                 historique.push({ 'indx': i, 'type': 4, 'prec': etat });
 
                 if (autoColorDiamonds && tabmilieu[i][4]) {
