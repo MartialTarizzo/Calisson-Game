@@ -243,9 +243,6 @@ function decompteTemps() {
     document.getElementById('spTempsRestant').innerHTML = "0 s"
     bonus = calcBonus()
 
-bonus +=500
-
-
     // affichage temporaire de la solution de la grille inachevée
     // pendant la durée définie dans la fonction abandonGrille
     abandonGrille()
@@ -564,7 +561,6 @@ function restart(objScore) {
   }
 }
 
-
 /**
  * La fonction de lancement du jeu
  * - définitions des variables globales et des timers
@@ -575,7 +571,7 @@ function restart(objScore) {
  *   
  */
 export function beginGame() {
-  maxTime = 20 // 5 * 60
+  maxTime = 5 * 60
   document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
   updateProgressBar()
   listObjScore = []
