@@ -74,9 +74,12 @@ document.body.addEventListener("touchmove", function (e) {
     }
 }, { passive: false });
 
+// initialisation sortie de la fonction init, pour que le choix soit conservé entre les grilles successives
+mode = "mode_arete";
+
 function init() {
     marge = 5;
-    mode = "mode_arete";
+    // mode = "mode_arete";
     drawModeButtonsBorders()
     // document.getElementById("btmode").innerHTML = "Mode arête";
 
@@ -173,15 +176,21 @@ if (!context) {
 if (canvas.getAttribute('listenerYetAdded') !== 'true') {
     canvas.setAttribute('listenerYetAdded', 'true');
     canvas.addEventListener('pointerdown', function (evt) {
-        ajouterenleversegment(evt)
+        if (jeuPossible) {
+            ajouterenleversegment(evt)
+        }
     }, false);
 
     canvas.addEventListener('pointermove', function (evt) {
-        curseur(evt)
+        if (jeuPossible) {
+            curseur(evt)
+        }
     }, false);
     canvas.addEventListener('pointerout', function (evt) {
-        lastCursorIndex = -1;
-        dessinerlafigure()
+        if (jeuPossible) {
+            lastCursorIndex = -1;
+            dessinerlafigure()
+        }
     }, false);
 }
 // empêche l'affichage du menu contextuel en cas de clic-droit sur la figure
@@ -1211,38 +1220,36 @@ function abandonGrille() {
 function ajouterenleversegment(evt) {
 
     let taillePoint = calcTaillePoint()
-    if (jeuPossible) {
-        var pos = getMousePos(canvas, evt)
-        var x = pos.x
-        var y = pos.y
-        if ((evt.button == 0) && (mode == "mode_arete")) {
-            //si clic gauche et mode arête
-            for (var i = 0; i < tabmilieu.length; i++) {
-                if (curseurProcheMilieu(x, y, i)) {
+    var pos = getMousePos(canvas, evt)
+    var x = pos.x
+    var y = pos.y
+    if ((evt.button == 0) && (mode == "mode_arete")) {
+        //si clic gauche et mode arête
+        for (var i = 0; i < tabmilieu.length; i++) {
+            if (curseurProcheMilieu(x, y, i)) {
 
-                    if (tabmilieu[i][2] != 'bloquee') {
-                        let etat = tabmilieu[i][2];
+                if (tabmilieu[i][2] != 'bloquee') {
+                    let etat = tabmilieu[i][2];
 
-                        tabmilieu[i][2] = !tabmilieu[i][2];
+                    tabmilieu[i][2] = !tabmilieu[i][2];
 
-                        historique.push({ 'indx': i, 'type': 2, 'prec': etat });
-                    }
-                    dessinerlafigure()
-                    context.beginPath();
-                    context.lineWidth = gridLineWidth;
-                    context.arc(tabmilieu[i][0], tabmilieu[i][1], taillePoint, 0, 2 * Math.PI);
-                    context.fillStyle = dotHoverColor;
-                    context.fill();
-                    context.closePath();
+                    historique.push({ 'indx': i, 'type': 2, 'prec': etat });
                 }
+                dessinerlafigure()
+                context.beginPath();
+                context.lineWidth = gridLineWidth;
+                context.arc(tabmilieu[i][0], tabmilieu[i][1], taillePoint, 0, 2 * Math.PI);
+                context.fillStyle = dotHoverColor;
+                context.fill();
+                context.closePath();
             }
-        } else if (((evt.button == 0) && (mode == "mode_losange") || (evt.button == 2))) {
-            // (clic gauche et mode losange) ou (clic droit)
-            ajouteunlosange(x, y)
-            dessinerlafigure()
         }
-
+    } else if (((evt.button == 0) && (mode == "mode_losange") || (evt.button == 2))) {
+        // (clic gauche et mode losange) ou (clic droit)
+        ajouteunlosange(x, y)
+        dessinerlafigure()
     }
+
     if (testesolution()) {
         chronoarret()
         termine();
@@ -1399,6 +1406,8 @@ function testesolution() {
     var missingEdges = false;
     // Tous les calissons sont-ils bien placés ?
     var allDiamondsCorrect = true;
+    // y a-t-il des losanges mal placés ?
+    var falseDiamond = false;
 
     var i = 0;
 
@@ -1412,10 +1421,13 @@ function testesolution() {
                 break;
         }
         allDiamondsCorrect = (tablosanges[i] == tabmilieu[i][4]) && allDiamondsCorrect;
+        falseDiamond = (tabmilieu[i][4] && !tablosanges[i]) || falseDiamond;
         i++;
     }
 
-    return correctEdges && (!missingEdges || allDiamondsCorrect)
+    return (correctEdges && !missingEdges && !falseDiamond) || (correctEdges && allDiamondsCorrect)
+
+    // return correctEdges && ((!missingEdges && !falseDiamond) || allDiamondsCorrect)
 }
 
 /////////////////////////////////////////////

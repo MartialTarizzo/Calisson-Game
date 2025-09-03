@@ -242,6 +242,10 @@ function decompteTemps() {
     chronoarret()
     document.getElementById('spTempsRestant').innerHTML = "0 s"
     bonus = calcBonus()
+
+bonus +=500
+
+
     // affichage temporaire de la solution de la grille inachevée
     // pendant la durée définie dans la fonction abandonGrille
     abandonGrille()
@@ -571,7 +575,7 @@ function restart(objScore) {
  *   
  */
 export function beginGame() {
-  maxTime = 5 * 60
+  maxTime = 20 // 5 * 60
   document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
   updateProgressBar()
   listObjScore = []
