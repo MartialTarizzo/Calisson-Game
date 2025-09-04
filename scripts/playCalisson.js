@@ -95,14 +95,10 @@ function init() {
 
     // définit le type d'interaction avec le jeu 
     // true -> on peut modifier la grille
-    // false -> grille non modifiable, on peut téléverser la solution trouvée, etc.
-    // vestige du script initial permettant de créer les grilles à la main
-    // ne sert plus maintenant que lors de l'affichage lors de l'abandon
-
+    // false -> grille non modifiable
+    // permet d'inhber les clics souris lors de certaines phases d'affichage
+    // de la solution (abandon, fin de partie ...)
     jeuPossible = true;
-
-    // on cache le bouton de téléchargement de la solution
-    // document.getElementById('terminedl').style.display = "none";
 
     // Les 3 tableaux de travail, unidimentionnels
     // pour les arêtes, contient des [[xa,ya],[xb,yb]], coord des extrémités des segments
@@ -572,13 +568,6 @@ function reset() {
     commencergrille()
 }
 
-// associée au bouton 'Ma grille est terminée'
-function termine() {
-
-    jeuPossible = !jeuPossible;
-
-    // dessinerlafigure();
-}
 
 function dessinerlafigure() {
 
@@ -1252,7 +1241,7 @@ function ajouterenleversegment(evt) {
 
     if (testesolution()) {
         chronoarret()
-        termine();
+        jeuPossible = false;
         setTimeout(() => { returnToGamePlay() }, 0)
     }
 }
@@ -1354,28 +1343,26 @@ function returnToGamePlay() {
 
 function curseur(evt) {
     let taillePoint = calcTaillePoint()
-    if (jeuPossible) {
-        var pos = getMousePos(canvas, evt)
-        var x = pos.x
-        var y = pos.y
+    var pos = getMousePos(canvas, evt)
+    var x = pos.x
+    var y = pos.y
 
-        canvas.style.cursor = 'auto';
+    canvas.style.cursor = 'auto';
 
-        for (var i = 0; i < tabmilieu.length; i++) {
-            if (curseurProcheMilieu(x, y, i) && i != lastCursorIndex) {
-                lastCursorIndex = i;
-                canvas.style.cursor = 'pointer';
-                dessinerlafigure();
-                if (tabmilieu[i][2] != 'bloquee') {
-                    context.beginPath();
-                    context.lineWidth = 1;
-                    context.arc(tabmilieu[i][0], tabmilieu[i][1], taillePoint, 0, 2 * Math.PI);
-                    context.fillStyle = dotHoverColor;
-                    context.fill();
-                    context.closePath();
-                }
-                break;
+    for (var i = 0; i < tabmilieu.length; i++) {
+        if (curseurProcheMilieu(x, y, i) && i != lastCursorIndex) {
+            lastCursorIndex = i;
+            canvas.style.cursor = 'pointer';
+            dessinerlafigure();
+            if (tabmilieu[i][2] != 'bloquee') {
+                context.beginPath();
+                context.lineWidth = 1;
+                context.arc(tabmilieu[i][0], tabmilieu[i][1], taillePoint, 0, 2 * Math.PI);
+                context.fillStyle = dotHoverColor;
+                context.fill();
+                context.closePath();
             }
+            break;
         }
     }
 }
@@ -1439,16 +1426,11 @@ function start(enigme, callback, funSetLang) {
     let tab = enigme.tab
     currentEnigme = enigme
     funCallBack = callback;
-
     calcTaille(tab)
-    setZoomFactor();
     funSetLang();
     init();
     document.getElementById('btreset').style.display = "";
-
-    // rafraichit()
     commencergrille()
-
 }
 
 // on change la taille écran du graphique
