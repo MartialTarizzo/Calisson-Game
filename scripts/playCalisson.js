@@ -8,7 +8,7 @@ playCalisson.js pour la page HTML permettant de jouer au jeu de Calisson
 ////////////////////////////////////////////////////
 // Les variables globales
 // voir les commentaires dans la fonction init
-let taille, longueur, marge, mode, v1x, v1y, v2x, v2y, v3x, v3y, centrex, centrey;
+let taille, longueur, marge, v1x, v1y, v2x, v2y, v3x, v3y, centrex, centrey;
 let jeuPossible;
 let tabsegment, tabmilieu, solution;
 let tablosanges;
@@ -17,9 +17,11 @@ let nblosangeutilises;
 let chrono;
 let dateDebutResolution;
 let chronointerval;
-let is_touch_device;
+
 let canvas, context;
 let currentEnigme;
+
+let mode;   /* mode_arete ou mode_losange */
 
 let autoColorDiamonds = false;
 
@@ -46,14 +48,6 @@ let dotEdgeColor = "black"
 let dotFillColor = "white"
 let dotHoverColor = "black"
 let undoDotColor = "red"
-
-// réglage de l'interface sur un écran tactile 
-try {
-    document.createEvent("TouchEvent");
-    is_touch_device = true;
-} catch (e) {
-    is_touch_device = false;
-}
 
 // pour empêcher le clignotement du canvas lors d'un toucher sur le canvas (interface tactile)
 document.body.addEventListener("touchstart", function (e) {
@@ -147,15 +141,8 @@ function init() {
 
 }
 
-if (is_touch_device) {
-    // document.getElementById('btmode').style.display = '';
-    document.getElementById("butEdge").style.display = '';
-    document.getElementById("butDiamond").style.display = '';
-} else {
-    // document.getElementById('btmode').style.display = 'none';
-    document.getElementById("butEdge").style.display = 'none';
-    document.getElementById("butDiamond").style.display = 'none';
-}
+document.getElementById("butEdge").style.display = '';
+document.getElementById("butDiamond").style.display = '';
 
 // variables permettant les dessins dans la page du navigateur
 // canvas principal 
@@ -173,7 +160,7 @@ if (canvas.getAttribute('listenerYetAdded') !== 'true') {
     canvas.setAttribute('listenerYetAdded', 'true');
     canvas.addEventListener('pointerdown', function (evt) {
         if (jeuPossible) {
-            ajouterenleversegment(evt)
+            ajouterEnleverSegLos(evt)
         }
     }, false);
 
@@ -1181,21 +1168,20 @@ function abandonGrille() {
         document.getElementById('btreset').disabled = false;
         // document.getElementById('btmode').disabled = false;
         document.getElementById('btcancel').disabled = false;
-        if (is_touch_device) {
-            document.getElementById('butEdge').style.display = "";
-            document.getElementById('butDiamond').style.display = "";
-        }
+        // if (is_touch_device) {
+        document.getElementById('butEdge').style.display = "";
+        document.getElementById('butDiamond').style.display = "";
+        // }
         funCallBack({ score: 0 })
     }
 
     document.getElementById('btback').disabled = true;
     document.getElementById('btreset').disabled = true;
-    // document.getElementById('btmode').disabled = true;
     document.getElementById('btcancel').disabled = true;
-    if (is_touch_device) {
-        document.getElementById('butEdge').style.display = "none";
-        document.getElementById('butDiamond').style.display = "none";
-    }
+
+    document.getElementById('butEdge').style.display = "none";
+    document.getElementById('butDiamond').style.display = "none";
+
     jeuPossible = false
 
     dessinerSolution();
@@ -1206,13 +1192,27 @@ function abandonGrille() {
 // MT-
 
 // La fonction appelée à chaque clic de souris sur le point mileu d'un segment
-function ajouterenleversegment(evt) {
+// ajoute/retire un segment ou un losange en fonction du mode de jeu
+function ajouterEnleverSegLos(evt) {
 
     let taillePoint = calcTaillePoint()
     var pos = getMousePos(canvas, evt)
     var x = pos.x
     var y = pos.y
-    if ((evt.button == 0) && (mode == "mode_arete")) {
+
+    var addEdge
+    var addDiamond
+
+        if (evt.button == 0) {
+            addEdge = (mode == 'mode_arete')
+            addDiamond = !addEdge
+        }
+        if (evt.button == 2) {
+            addEdge = (mode == 'mode_losange')
+            addDiamond = !addEdge
+        }
+
+    if (addEdge) {
         //si clic gauche et mode arête
         for (var i = 0; i < tabmilieu.length; i++) {
             if (curseurProcheMilieu(x, y, i)) {
@@ -1233,7 +1233,7 @@ function ajouterenleversegment(evt) {
                 context.closePath();
             }
         }
-    } else if (((evt.button == 0) && (mode == "mode_losange") || (evt.button == 2))) {
+    } else if (addDiamond) {
         // (clic gauche et mode losange) ou (clic droit)
         ajouteunlosange(x, y)
         dessinerlafigure()
