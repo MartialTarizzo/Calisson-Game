@@ -456,24 +456,27 @@
                 Les arêtes initiales ne sont pas modifiables, tandis que les positions des arêtes à déterminer sont
                 tracées en pointillés avec un petit cercle au milieu.
             </p>
+            <p>
+                Deux boutons de mode de résolution sont situés de part et d'autre de la zone de jeu : dessin des arêtes à gauche, coloriage des calissons à droite.
+            </p>
             <ul>
-                <li> Sur ordinateur, le dessin des arêtes manquantes s'effectue avec un clic-gauche sur le milieu de
-                    l'arête tandis que le coloriage des calissons est obtenu par un clic-droit sur le centre d'un
-                    losange.
+                <li> Sur ordinateur, un clic-gauche sur le point milieu d'une arête dessine cette arête 
+                    ou colorie le calisson centré sur ce point
+                    selon le mode en cours,
+                    tandis qu'un clic droit effectue l'opération opposée.
                 </li>
                 <li> Sur tablette/téléphone/écran tactile, le toucher du milieu d'une arête provoque le dessin de
-                    l'arête ou le coloriage des losanges en fonction de l'état des boutons à gauche et à droite de la
-                    zone
-                    de jeu.
+                    l'arête ou le coloriage des losanges en fonction de l'état du bouton de mode.
                 </li>
             </ul>
             <p>
                 En général, il y a beaucoup moins d'arêtes à tracer que de calissons à colorier.<br>
-                Afin de faciliter la résolution, le coloriage d'un calisson peut provoquer automatiquement le coloriage des
+                Afin de faciliter la résolution et de rendre les deux modes de résolution équivalents, 
+                le coloriage d'un calisson peut provoquer automatiquement le coloriage des
                 calissons adjacents qui vérifient la règle de l'angle aigu (ajustable dans les options).
             </p>
             <p>
-                Avec de l'entraînement, on peut souvent se passer du coloriage des calissons !
+                À vous de choisir le mode de résolution qui vous semble le plus efficace !
             </p>
             <h2>Exemple de résolution</h2>
             <div>
@@ -525,7 +528,7 @@
                     un bonus est accordé pour la tentative de résolution de la dernière grille (ne pas abandonner
                     même si le temps est compté !)
                 </li>
-                <li>tracer les arêtes plutôt que colorier les calissons (c'est en général plus rapide)
+                <li>tracer les arêtes ou colorier les calissons, sans mélanger les deux modes de résolution 
                 </li>
             </ul>
             <p>Le score pour chaque grille augmente avec sa taille et sa difficulté :
@@ -588,15 +591,18 @@
                 <img src="./pictures/icons8-home.gif" height="30px" width="30px" alt="Home">
             </p>
 
-            <h2>Dessin des calissons sur Tablette/téléphone</h2>
-            <p>Quand on joue sur ordinateur, il est possible de dessiner des calissons (ou losanges) en effectuant
-                un clic-droit avec la souris sur le milieu d'une arête.</p>
+            <h2>Dessin des arêtes ou des calissons</h2>
             <p>
-                Sur un dispositif à interface tactile où le clic-droit est impossible, les pages de jeu affichent à
+                les pages de jeu affichent à
                 gauche et à droite de l'hexagone deux boutons définissant le mode d'action d'une pression sur le
-                mileu d'une arête : tracé d'une arête (<strong>à gauche</strong>) ou d'un losange (<strong>à
+                mileu d'une arête : tracé d'une arête (<strong>à gauche</strong>) ou coloriage d'un losange (<strong>à
                     droite</strong>).
-                Il suffit de taper sur un bouton pour définir le mode.
+            </p>
+            <p>Quand on joue sur ordinateur, l'action sélectionnée est obtenue par un clic gauche tandis qu'un clic droit 
+                provoque l'action opposée.
+            <p>
+                Sur un dispositif à interface tactile où le clic-droit est impossible, l'action sélectionnée est obtenue quand on tape 
+                sure le milieu de l'arête.
             </p>
             <p>
                 Afin de faciliter la résolution, le coloriage d'un calisson peut provoquer automatiquement le coloriage des
@@ -633,6 +639,7 @@
                         Une case à cocher est présente pour activer/désactiver la coloration automatique des calissons
                         voisins selon la
                         règle de l'angle aigu lors de la résolution des grilles par coloriage.
+                        Ceci permet d'avoir des durées de résolution par coloriage équivalentes à celle obtenues par dessin des arêtes.
                     </p>
 
                 </li>
