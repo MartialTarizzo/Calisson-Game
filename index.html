@@ -55,9 +55,16 @@
                 document.getElementById('selScoreDelay').value)
         }
 
+        // idem pour le coloriage auto des losanges voisins (angles aigus)
         function setAutoColor() {
             localStorage.setItem('autoColor',
                 document.getElementById("autoCalisson").checked)
+        }
+
+        // idem pour le mode de résolution par défaut : tracé d'arêtes ou coloriage des calissons
+        function setDefMode() {
+            localStorage.setItem('defaultMode',
+                document.getElementById('selDefMode').value)
         }
 
         // et on récupère la taille max au chargement de la page
@@ -77,10 +84,16 @@
             document.getElementById('autoCalisson').checked = autoColor == "true"
         }
 
+        function getDefMode() {
+            let defModeInStorage = localStorage.getItem('defaultMode')
+            let defaultMode = defModeInStorage ? defModeInStorage : "mode_arete"
+            document.getElementById('selDefMode').value = defaultMode
+        }
 
         document.addEventListener("DOMContentLoaded", getMaxGridSize);
         document.addEventListener("DOMContentLoaded", getScoreDelay);
         document.addEventListener("DOMContentLoaded", getAutoColor);
+        document.addEventListener("DOMContentLoaded", getDefMode);        
     </script>
     <link rel="manifest" href="./manifest.json" />
 
@@ -196,6 +209,13 @@
                     <span id="etiqAutoColor" style="margin-right: 10px;">coloration des calissons voisins : </span>
                     <input type="checkbox" id="autoCalisson" name="autoCalisson" style="transform: scale(2);"
                         onchange="setAutoColor()">
+                </p>
+                <p class="maxGridSize">
+                    <span id="etiqDefMode" style="margin-right: 10px;">mode préféré de résolution : </span>
+                    <select name="simple" id="selDefMode" class="maxGridSize" onchange="setDefMode()">
+                        <option selected value="mode_arete">arêtes</option>
+                        <option value="mode_losange">calissons</option>
+                    </select>
                 </p>
 
             </div>

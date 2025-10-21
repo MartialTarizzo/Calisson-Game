@@ -23,6 +23,15 @@ let currentEnigme;
 
 let mode;   /* mode_arete ou mode_losange */
 
+let defaultMode = localStorage.getItem('defaultMode');
+if (defaultMode === null) {
+    defaultMode = 'mode_arete'
+}
+
+// initialisation sortie de la fonction init, pour que le choix soit conservé entre les grilles successives
+// et qu'il tienne compte du mode de résolution préféré
+mode = defaultMode;
+
 let autoColorDiamonds = false;
 
 autoColorDiamonds = localStorage.getItem('autoColor') == "true";
@@ -67,9 +76,6 @@ document.body.addEventListener("touchmove", function (e) {
         e.preventDefault();
     }
 }, { passive: false });
-
-// initialisation sortie de la fonction init, pour que le choix soit conservé entre les grilles successives
-mode = "mode_arete";
 
 function init() {
     marge = 5;

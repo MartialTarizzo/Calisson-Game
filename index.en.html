@@ -51,6 +51,11 @@
                 document.getElementById("autoCalisson").checked)
         }
 
+        function setDefMode() {
+            localStorage.setItem('defaultMode',
+                document.getElementById('selDefMode').value)
+        }
+
         // et on récupère cette taille max au chargement de la page
         function getMaxGridSize() {
             let maxGridSizeInStorage = localStorage.getItem('maxGridSize')
@@ -69,9 +74,16 @@
             document.getElementById('autoCalisson').checked = autoColor == "true"
         }
 
+        function getDefMode() {
+            let defModeInStorage = localStorage.getItem('defaultMode')
+            let defaultMode = defModeInStorage ? defModeInStorage : "mode_arete"
+            document.getElementById('selDefMode').value = defaultMode
+        }
+
         document.addEventListener("DOMContentLoaded", getMaxGridSize);
         document.addEventListener("DOMContentLoaded", getScoreDelay);
         document.addEventListener("DOMContentLoaded", getAutoColor);
+        document.addEventListener("DOMContentLoaded", getDefMode);        
     </script>
     <link rel="manifest" href="./manifest.json" />
 
@@ -187,6 +199,13 @@
                     <span id="etiqAutoColor" style="margin-right: 10px;">coloration of neighboring calissons: </span>
                     <input type="checkbox" id="autoCalisson" name="autoCalisson" style="transform: scale(2);"
                         onchange="setAutoColor()">
+                </p>
+                <p class="maxGridSize">
+                    <span id="etiqDefMode" style="margin-right: 10px;">preferred resolution mode: </span>
+                    <select name="simple" id="selDefMode" class="maxGridSize" onchange="setDefMode()">
+                        <option selected value="mode_arete">edges</option>
+                        <option value="mode_losange">calissons</option>
+                    </select>
                 </p>
 
             </div>
