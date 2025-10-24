@@ -1276,7 +1276,7 @@ function calcScore() {
     // calcul de la valeur de référence pour la grille en cours
     let scoreRef = 1 * taille ** 2 * 1.1
     // et de la valeur obtenue par le joueur
-    let scorePlayer = 1 * taille ** 2 * (1.1 - propLos) * (durPlacAr / durPlacArUser) * (1 + perfAr / 2)
+    let scorePlayer = 1 * taille ** 2 * (1.1 - propLos / 5) * (durPlacAr / durPlacArUser) * (1 + perfAr / 2)
     // Calcul du score qui dépend de la taille de la grille et des variables précédentes
     let scoreFinal = Math.max(
         taille * 5,
