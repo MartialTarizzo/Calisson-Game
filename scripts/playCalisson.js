@@ -1245,11 +1245,18 @@ function ajouterEnleverSegLos(evt) {
         dessinerlafigure()
     }
 
-    if (testesolution()) {
-        chronoarret()
+    if (testesolution()[0]) {
+        chronoarret();
         jeuPossible = false;
+        recordData();
         setTimeout(() => { returnToGamePlay() }, 0)
     }
+}
+
+function recordData() {
+    var resMode = testesolution()[1]
+    var ob = {resMode : resMode}
+    return ob
 }
 
 function calcScore() {
@@ -1401,6 +1408,10 @@ function testesolution() {
     var allDiamondsCorrect = true;
     // y a-t-il des losanges mal placés ?
     var falseDiamond = false;
+    // Type de résolution : 'arete' ou 'calisson' ?
+    var resolutionType
+    var solvedWithEdges
+    var solvedWithDiamonds
 
     var i = 0;
 
@@ -1418,7 +1429,12 @@ function testesolution() {
         i++;
     }
 
-    return (correctEdges && !missingEdges && !falseDiamond) || (correctEdges && allDiamondsCorrect)
+    solvedWithEdges = correctEdges && !missingEdges && !falseDiamond
+    solvedWithDiamonds = correctEdges && allDiamondsCorrect
+
+    resolutionType = (solvedWithDiamonds) ? 'calisson' : 'arete'
+
+    return [(solvedWithEdges) || (solvedWithDiamonds), resolutionType]
 
     // return correctEdges && ((!missingEdges && !falseDiamond) || allDiamondsCorrect)
 }
