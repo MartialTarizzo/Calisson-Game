@@ -158,6 +158,9 @@
     </div>
 
     <script type="module">
+
+        localStorage.removeItem('test')
+
         import { beginGame } from "./scripts/gamePlay_training.js"
 
         document.getElementById('selNiveau').onchange = beginGame

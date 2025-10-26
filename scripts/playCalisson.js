@@ -1209,14 +1209,14 @@ function ajouterEnleverSegLos(evt) {
     var addEdge
     var addDiamond
 
-        if (evt.button == 0) {
-            addEdge = (mode == 'mode_arete')
-            addDiamond = !addEdge
-        }
-        if (evt.button == 2) {
-            addEdge = (mode == 'mode_losange')
-            addDiamond = !addEdge
-        }
+    if (evt.button == 0) {
+        addEdge = (mode == 'mode_arete')
+        addDiamond = !addEdge
+    }
+    if (evt.button == 2) {
+        addEdge = (mode == 'mode_losange')
+        addDiamond = !addEdge
+    }
 
     if (addEdge) {
         //si clic gauche et mode arête
@@ -1255,9 +1255,42 @@ function ajouterEnleverSegLos(evt) {
 
 function recordData() {
     var resMode = testesolution()[1]
-    var ob = {resMode : resMode}
-    return ob
+    var nbUsedEdges = 0
+    var nbFixedEdges = 0
+    var nbSolEdges = 0
+
+    var score = calcScore()
+
+    for (var i= 0; i<tabmilieu.length; i++) {
+        if (tabmilieu[i][2] == true) {nbUsedEdges++}
+        if (solution[i] == 'bloquee') {nbFixedEdges++}
+        if (solution[i] != false) {nbSolEdges++}
+    } 
+    score.resmode = resMode
+    score.nbUsedEdges = nbUsedEdges
+    score.nbFixedEdges = nbFixedEdges
+    score.nbSolEdges = nbSolEdges
+        
+    var tab = localStorage.getItem('test')
+    if (tab === null) {
+        tab = []
+    } else {
+        tab = JSON.parse(tab)
+    }
+    tab.push(score)
+    var statsText = JSON.stringify(tab)
+    localStorage.setItem('test', statsText)
+    writeClipboardText(statsText)
 }
+
+async function writeClipboardText(text) {
+    try {
+        await navigator.clipboard.writeText(text);
+      } catch (error) {
+        console.error(error.message);
+      }
+}
+
 
 function calcScore() {
     let nbTotLos = 3 * taille ** 2; // nbre max de losanges dans la grille
