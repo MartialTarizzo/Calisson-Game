@@ -1209,6 +1209,8 @@ function ajouterEnleverSegLos(evt) {
     var addEdge
     var addDiamond
 
+    var testResult
+
     if (evt.button == 0) {
         addEdge = (mode == 'mode_arete')
         addDiamond = !addEdge
@@ -1245,32 +1247,32 @@ function ajouterEnleverSegLos(evt) {
         dessinerlafigure()
     }
 
-    if (testesolution()[0]) {
+    testResult = testesolution()
+    if (testResult[0]) {
         chronoarret();
         jeuPossible = false;
-        recordData();
+        recordData(testResult[1]);
         setTimeout(() => { returnToGamePlay() }, 0)
     }
 }
 
-function recordData() {
-    var resMode = testesolution()[1]
+function recordData(resMode) {
     var nbUsedEdges = 0
     var nbFixedEdges = 0
     var nbSolEdges = 0
 
     var score = calcScore()
 
-    for (var i= 0; i<tabmilieu.length; i++) {
-        if (tabmilieu[i][2] == true) {nbUsedEdges++}
-        if (solution[i] == 'bloquee') {nbFixedEdges++}
-        if (solution[i] != false) {nbSolEdges++}
-    } 
+    for (var i = 0; i < tabmilieu.length; i++) {
+        if (tabmilieu[i][2] == true) { nbUsedEdges++ }
+        if (solution[i] == 'bloquee') { nbFixedEdges++ }
+        if (solution[i] != false) { nbSolEdges++ }
+    }
     score.resmode = resMode
     score.nbUsedEdges = nbUsedEdges
     score.nbFixedEdges = nbFixedEdges
     score.nbSolEdges = nbSolEdges
-        
+
     var tab = localStorage.getItem('test')
     if (tab === null) {
         tab = []
@@ -1286,37 +1288,54 @@ function recordData() {
 async function writeClipboardText(text) {
     try {
         await navigator.clipboard.writeText(text);
-      } catch (error) {
+    } catch (error) {
         console.error(error.message);
-      }
+    }
 }
 
 
 function calcScore() {
+    let score = {} // l'objet retourné pa r la fonction
+
     let nbTotLos = 3 * taille ** 2; // nbre max de losanges dans la grille
+
     let tab = currentEnigme.tab
-    let nbArUser = 0;   // nb arêtes à ajouter par le joueur
-    for (let s of tab) {
-        if (s == 's') { nbArUser++ }
+    let nbArUser = 0;           // nb arêtes utilisées par le joueur
+    let nbAretesFixees = 0      // les arêtes non modifiables
+    let nbAretes = 0            // nombre d'arêtes de la solution
+
+    for (var i = 0; i < tabmilieu.length; i++) {
+        if (tabmilieu[i][2] == true) { nbArUser++ }
+        if (solution[i] == 'bloquee') { nbAretesFixees++ }
+        if (solution[i] != false) { nbAretes++ }
     }
-    let nbAretes = 0;   // nb total d'arêtes de la solution
-    for (let s of tab) {
-        if (s == 't') { nbAretes++ }
-    }
-    nbAretes += nbArUser;
+
+    // for (let s of tab) {
+    //     if (s == 's') { nbArUser++ }
+    // }
+    // let nbAretes = 0;   // nb total d'arêtes de la solution
+    // for (let s of tab) {
+    //     if (s == 't') { nbAretes++ }
+    // }
+    // nbAretes += nbArUser;
+
     // proportion de losanges utilisée. meilleure si faible, entre 0 et 1
     let propLos = Math.min(nblosangeutilises / nbTotLos, 1);
+
     // durée moyenne de placement d'une arête, > à 1 s 
     let dureeResolution = Math.floor((Date.now() - dateDebutResolution) / 1000)
-    let durPlacArUser = Math.max(dureeResolution, 1) / nbArUser;
+    let durPlacArUser = Math.max(dureeResolution, 1) / (nbAretes - nbAretesFixees);
+
     // proportion d'arêtes à placer, entre 0 et 1. Croît avec la difficulté de la grille
-    let perfAr = nbArUser / nbAretes;
+    let perfAr = (nbAretes - nbAretesFixees) / nbAretes;
     let durPlacAr = 2 // durée (en s) moyenne de placement d'une arête pour un bon joueur
 
     // calcul de la valeur de référence pour la grille en cours
     let scoreRef = 1 * taille ** 2 * 1.1
+
     // et de la valeur obtenue par le joueur
     let scorePlayer = 1 * taille ** 2 * (1.1 - propLos / 5) * (durPlacAr / durPlacArUser) * (1 + perfAr / 2)
+
     // Calcul du score qui dépend de la taille de la grille et des variables précédentes
     let scoreFinal = Math.max(
         taille * 5,
@@ -1345,6 +1364,35 @@ function calcScore() {
  * 6.3 -> bonus < 266
 */
 function calcBonus() {
+    /* bilan du placement des calissons
+     * 
+     * nbCorrects est le nombre d'arête correctement placées
+     * nbIncorrects "    "          ""      incorrectement ""
+     * nb_a_placer est le nombre d'arêtes à placer pour résoudre
+     * 
+     * @returns [nbCorrectes, nbIncorrectes, nb_a_placer]
+     */
+    function bilanPlacementCalissons() {
+        let nbCorrects = 0
+        let nbIncorrects = 0
+        let nb_a_Placer = 3 * taille ** 2
+        for (let i = 0; i < tabmilieu.length; i++) {
+            switch (tablosanges[i]) {
+                case true:
+                    nb_a_Placer++
+                    if (tabmilieu[i][4] === true) {
+                        nbCorrects++
+                        break
+                    }
+                case false:
+                    if (tabmilieu[i][4] === true) {
+                        nbIncorrects++
+                    }
+            }
+        }
+        return [nbCorrects, nbIncorrects, nb_a_Placer]
+    }
+
     /* bilan du placement des arêtes
      * 
      * nbCorrectes est le nombre d'arête correctement placées
@@ -1375,16 +1423,27 @@ function calcBonus() {
     }
 
     let [nbCorrectes, nbIncorrectes, nbaPlacer] = bilanPlacementAretes()
-    return Math.max(
-        0,
-        Math.round((taille - 2 + (currentEnigme.niveau - 1) / 3) *
-            50 * (nbCorrectes - nbIncorrectes) / nbaPlacer)
-    )
+    let [nbCalCorrects, nbCalIncorrects, nbaCalAPlacer] = bilanPlacementCalissons()
+    if (nbCorrectes + nbIncorrectes > nbCalCorrects + nbCalIncorrects) {
+        return Math.max(
+            0,
+            Math.round((taille - 2 + (currentEnigme.niveau - 1) / 3) *
+                50 * (nbCorrectes - nbIncorrectes) / nbaPlacer)
+        )
+
+    } else {
+        return Math.max(
+            0,
+            Math.round((taille - 2 + (currentEnigme.niveau - 1) / 3) *
+                50 * (nbCalCorrects - nbCalIncorrects) / nbaCalAPlacer)
+        )
+    }
 }
 
 function returnToGamePlay() {
+    var score = calcScore()
     dessinerSolution()
-    funCallBack(calcScore())
+    funCallBack(score)
 }
 
 function curseur(evt) {
@@ -1431,6 +1490,9 @@ function testesolution() {
      *  OU
      * - une partie des arêtes placées est correcte (voire aucune)
      *   et tous les calissons corrects sont coloriés
+     * 
+     * La fonction retourne une paire (true/false, "arete"/"calisson")
+     * selon la validité de la solution et le mode de résolution
      */
 
     // les arêtes placées sont-elles toutes correctes ?
@@ -1468,8 +1530,6 @@ function testesolution() {
     resolutionType = (solvedWithDiamonds) ? 'calisson' : 'arete'
 
     return [(solvedWithEdges) || (solvedWithDiamonds), resolutionType]
-
-    // return correctEdges && ((!missingEdges && !falseDiamond) || allDiamondsCorrect)
 }
 
 /////////////////////////////////////////////
