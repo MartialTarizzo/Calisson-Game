@@ -571,7 +571,7 @@ function restart(objScore) {
  *   
  */
 export function beginGame() {
-  maxTime = 30  // 5 * 60
+  maxTime = 5 * 60
   document.getElementById('spTempsRestant').innerHTML = maxTime + " s"
   updateProgressBar()
   listObjScore = []

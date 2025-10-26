@@ -1251,7 +1251,7 @@ function ajouterEnleverSegLos(evt) {
     if (testResult[0]) {
         chronoarret();
         jeuPossible = false;
-        recordData(testResult[1]);
+        // recordData(testResult[1]);
         setTimeout(() => { returnToGamePlay() }, 0)
     }
 }
