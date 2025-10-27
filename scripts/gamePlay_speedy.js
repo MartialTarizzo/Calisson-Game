@@ -296,7 +296,7 @@ function endGame() {
         totalLosanges += os.nbLosanges
       }
       let durMoyenneGrille = totalResTime / listObjScore.length
-      let durMoyenneArete = totalAretes / totalResTime
+      let durMoyenneAreteLosange = (totalAretes + totalLosanges) / totalResTime
 
       // temps perdu (Reset, Abandon, dernière grille inachevée)
       let tempsPerdu = (totalCumulTime - totalResTime) +
@@ -311,7 +311,7 @@ function endGame() {
         tempsPerdu: tempsPerdu,
         bonus: bonus,
         totalAretes: totalAretes,
-        durMoyenneArete: durMoyenneArete.toFixed(1),
+        durMoyenneAreteLosange: durMoyenneAreteLosange.toFixed(1),
         totalLosanges: totalLosanges,
         nbAbandons: nbAbandons
       })
@@ -657,8 +657,8 @@ let dico = {
     Durée de la partie : <strong>{dureePartie}&nbsp;s</strong><br>
     Bonus de dernière tentative : <strong>{bonus}&nbsp;pts </strong><br>
     Nombre d'arêtes correctes placées : <strong>{totalAretes}</strong><br>
-    Durée moyenne par arête correcte : <strong>{durMoyenneArete}&nbsp;s</strong><br>
     Nombre total de losange utilisés : <strong>{totalLosanges}</strong><br>
+    Durée moyenne par arête/calisson correct : <strong>{durMoyenneAreteLosange}&nbsp;s</strong><br>
     Nombre d'abandons : <strong>{nbAbandons}</strong>
     `,
     msgNoGridSolved: "Aucune grille résolue ...",
@@ -693,8 +693,8 @@ let dico = {
     Length of Game: <strong>{dureePartie}&nbsp;s</strong><br>
     Last attempt bonus: <strong>{bonus} pts </strong><br>
     Number of correct edges placed: <strong>{totalAretes}</strong><br>
-    Average time per correct edge: <strong>{durMoyenneArete} s</strong><br>
     Total number of Diamonds used: <strong>{totalLosanges}</strong><br>
+    Average time per correct edge/diamond: <strong>{durMoyenneAreteLosange} s</strong><br>
     Number of abandonments: <strong>{nbAbandons}</strong>
     `,
     msgNoGridSolved: "No grid solved ...",
