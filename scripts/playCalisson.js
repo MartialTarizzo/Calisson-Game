@@ -1251,40 +1251,11 @@ function ajouterEnleverSegLos(evt) {
     if (testResult[0]) {
         chronoarret();
         jeuPossible = false;
-        // recordData(testResult[1]);
-        setTimeout(() => { returnToGamePlay() }, 0)
+        setTimeout(() => { returnToGamePlay(testResult[1]) }, 0)
     }
 }
 
-function recordData(resMode) {
-    var nbUsedEdges = 0
-    var nbFixedEdges = 0
-    var nbSolEdges = 0
-
-    var score = calcScore()
-
-    for (var i = 0; i < tabmilieu.length; i++) {
-        if (tabmilieu[i][2] == true) { nbUsedEdges++ }
-        if (solution[i] == 'bloquee') { nbFixedEdges++ }
-        if (solution[i] != false) { nbSolEdges++ }
-    }
-    score.resmode = resMode
-    score.nbUsedEdges = nbUsedEdges
-    score.nbFixedEdges = nbFixedEdges
-    score.nbSolEdges = nbSolEdges
-
-    var tab = localStorage.getItem('test')
-    if (tab === null) {
-        tab = []
-    } else {
-        tab = JSON.parse(tab)
-    }
-    tab.push(score)
-    var statsText = JSON.stringify(tab)
-    localStorage.setItem('test', statsText)
-    writeClipboardText(statsText)
-}
-
+// copie d'un texte dans le presse-papier système
 async function writeClipboardText(text) {
     try {
         await navigator.clipboard.writeText(text);
@@ -1294,61 +1265,125 @@ async function writeClipboardText(text) {
 }
 
 
-function calcScore() {
-    let score = {} // l'objet retourné pa r la fonction
+function calcScore(resmode) {
+    let score = { // l'objet retourné par la fonction
+        taille: currentEnigme.taille,
+        niveau: currentEnigme.niveau,
+        nbLosanges: nblosangeutilises,
 
+        // les champs suivants seront remplis par le code qui suit dans la fonction :
+        // nbAretesJoueur, chronofin, score
+    }
     let nbTotLos = 3 * taille ** 2; // nbre max de losanges dans la grille
 
-    let tab = currentEnigme.tab
     let nbArUser = 0;           // nb arêtes utilisées par le joueur
     let nbAretesFixees = 0      // les arêtes non modifiables
-    let nbAretes = 0            // nombre d'arêtes de la solution
+    let nbAretesSol = 0            // nombre d'arêtes de la solution
 
+    let dureeResolution
+    let scoreFinal
+
+    // décomptes des arêtes
     for (var i = 0; i < tabmilieu.length; i++) {
         if (tabmilieu[i][2] == true) { nbArUser++ }
         if (solution[i] == 'bloquee') { nbAretesFixees++ }
-        if (solution[i] != false) { nbAretes++ }
+        if (solution[i] != false) { nbAretesSol++ }
     }
 
-    // for (let s of tab) {
-    //     if (s == 's') { nbArUser++ }
-    // }
-    // let nbAretes = 0;   // nb total d'arêtes de la solution
-    // for (let s of tab) {
-    //     if (s == 't') { nbAretes++ }
-    // }
-    // nbAretes += nbArUser;
+    // enregistrement du nombre d'arêtes jouées dans l'objet retourné
+    score.nbAretesJoueur = nbArUser
 
-    // proportion de losanges utilisée. meilleure si faible, entre 0 et 1
-    let propLos = Math.min(nblosangeutilises / nbTotLos, 1);
+    dureeResolution = Math.floor((Date.now() - dateDebutResolution) / 1000)
 
-    // durée moyenne de placement d'une arête, > à 1 s 
-    let dureeResolution = Math.floor((Date.now() - dateDebutResolution) / 1000)
-    let durPlacArUser = Math.max(dureeResolution, 1) / (nbAretes - nbAretesFixees);
+    // enregistrement de la durée de résolution de la grille dans l'objet retourné
+    score.chronofin = dureeResolution
 
-    // proportion d'arêtes à placer, entre 0 et 1. Croît avec la difficulté de la grille
-    let perfAr = (nbAretes - nbAretesFixees) / nbAretes;
-    let durPlacAr = 2 // durée (en s) moyenne de placement d'une arête pour un bon joueur
+    if (nbArUser == (nbAretesSol - nbAretesFixees)) {
+        // la résolution a été faite en traçant les arêtes
 
-    // calcul de la valeur de référence pour la grille en cours
-    let scoreRef = 1 * taille ** 2 * 1.1
+        // proportion de losanges utilisée. meilleure si faible, entre 0 et 1
+        let propLos = Math.min(nblosangeutilises / nbTotLos, 1);
 
-    // et de la valeur obtenue par le joueur
-    let scorePlayer = 1 * taille ** 2 * (1.1 - propLos / 5) * (durPlacAr / durPlacArUser) * (1 + perfAr / 2)
+        // durée moyenne de placement d'une arête, > à 1 s 
+        let durPlacArUser = Math.max(dureeResolution, 1) / (nbAretesSol - nbAretesFixees);
 
-    // Calcul du score qui dépend de la taille de la grille et des variables précédentes
-    let scoreFinal = Math.max(
-        taille * 5,
-        Math.round((taille - 2 + (currentEnigme.niveau - 1) / 3) * 50 * scorePlayer / scoreRef)
-    )
-    return {
-        taille: currentEnigme.taille,
-        niveau: currentEnigme.niveau,
-        nbAretesJoueur: nbArUser,
-        nbLosanges: nblosangeutilises,
-        chronofin: dureeResolution,
-        score: scoreFinal
+        // proportion d'arêtes à placer, entre 0 et 1. Croît avec la difficulté de la grille
+        let perfAr = (nbAretesSol - nbAretesFixees) / nbAretesSol;
+        let durPlacAr = 2 // durée (en s) moyenne de placement d'une arête pour un bon joueur
+
+        // calcul de la valeur de référence pour la grille en cours
+        let scoreRef = 1 * taille ** 2 * 1.1
+
+        // et de la valeur obtenue par le joueur
+        let scorePlayer = 1 * taille ** 2 * (1.1 - propLos / 5) * (durPlacAr / durPlacArUser) * (1 + perfAr / 2)
+
+        // Calcul du score qui dépend de la taille de la grille et des variables précédentes
+        scoreFinal = Math.max(
+            taille * 5,
+            Math.round((taille - 2 + (currentEnigme.niveau - 1) / 3) * 50 * scorePlayer / scoreRef)
+        )
+    } else {
+        // résolution par calissons
+        // proportion de losanges utilisée. meilleure si faible, entre 0 et 1
+        let propLos = Math.min(nblosangeutilises / nbTotLos, 1);
+
+        // durée moyenne de placement d'un calisson, > à 1 s 
+        let durPlacCalisson = Math.max(dureeResolution, 1) / nblosangeutilises;
+
+        // Estimation du nombre de calissons à colorier, en resolvant par calissons avec
+        // propagation de la coloration par la règle de l'angle aigu
+        // Nombres issus d'une étude statistique sur des résolutions personnelles.
+        let dictTailleNiveau = {
+            3: { 1: 1.1, 2: 1.7, 3: 1.8 },
+            4: { 1: 1, 2: 1.5, 3: 1.5 },
+            5: { 1: 1, 2: 1.4, 3: 1.6 },
+            6: { 1: 0.9, 2: 1.2, 3: 1.5 }
+        }
+
+        let nbCalRef
+        nbCalRef = (nbAretesSol - nbAretesFixees) / dictTailleNiveau[taille][currentEnigme.niveau]
+
+        // indice de performance, meilleur si >1
+        let perfCal = nbCalRef / nblosangeutilises
+
+        let durPlacCal = 2 // durée (en s) moyenne de placement d'une arête pour un bon joueur
+
+        // calcul de la valeur de référence pour la grille en cours
+        let scoreRef = 1 * taille ** 2 * 1.1
+
+        // et de la valeur obtenue par le joueur
+        let scorePlayer = 1 * taille ** 2 * (1.1 - propLos / 5) * (durPlacCal / durPlacCalisson) * (1 + perfCal / 2)
+
+        // Calcul du score qui dépend de la taille de la grille et des variables précédentes
+        scoreFinal = Math.max(
+            taille * 5,
+            Math.round((taille - 2 + (currentEnigme.niveau - 1) / 3) * 50 * scorePlayer / scoreRef)
+        )
+
     }
+
+    // enregistrement du score final dans l'objet retourné
+    score.score = scoreFinal
+
+    let recordData = true
+    if (recordData) {
+        score.resmode = resmode
+        score.nbFixedEdges = nbAretesFixees
+        score.nbSolEdges = nbAretesSol
+
+        var tab = localStorage.getItem('sessionData')
+        if (tab === null) {
+            tab = []
+        } else {
+            tab = JSON.parse(tab)
+        }
+        tab.push(score)
+        var statsText = JSON.stringify(tab)
+        localStorage.setItem('sessionData', statsText)
+        writeClipboardText(statsText)
+    }
+
+    return score
 }
 
 /** calcul du bonus en fin de partie 
@@ -1379,7 +1414,7 @@ function calcBonus() {
         for (let i = 0; i < tabmilieu.length; i++) {
             switch (tablosanges[i]) {
                 case true:
-                    nb_a_Placer++
+                    // nb_a_Placer++
                     if (tabmilieu[i][4] === true) {
                         nbCorrects++
                         break
@@ -1440,8 +1475,8 @@ function calcBonus() {
     }
 }
 
-function returnToGamePlay() {
-    var score = calcScore()
+function returnToGamePlay(resmode) {
+    var score = calcScore(resmode)
     dessinerSolution()
     funCallBack(score)
 }

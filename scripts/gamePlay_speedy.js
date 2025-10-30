@@ -336,7 +336,7 @@ function endGame() {
   }
 
   // Calcul du score final de la partie
-  let scoreFinal = totalScore + bonus
+  let scoreFinal = totalScore > 0 ? totalScore + bonus : 0
 
   // récupération du meilleur score dans le storage
   const bestScoreInStorage = localStorage.getItem('bestScore')

@@ -296,7 +296,7 @@ function genEnigme() {
     fileIdxEnigmes.shift()
   }
   // récupération de l'énigme et affectation à la variable globale currentEnig
-  currentEnig = { taille: niveau[0], niveau: niveau[1], tab: enigs[i] }
+  currentEnig = { taille: parseInt(niveau[0], 10), niveau: parseInt(niveau[1], 10), tab: enigs[i] }
 }
 
 
@@ -382,7 +382,7 @@ function restart(objScore) {
   let score = objScore.score
   if (score > 0) {
     scoresAndTimes.addScore(
-      objScore.taille + objScore.niveau,
+      objScore.taille.toString() + objScore.niveau.toString(),
       score,
       objScore.chronofin)
     displaypopupEndGrid()
