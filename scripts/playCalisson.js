@@ -1366,13 +1366,14 @@ function calcScore(resmode) {
 
     // enregistrement du score final dans l'objet retourné
     score.score = scoreFinal
+    score.resmode = resmode
+    score.nbFixedEdges = nbAretesFixees
+    score.nbSolEdges = nbAretesSol
 
-    let recordData = true
+    // pour enregistrer les data de session dans le PP système
+    let recordData = false
+
     if (recordData) {
-        score.resmode = resmode
-        score.nbFixedEdges = nbAretesFixees
-        score.nbSolEdges = nbAretesSol
-
         var tab = localStorage.getItem('sessionData')
         if (tab === null) {
             tab = []
