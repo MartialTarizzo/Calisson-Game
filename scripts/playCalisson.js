@@ -1346,7 +1346,9 @@ function calcScore(resmode) {
         // indice de performance, meilleur si >1
         let perfCal = nbCalRef / nblosangeutilises
 
-        let durPlacCal = 2 // durée (en s) moyenne de placement d'une arête pour un bon joueur
+        // durée (en s) moyenne de placement d'un calisson pour un bon joueur
+        // étalonnée statistiquement pour donner des perfs analogues aux arêtes
+        let durPlacCal = 1.8
 
         // calcul de la valeur de référence pour la grille en cours
         let scoreRef = 1 * taille ** 2 * 1.1
