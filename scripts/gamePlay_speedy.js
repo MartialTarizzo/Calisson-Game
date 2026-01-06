@@ -134,6 +134,14 @@ function getRandomInt(max) {
  * La valeur de retour de la fonction nextEnig est un objet contenant 
  * trois champs : taille (3..6), niveau (1..3) et enigme (chaîne représentant l'énigme)
  * effet de bord : la variable globale currentEnig contient la dernière énigme générée 
+ * 
+ * Changement de la règle de progression entre les niveaux :
+ * on ne passe au niveau supérieur lors de la progression (3.1 ->... -> 6.3) que si
+ * la performance de la dernière grille résolue est suffisante.
+ * Cette performance est calculée de la façon suivante :
+ * perf = score / durée_résolution * timeBonif / coeffGridSize
+ * on ne passe au niveau suivant que si perf > incScoreBonif
+ * 
  */
 function mkGenEnigme(idx_taille_max = 3) {
   // index de la taille et du niveau
@@ -143,53 +151,60 @@ function mkGenEnigme(idx_taille_max = 3) {
   // let idx_taille_max = 3
   let idx_niveau_max = 2
 
-  // pour éviter une répétition trop proche du tirage au sort des énigmes de niveau 6.3,
+  // pour éviter une répétition trop proche du tirage au sort des énigmes dans un niveau,
   //  on range dans une file les index énigmes proposées pour ce niveau.
   // Cette file fileEnigmes est de taille maximale maxFileEnigmes  
   let maxFileEnigmes = 30
   let fileIdxEnigmes = []
 
   function nextEnig() {
+    // incrémentation du couple taille/niveau : 0/0 -> 3/2 (grilles 3/1 -> 6/3)
+    // si la performance de la dernière grille résolue est suffisante
+    let mustIncrement = false
+    if (listObjScore.length > 0) {
+      let lastScore = listObjScore[listObjScore.length - 1]
+      console.log(lastScore.score / lastScore.chronofin * timeBonif / coeffGridSize)
+      mustIncrement = (lastScore.score / lastScore.chronofin * timeBonif / coeffGridSize) > incScoreBonif
+    }
+
+    if (mustIncrement) {
+      if (idx_niveau == 2) {
+        if (idx_taille < idx_taille_max) {
+          idx_taille++;
+          idx_niveau = 0;
+          fileIdxEnigmes = []
+        }
+      }
+      else {
+        idx_niveau++
+        fileIdxEnigmes = []
+      }
+    }
+
     // choix au hasard d'une énigme dans la taille et le niveau courants
     let enigs = getEnigmes(idx_taille, idx_niveau)
 
     // l'index de l'énigme qui sera proposée
     let i
 
-    if (idx_taille == idx_taille_max && idx_niveau == idx_niveau_max) {
-      // il faut éviter une répétition trop proche des mêmes énigmes
+    // il faut éviter une répétition trop proche des mêmes énigmes
+    // tirage au sort d'un nouvel index non présent dans les derniers tirages
+    do { i = getRandomInt(enigs.length) } while (fileIdxEnigmes.includes(i))
 
-      // tirage au sort d'un nouvel index non présent dans les derniers tirages
-      do { i = getRandomInt(enigs.length) } while (fileIdxEnigmes.includes(i))
+    // enfilage de l'index
+    fileIdxEnigmes.push(i)
 
-      // enfilage de l'index
-      fileIdxEnigmes.push(i)
-
-      // retrait du premier index si la taille max est atteinte
-      if (fileIdxEnigmes.length > maxFileEnigmes) {
-        fileIdxEnigmes.shift()
-      }
-
-    } else {
-      // dans les niveaux intermédiaires, une seule énigme est tirée au hasard
-      // pour chaque couple taille/niveau
-      // pas besoin de tester si elle a déjà été proposée dans cette partie !
-      i = getRandomInt(enigs.length)
+    // retrait du premier index si la taille max est atteinte
+    if (fileIdxEnigmes.length > maxFileEnigmes) {
+      fileIdxEnigmes.shift()
     }
+
 
     let r = {
       taille: idx_taille + 3,
       niveau: idx_niveau + 1,
       tab: enigs[i]
     }
-    // incrémentation du couple taille/niveau : 0/0 -> 3/2 (grilles 3/1 -> 6/3)
-    if (idx_niveau == 2) {
-      if (idx_taille < idx_taille_max) {
-        idx_taille++;
-        idx_niveau = 0
-      }
-    }
-    else { idx_niveau++ }
 
     // déf de currentEnig et valeur retournée
     currentEnig = r;

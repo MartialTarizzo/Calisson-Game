@@ -7,3 +7,4 @@ dist/*
 test/*
 package.json
 Calisson-Game.code-workspace
+copy_files_to_local.sh
