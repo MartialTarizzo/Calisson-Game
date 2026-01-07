@@ -124,7 +124,7 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-/** Fonction de fabrication d'un générateur d'énigme
+/** Fonction de fabrication d'un générateur d'énigme : mkGenEnigme
  * @returns 
  * la valeur de retour est une fonction nextEnig sans arguments qui agit comme un générateur.
  * 
@@ -142,7 +142,15 @@ function getRandomInt(max) {
  * perf = score / durée_résolution * timeBonif / coeffGridSize
  * on ne passe au niveau suivant que si perf > incScoreBonif
  * 
+ * La fonction de test de changement de niveau est sortie de mkGenEnigme
+ * pour pouvoir l'appeler lors de l'affichage du score en fin de résolution de chaque grille.
+ * Cela permet d'avertir le joueur qu'il change de niveau
  */
+
+function must_increment_level(lastScore) {
+  return (lastScore.score / lastScore.chronofin * timeBonif / coeffGridSize) > incScoreBonif
+}
+
 function mkGenEnigme(idx_taille_max = 3) {
   // index de la taille et du niveau
   // décalage de 3 pour la taille et de 1 pour le niveau / aux valeurs vraies
@@ -163,8 +171,8 @@ function mkGenEnigme(idx_taille_max = 3) {
     let mustIncrement = false
     if (listObjScore.length > 0) {
       let lastScore = listObjScore[listObjScore.length - 1]
-      console.log(lastScore.score / lastScore.chronofin * timeBonif / coeffGridSize)
-      mustIncrement = (lastScore.score / lastScore.chronofin * timeBonif / coeffGridSize) > incScoreBonif
+      // console.log(lastScore.score / lastScore.chronofin * timeBonif / coeffGridSize)
+      mustIncrement = must_increment_level(lastScore)
     }
 
     if (mustIncrement) {
@@ -463,6 +471,11 @@ function restart(objScore) {
 
     // Nettoyage de toute sélection parasite dans la popup
     document.getSelection().empty()
+    if (must_increment_level(objScore)) {
+      document.getElementById('pScoreFinal').style = 'color:blue;'
+    } else {
+      document.getElementById('pScoreFinal').style = 'color:black;'
+    }
     document.getElementById('pScoreFinal').innerHTML = 'Score : ' + score
 
     // l'animation suivante dure 2400 + delai (en ms)
